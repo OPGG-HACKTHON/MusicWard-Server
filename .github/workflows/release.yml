@@ -35,4 +35,4 @@ jobs:
         file: ./Dockerfile
         platforms: linux/amd64
         push: true
-        tags: leeseojune/gs_backend:latest
+        tags: leeseojune/musicward:latest
