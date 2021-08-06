@@ -2,6 +2,7 @@ package io.github.opgg.music_ward_server.entity.comment;
 
 import io.github.opgg.music_ward_server.entity.champion.Champion;
 import io.github.opgg.music_ward_server.entity.playlist.Playlist;
+import io.github.opgg.music_ward_server.entity.playlist.ServiceType;
 import io.github.opgg.music_ward_server.entity.user.User;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -32,6 +33,7 @@ class CommentTest {
         return Playlist.builder()
                 .title("테스트 플레이 리스트")
                 .thumbnailImageUrl("/images/thumbnail/test.png")
+                .serviceType(ServiceType.YOUTUBE)
                 .user(generateUser())
                 .champion(generateChampion())
                 .build();

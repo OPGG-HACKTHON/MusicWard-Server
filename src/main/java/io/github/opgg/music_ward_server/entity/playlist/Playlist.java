@@ -10,6 +10,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -32,6 +34,9 @@ public class Playlist extends BaseEntity {
 
     private Integer view;
 
+    @Enumerated(EnumType.STRING)
+    private ServiceType serviceType;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
@@ -41,9 +46,10 @@ public class Playlist extends BaseEntity {
     private Champion champion;
 
     @Builder
-    public Playlist(String title, String thumbnailImageUrl, User user, Champion champion) {
+    public Playlist(String title, String thumbnailImageUrl, ServiceType serviceType, User user, Champion champion) {
         this.title = title;
         this.thumbnailImageUrl = thumbnailImageUrl;
+        this.serviceType = serviceType;
         this.view = 0;
         this.user = user;
         this.champion = champion;

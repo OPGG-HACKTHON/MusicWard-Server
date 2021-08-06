@@ -60,12 +60,14 @@ class PlaylistTest {
         // given
         String title = "테스트 플레이 리스트";
         String thumbnailImageUrl = "/images/thumbnail/test.png";
+        ServiceType serviceType = ServiceType.YOUTUBE;
         User user = generateUser();
         Champion champion = generateChampion();
 
         Playlist playlist = Playlist.builder()
                 .title(title)
                 .thumbnailImageUrl(thumbnailImageUrl)
+                .serviceType(serviceType)
                 .user(user)
                 .champion(champion)
                 .build();
