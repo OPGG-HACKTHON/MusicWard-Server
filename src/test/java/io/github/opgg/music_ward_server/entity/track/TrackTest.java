@@ -1,4 +1,4 @@
-package io.github.opgg.music_ward_server.entity.song;
+package io.github.opgg.music_ward_server.entity.track;
 
 import io.github.opgg.music_ward_server.entity.champion.Champion;
 import io.github.opgg.music_ward_server.entity.playlist.Playlist;
@@ -8,9 +8,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-class SongTest {
+class TrackTest {
 
     static User generateUser() {
         return User.builder()
@@ -49,7 +47,7 @@ class SongTest {
         Playlist playlist = generatePlaylist();
 
         // when
-        Song song = Song.builder()
+        Track song = Track.builder()
                 .title(title)
                 .songUrl(songUrl)
                 .playlist(playlist)

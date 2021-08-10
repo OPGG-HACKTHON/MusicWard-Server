@@ -19,9 +19,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-@Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Entity(name = "tbl_playlist")
 public class Playlist extends BaseEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
