@@ -16,9 +16,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-@Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Entity(name = "tbl_tag")
 public class Tag extends BaseEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)

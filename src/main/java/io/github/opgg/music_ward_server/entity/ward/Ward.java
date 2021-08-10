@@ -16,9 +16,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-@Entity
+
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Entity(name = "tbl_ward")
 public class Ward extends BaseEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)

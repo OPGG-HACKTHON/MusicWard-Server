@@ -12,9 +12,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-@Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Entity(name = "tbl_champion")
 public class Champion extends BaseEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,8 +23,11 @@ public class Champion extends BaseEntity {
 
     private String name;
 
+    private String title;
+
     private String englishName;
 
+    @Column(columnDefinition = "TEXT")
     private String story;
 
     private String position;

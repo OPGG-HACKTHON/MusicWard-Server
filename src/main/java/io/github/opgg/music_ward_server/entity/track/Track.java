@@ -1,4 +1,4 @@
-package io.github.opgg.music_ward_server.entity.song;
+package io.github.opgg.music_ward_server.entity.track;
 
 import io.github.opgg.music_ward_server.entity.BaseEntity;
 import io.github.opgg.music_ward_server.entity.playlist.Playlist;
@@ -16,13 +16,13 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-@Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Song extends BaseEntity {
+@Entity(name = "tbl_track")
+public class Track extends BaseEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "song_id")
+    @Column(name = "track_id")
     private Long id;
 
     private String title;
@@ -34,7 +34,7 @@ public class Song extends BaseEntity {
     private Playlist playlist;
 
     @Builder
-    public Song(String title, String songUrl, Playlist playlist) {
+    public Track(String title, String songUrl, Playlist playlist) {
         this.title = title;
         this.songUrl = songUrl;
         this.playlist = playlist;
