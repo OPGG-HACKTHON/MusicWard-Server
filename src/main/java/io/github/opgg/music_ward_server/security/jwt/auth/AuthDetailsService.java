@@ -1,6 +1,7 @@
 package io.github.opgg.music_ward_server.security.jwt.auth;
 
 import io.github.opgg.music_ward_server.entity.user.UserRepository;
+import io.github.opgg.music_ward_server.exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -16,6 +17,6 @@ public class AuthDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String id) throws UsernameNotFoundException {
         return userRepository.findById(Long.valueOf(id))
-                .orElseThrow();
+                .orElseThrow(UserNotFoundException::new);
     }
 }
