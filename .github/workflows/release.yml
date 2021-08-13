@@ -30,4 +30,4 @@ jobs:
         secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         region: ap-northeast-2
         local-image: musicward
-        image: musicward:dev-${{ github.sha }}
+        image: music-ward:dev-${{ github.sha }}
