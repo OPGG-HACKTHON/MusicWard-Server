@@ -6,7 +6,6 @@ plugins {
 }
 
 group = 'io.github.opgg'
-version = '0.0.1'
 sourceCompatibility = JavaVersion.VERSION_11
 
 repositories {
