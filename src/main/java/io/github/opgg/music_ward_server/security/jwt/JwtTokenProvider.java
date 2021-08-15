@@ -1,7 +1,11 @@
 package io.github.opgg.music_ward_server.security.jwt;
 
+import io.github.opgg.music_ward_server.exception.ExpiredAccessTokenException;
+import io.github.opgg.music_ward_server.exception.ExpiredRefreshTokenException;
+import io.github.opgg.music_ward_server.exception.InvalidTokenException;
 import io.github.opgg.music_ward_server.security.jwt.auth.AuthDetailsService;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
@@ -58,8 +62,17 @@ public class JwtTokenProvider {
                 .compact();
     }
 
-    public boolean isRefreshToken(String token) {
-        return getTokenBody(token).get("type").equals("refresh");
+    public String parseRefreshToken(String token) {
+        try {
+            Claims claims = Jwts.parser().setSigningKey(getSecretKey())
+                    .parseClaimsJws(token).getBody();
+            if (claims.get("type").equals("refresh")) {
+                return claims.getSubject();
+            }
+            throw new InvalidTokenException();
+        } catch (ExpiredJwtException ignored) {
+            throw new ExpiredRefreshTokenException();
+        }
     }
 
     public String resolveToken(HttpServletRequest request) {
@@ -82,8 +95,13 @@ public class JwtTokenProvider {
     }
 
     private Claims getTokenBody(String token) {
-        return Jwts.parser().setSigningKey(getSecretKey())
-                .parseClaimsJws(token).getBody();
+        try {
+            return Jwts.parser().setSigningKey(getSecretKey())
+                    .parseClaimsJws(token).getBody();
+        } catch (ExpiredJwtException ignored) {
+            throw new ExpiredAccessTokenException();
+        }
+
     }
 
     private String getTokenSubject(String token) {
