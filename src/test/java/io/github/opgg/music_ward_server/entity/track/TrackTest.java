@@ -12,7 +12,7 @@ class TrackTest {
 
     static User generateUser() {
         return User.builder()
-                .email("test@email.com")
+                .googleEmail("test@email.com")
                 .build();
     }
 
