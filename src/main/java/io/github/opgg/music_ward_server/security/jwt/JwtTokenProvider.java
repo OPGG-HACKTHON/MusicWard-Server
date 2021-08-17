@@ -4,10 +4,7 @@ import io.github.opgg.music_ward_server.exception.ExpiredAccessTokenException;
 import io.github.opgg.music_ward_server.exception.ExpiredRefreshTokenException;
 import io.github.opgg.music_ward_server.exception.InvalidTokenException;
 import io.github.opgg.music_ward_server.security.jwt.auth.AuthDetailsService;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -100,6 +97,8 @@ public class JwtTokenProvider {
                     .parseClaimsJws(token).getBody();
         } catch (ExpiredJwtException ignored) {
             throw new ExpiredAccessTokenException();
+        } catch (SignatureException | MalformedJwtException ignored) {
+            throw new InvalidTokenException();
         }
 
     }
