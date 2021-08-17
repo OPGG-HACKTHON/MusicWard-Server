@@ -27,6 +27,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation', version: '2.5.2'
     implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
+    implementation 'org.apache.poi:poi:3.16'
 
 //    open api
     implementation 'se.michaelthelin.spotify:spotify-web-api-java:6.5.1'
