@@ -23,7 +23,10 @@ public class User extends BaseEntity implements UserDetails {
     private Long id;
 
     @Column(length = 20)
-    private String email;
+    private String googleEmail;
+
+    @Column(length = 20)
+    private String spotifyEmail;
 
     @Column(length = 10)
     private String name;
@@ -42,9 +45,10 @@ public class User extends BaseEntity implements UserDetails {
     private boolean withdrawal;
 
     @Builder
-    public User(String email, String name, Role role,
+    public User(String googleEmail, String spotifyEmail, String name, Role role,
                 String provider, String nickName, boolean withdrawal) {
-        this.email = email;
+        this.googleEmail = googleEmail;
+        this.spotifyEmail = spotifyEmail;
         this.name = name;
         this.role = role;
         this.provider = provider;

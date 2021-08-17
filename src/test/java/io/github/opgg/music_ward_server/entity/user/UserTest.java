@@ -13,7 +13,8 @@ class UserTest {
     void createByBuilder() {
         //given
         Role role = Role.ROLE_ADMIN;
-        String email = "test@gmail.com";
+        String googleEmail = "test@gmail.com";
+        String spotifyEmail = "test@gmail.com";
         String name = "test";
         String provider = "test";
         String nickname = "hideonbush";
@@ -21,7 +22,8 @@ class UserTest {
         //when
         User user = User.builder()
                 .role(role)
-                .email(email)
+                .googleEmail(googleEmail)
+                .spotifyEmail(spotifyEmail)
                 .name(name)
                 .provider(provider)
                 .nickName(nickname)
@@ -31,7 +33,8 @@ class UserTest {
         //then
         Assertions.assertAll(
                 () -> Assertions.assertEquals(role, user.getRole()),
-                () -> Assertions.assertEquals(email, user.getEmail()),
+                () -> Assertions.assertEquals(googleEmail, user.getGoogleEmail()),
+                () -> Assertions.assertEquals(spotifyEmail, user.getSpotifyEmail()),
                 () -> Assertions.assertEquals(name, user.getName()),
                 () -> Assertions.assertEquals(provider, user.getProvider()),
                 () -> Assertions.assertEquals(nickname, user.getNickName())

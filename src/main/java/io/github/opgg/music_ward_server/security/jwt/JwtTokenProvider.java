@@ -37,22 +37,22 @@ public class JwtTokenProvider {
 
     private final AuthDetailsService authDetailsService;
 
-    public String generateAccessToken(String email) {
+    public String generateAccessToken(Integer id) {
         return Jwts.builder()
                 .signWith(SignatureAlgorithm.HS256, getSecretKey())
                 .setHeaderParam("typ", "JWT")
-                .setSubject(email)
+                .setSubject(id.toString())
                 .claim("type", "access")
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + accessExp * 1000))
                 .compact();
     }
 
-    public String generateRefreshToken(String email) {
+    public String generateRefreshToken(Integer id) {
         return Jwts.builder()
                 .signWith(SignatureAlgorithm.HS256, getSecretKey())
                 .setHeaderParam("typ", "JWT")
-                .setSubject(email)
+                .setSubject(id.toString())
                 .claim("type", "refresh")
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + refreshExp * 1000))
