@@ -36,7 +36,7 @@ public class RequestLogger extends OncePerRequestFilter {
     private void logRequest(RequestWrapper request, HttpServletResponse response) throws IOException {
         String requestTime = LocalDateTime.now(ZoneId.of("Asia/Seoul"))
                 .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"));
-        String requestIp = Optional.ofNullable(request.getHeader("http_x_forwarded_for"))
+        String requestIp = Optional.ofNullable(request.getHeader("X-Forwarded-For"))
                 .orElse("127.0.0.1");
         String method = request.getMethod();
         String url = request.getRequestURI();
