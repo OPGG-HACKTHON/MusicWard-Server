@@ -30,7 +30,7 @@ dependencies {
     implementation 'org.apache.poi:poi:3.16'
 
 //    open api
-    implementation 'se.michaelthelin.spotify:spotify-web-api-java:6.5.1'
+    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign:3.0.3'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
