@@ -33,7 +33,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .antMatchers(HttpMethod.GET, "/auth/google").permitAll()
-                .antMatchers(HttpMethod.POST, "/auth/google").permitAll()
+                .antMatchers(HttpMethod.GET, "/auth/google/callback").permitAll()
                 .anyRequest().authenticated()
                 .and().apply(new FilterConfigure(jwtTokenProvider, exceptionHandlerFilter));
     }
