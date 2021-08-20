@@ -22,10 +22,10 @@ public class User extends BaseEntity implements UserDetails {
     @Column(name = "user_id")
     private Long id;
 
-    @Column(length = 20)
+    @Column(length = 60)
     private String googleEmail;
 
-    @Column(length = 20)
+    @Column(length = 60)
     private String spotifyEmail;
 
     @Column(length = 10)
