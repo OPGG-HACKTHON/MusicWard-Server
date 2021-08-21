@@ -2,13 +2,11 @@ package io.github.opgg.music_ward_server.entity.token;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.ToString;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
 import org.springframework.data.redis.core.TimeToLive;
 
 @Getter
-@ToString
 @AllArgsConstructor
 @RedisHash
 public class Token {
