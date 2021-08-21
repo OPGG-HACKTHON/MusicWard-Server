@@ -14,6 +14,8 @@ import io.github.opgg.music_ward_server.security.jwt.JwtTokenProvider;
 import io.github.opgg.music_ward_server.utils.api.client.GoogleAuthClient;
 import io.github.opgg.music_ward_server.utils.api.client.GoogleInfoClient;
 import io.github.opgg.music_ward_server.utils.api.dto.google.CodeRequest;
+import io.github.opgg.music_ward_server.utils.api.dto.google.GoogleAccessTokenRequest;
+import io.github.opgg.music_ward_server.utils.api.dto.google.GoogleAccessTokenResponse;
 import io.github.opgg.music_ward_server.utils.api.dto.google.GoogleTokenResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -91,5 +93,15 @@ public class UserServiceImpl implements UserService {
         }
 
         return new TokenResponse(accessToken, refreshToken, response.getRefreshToken(), Type.GOOGLE.name());
+    }
+
+    @Override
+    public GoogleAccessTokenResponse getAccessToken(String refreshToken) {
+
+        GoogleAccessTokenResponse accessTokenResponse = googleAuthClient.getAccessTokenByRefreshToken(
+                new GoogleAccessTokenRequest(clientId, clientSecret, refreshToken, "refresh_token")
+        );
+
+        return accessTokenResponse;
     }
 }
