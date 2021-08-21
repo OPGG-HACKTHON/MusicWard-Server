@@ -1,5 +1,6 @@
 package io.github.opgg.music_ward_server.entity.champion;
 
+import io.github.opgg.music_ward_server.dto.champion.response.ChampionListDTO;
 import io.github.opgg.music_ward_server.entity.BaseEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -47,5 +48,8 @@ public class Champion extends BaseEntity {
         this.imageUrl = imageUrl;
         this.title = title;
     }
+
+    public ChampionListDTO toDTO() {
+        return new ChampionListDTO(id, englishName, name, position, imageUrl);
     }
 }
