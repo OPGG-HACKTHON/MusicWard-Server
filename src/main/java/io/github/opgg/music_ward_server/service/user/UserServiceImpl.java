@@ -21,6 +21,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -50,7 +52,7 @@ public class UserServiceImpl implements UserService {
     public GoogleLinkResponse getGoogleLink() {
         return new GoogleLinkResponse(GOOGLE_LOGIN_LINK +
                 "?client_id=" + clientId +
-                "&scope=https://www.googleapis.com/auth/youtube%20https://www.googleapis.com/auth/userinfo.email" +
+                "&scope=https%3A//www.googleapis.com/auth/userinfo.email" +
                 "&response_type=code" +
                 "&access_type=offline" +
                 "&redirect_uri=" + redirectUri);
@@ -62,7 +64,7 @@ public class UserServiceImpl implements UserService {
                 new CodeRequest(code, clientId, clientSecret, redirectUri, "authorization_code")
         );
 
-        String email = googleInfoClient.getEmail(response.getAccessTokenAndTokenType()).getEmail();
+        String email = googleInfoClient.getEmail("Bearer" + response.getAccessToken()).getEmail();
 
         try{
             if(userRepository.findByGoogleEmail(email).isEmpty()) {
@@ -83,25 +85,22 @@ public class UserServiceImpl implements UserService {
         String accessToken = jwtTokenProvider.generateAccessToken(Math.toIntExact(userId));
         String refreshToken = jwtTokenProvider.generateRefreshToken(Math.toIntExact(userId));
 
-        Token token = tokenRepository.findById(userId).orElse(null);
-        if (token == null) {
-            tokenRepository.save(new Token(userId, refreshToken, response.getRefreshToken(),
-                    null, GOOGLE_REFRESH_EXP));
-        } else {
-            tokenRepository.save(token.update(refreshToken, response.getRefreshToken(),
-                    token.getSpotifyRefreshToken(), GOOGLE_REFRESH_EXP));
-        }
+        tokenRepository.findById(userId + Type.MUSICWARD.name())
+                .or(() -> Optional.of(new Token(userId + Type.MUSICWARD.name(), refreshToken, refreshExp)))
+                .ifPresent(token -> tokenRepository.save(token.update(refreshToken, refreshExp)));
+        tokenRepository.findById(userId + Type.GOOGLE.name())
+                .or(() -> Optional.of(new Token(userId + Type.GOOGLE.name(),
+                        response.getRefreshToken(), GOOGLE_REFRESH_EXP)))
+                .ifPresent(token -> tokenRepository.save(token.update(refreshToken, GOOGLE_REFRESH_EXP)));
 
         return new TokenResponse(accessToken, refreshToken, response.getRefreshToken(), Type.GOOGLE.name());
     }
 
     @Override
     public GoogleAccessTokenResponse getAccessToken(String refreshToken) {
-
-        GoogleAccessTokenResponse accessTokenResponse = googleAuthClient.getAccessTokenByRefreshToken(
+        return googleAuthClient.getAccessTokenByRefreshToken(
                 new GoogleAccessTokenRequest(clientId, clientSecret, refreshToken, "refresh_token")
         );
-
-        return accessTokenResponse;
     }
+
 }
