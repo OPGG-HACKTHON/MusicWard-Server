@@ -35,7 +35,7 @@ public class Playlist extends BaseEntity {
     private Integer view;
 
     @Enumerated(EnumType.STRING)
-    private ServiceType serviceType;
+    private Provider serviceType;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -46,7 +46,7 @@ public class Playlist extends BaseEntity {
     private Champion champion;
 
     @Builder
-    public Playlist(String title, String thumbnailImageUrl, ServiceType serviceType, User user, Champion champion) {
+    public Playlist(String title, String thumbnailImageUrl, Provider serviceType, User user, Champion champion) {
         this.title = title;
         this.thumbnailImageUrl = thumbnailImageUrl;
         this.serviceType = serviceType;

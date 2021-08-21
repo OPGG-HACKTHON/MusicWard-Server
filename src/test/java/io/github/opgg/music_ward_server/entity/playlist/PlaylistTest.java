@@ -60,7 +60,7 @@ class PlaylistTest {
         // given
         String title = "테스트 플레이 리스트";
         String thumbnailImageUrl = "/images/thumbnail/test.png";
-        ServiceType serviceType = ServiceType.YOUTUBE;
+        Provider serviceType = Provider.YOUTUBE;
         User user = generateUser();
         Champion champion = generateChampion();
 

@@ -14,18 +14,20 @@ public class Token {
     @Id
     private final Long id;
 
-    private final Type type;
+    private String musicWardRefreshToken;
 
-    private String refreshToken;
+    private String googleRefreshToken;
+
+    private String spotifyRefreshToken;
 
     @TimeToLive
     private Long ttl;
 
-    public Token update(String refreshToken, Long ttl) {
-        this.refreshToken = refreshToken;
+    public Token update(String musicWardRefreshToken, String googleRefreshToken, String spotifyRefreshToken, Long ttl) {
+        this.musicWardRefreshToken = musicWardRefreshToken;
+        this.googleRefreshToken = googleRefreshToken;
+        this.spotifyRefreshToken = spotifyRefreshToken;
         this.ttl = ttl;
         return this;
     }
-
-
 }
