@@ -50,7 +50,7 @@ public class UserServiceImpl implements UserService {
     public GoogleLinkResponse getGoogleLink() {
         return new GoogleLinkResponse(GOOGLE_LOGIN_LINK +
                 "?client_id=" + clientId +
-                "&scope=https%3A//www.googleapis.com/auth/userinfo.email" +
+                "&scope=https://www.googleapis.com/auth/youtube%20https://www.googleapis.com/auth/userinfo.email" +
                 "&response_type=code" +
                 "&access_type=offline" +
                 "&redirect_uri=" + redirectUri);
@@ -62,7 +62,7 @@ public class UserServiceImpl implements UserService {
                 new CodeRequest(code, clientId, clientSecret, redirectUri, "authorization_code")
         );
 
-        String email = googleInfoClient.getEmail(response.getAccessToken()).getEmail();
+        String email = googleInfoClient.getEmail(response.getAccessTokenAndTokenType()).getEmail();
 
         try{
             if(userRepository.findByGoogleEmail(email).isEmpty()) {

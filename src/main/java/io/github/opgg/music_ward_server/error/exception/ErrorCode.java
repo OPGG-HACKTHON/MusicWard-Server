@@ -15,7 +15,8 @@ public enum ErrorCode {
     EXPIRED_ACCESS_TOKEN(401, "Expired access token."),
     EXPIRED_REFRESH_TOKEN(401, "Expired refresh token."),
     USER_NOT_FOUND(404, "User not found."),
-    CREDENTIALS_NOT_FOUND(401, "Credentials not found.");
+    CREDENTIALS_NOT_FOUND(401, "Credentials not found."),
+    EMPTY_REFRESH_TOKEN(401, "Empty refresh token");
 
     private final int status;
     private final String message;
