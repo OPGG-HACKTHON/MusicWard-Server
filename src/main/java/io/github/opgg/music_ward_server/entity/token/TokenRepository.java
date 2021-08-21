@@ -7,5 +7,4 @@ import java.util.Optional;
 
 @Repository
 public interface TokenRepository extends CrudRepository<Token, Long> {
-    Optional<Token> findByIdAndType(Long id, Type type);
 }

@@ -5,7 +5,6 @@ import io.github.opgg.music_ward_server.dto.user.response.TokenResponse;
 import io.github.opgg.music_ward_server.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,7 +19,7 @@ public class UserController {
         return userService.getGoogleLink();
     }
 
-    @PostMapping("/auth/google")
+    @GetMapping("/auth/google/callback")
     public TokenResponse getTokenByCode(@RequestParam("code") String code) {
         return userService.getTokenByCode(code);
     }
