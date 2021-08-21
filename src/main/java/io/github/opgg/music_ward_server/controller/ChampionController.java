@@ -1,6 +1,5 @@
 package io.github.opgg.music_ward_server.controller;
 
-import io.github.opgg.music_ward_server.dto.champion.response.ChampionDataDTO;
 import io.github.opgg.music_ward_server.dto.champion.response.ChampionDetailDTO;
 import io.github.opgg.music_ward_server.dto.champion.response.ChampionListResponse;
 import io.github.opgg.music_ward_server.service.champion.ChampionService;
@@ -15,12 +14,12 @@ public class ChampionController {
     private final ChampionService championService;
 
     @GetMapping("/championlist")
-    public ChampionDataDTO getChampoinList() {
-        return new ChampionDataDTO<ChampionListResponse>(championService.getChampionList());
+    public ChampionListResponse getChampoinList() {
+        return championService.getChampionList();
     }
 
     @GetMapping("/champion/{championId}")
-    public ChampionDataDTO getChampionDetail(@PathVariable("championId") Long championId) {
-        return new ChampionDataDTO<ChampionDetailDTO>(championService.getChampionDetail(championId));
+    public ChampionDetailDTO getChampionDetail(@PathVariable("championId") Long championId) {
+        return championService.getChampionDetail(championId);
     }
 }
