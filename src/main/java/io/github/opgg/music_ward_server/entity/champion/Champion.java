@@ -38,12 +38,14 @@ public class Champion extends BaseEntity {
 
     @Builder
     public Champion(String name, String englishName, String story,
-                    String position, String profileImageUrl, String imageUrl) {
+                    String position, String profileImageUrl, String imageUrl, String title) {
         this.name = name;
         this.englishName = englishName;
         this.story = story;
         this.position = position;
         this.profileImageUrl = profileImageUrl;
         this.imageUrl = imageUrl;
+        this.title = title;
+    }
     }
 }
