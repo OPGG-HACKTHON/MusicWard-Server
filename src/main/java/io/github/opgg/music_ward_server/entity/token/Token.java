@@ -5,6 +5,7 @@ import lombok.Getter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
 import org.springframework.data.redis.core.TimeToLive;
+import org.springframework.data.redis.core.index.Indexed;
 
 @Getter
 @AllArgsConstructor
@@ -12,21 +13,15 @@ import org.springframework.data.redis.core.TimeToLive;
 public class Token {
 
     @Id
-    private final Long id;
+    private final String id;
 
-    private String musicWardRefreshToken;
-
-    private String googleRefreshToken;
-
-    private String spotifyRefreshToken;
+    private String refreshToken;
 
     @TimeToLive
     private Long ttl;
 
-    public Token update(String musicWardRefreshToken, String googleRefreshToken, String spotifyRefreshToken, Long ttl) {
-        this.musicWardRefreshToken = musicWardRefreshToken;
-        this.googleRefreshToken = googleRefreshToken;
-        this.spotifyRefreshToken = spotifyRefreshToken;
+    public Token update(String refreshToken, Long ttl) {
+        this.refreshToken = refreshToken;
         this.ttl = ttl;
         return this;
     }
