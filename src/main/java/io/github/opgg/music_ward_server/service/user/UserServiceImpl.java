@@ -19,8 +19,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -83,16 +81,15 @@ public class UserServiceImpl implements UserService {
         String accessToken = jwtTokenProvider.generateAccessToken(Math.toIntExact(userId));
         String refreshToken = jwtTokenProvider.generateRefreshToken(Math.toIntExact(userId));
 
-        tokenRepository.findByIdAndType(userId, Type.MUSICWARD)
-                .or(() -> Optional.of(new Token(userId, Type.MUSICWARD, refreshToken, refreshExp)))
-                .ifPresent(token -> tokenRepository.save(token.update(refreshToken, refreshExp)));
-        tokenRepository.findByIdAndType(userId, Type.GOOGLE)
-                .or(() -> Optional.of(new Token(userId, Type.GOOGLE,
-                        response.getRefreshToken(), GOOGLE_REFRESH_EXP)))
-                .ifPresent(token -> tokenRepository.save(token.update(refreshToken, GOOGLE_REFRESH_EXP)));
+        Token token = tokenRepository.findById(userId).orElse(null);
+        if (token == null) {
+            tokenRepository.save(new Token(userId, refreshToken, response.getRefreshToken(),
+                    null, GOOGLE_REFRESH_EXP));
+        } else {
+            tokenRepository.save(token.update(refreshToken, response.getRefreshToken(),
+                    token.getSpotifyRefreshToken(), GOOGLE_REFRESH_EXP));
+        }
 
-        return new TokenResponse(accessToken, refreshToken,
-                response.getRefreshToken(), Type.GOOGLE.name());
+        return new TokenResponse(accessToken, refreshToken, response.getRefreshToken(), Type.GOOGLE.name());
     }
-
 }
