@@ -62,7 +62,7 @@ public class UserServiceImpl implements UserService {
                 new CodeRequest(code, clientId, clientSecret, redirectUri, "authorization_code")
         );
 
-        String email = googleInfoClient.getEmail(response.getAccessToken()).getEmail();
+        String email = googleInfoClient.getEmail(response.getAccessTokenAndTokenType()).getEmail();
 
         try{
             if(userRepository.findByGoogleEmail(email).isEmpty()) {
