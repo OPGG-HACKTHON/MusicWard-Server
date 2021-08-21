@@ -6,32 +6,33 @@ import io.github.opgg.music_ward_server.dto.champion.response.ChampionListRespon
 import io.github.opgg.music_ward_server.entity.champion.Champion;
 import io.github.opgg.music_ward_server.entity.champion.ChampionRepository;
 import io.github.opgg.music_ward_server.exception.ChampionNotFoundException;
-import io.github.opgg.music_ward_server.exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class ChampionServiceImpl implements ChampionService {
+
     private final ChampionRepository championRepository;
 
     @Override
     public ChampionListResponse getChampionList() {
-        List<Champion> champions = championRepository.findAll();
-        ChampionListResponse championListResponse = new ChampionListResponse();
-        championListResponse.setChampionList(champions);
-        return championListResponse;
+
+        List<ChampionListDTO> championListDTO = championRepository.findAll()
+                .stream()
+                .map(Champion::toDTO)
+                .collect(Collectors.toList());
+        return new ChampionListResponse(championListDTO);
+
     }
 
     @Override
     public ChampionDetailDTO getChampionDetail(Long championId) {
-        Optional<Champion> champion = championRepository.findById(championId);
-        champion.orElseThrow(ChampionNotFoundException::new);
+        Champion champion = championRepository.findById(championId).orElseThrow(ChampionNotFoundException::new);
         return new ChampionDetailDTO(champion);
+
     }
 
 }
