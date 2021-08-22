@@ -1,6 +1,6 @@
 package io.github.opgg.music_ward_server.service.user;
 
-import io.github.opgg.music_ward_server.dto.user.response.GoogleLinkResponse;
+import io.github.opgg.music_ward_server.dto.user.response.LinkResponse;
 import io.github.opgg.music_ward_server.dto.user.response.TokenResponse;
 import io.github.opgg.music_ward_server.entity.token.Token;
 import io.github.opgg.music_ward_server.entity.token.TokenRepository;
@@ -21,6 +21,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 
 @Service
@@ -29,15 +31,25 @@ public class UserServiceImpl implements UserService {
 
     private static final String GOOGLE_LOGIN_LINK = "https://accounts.google.com/o/oauth2/v2/auth";
     private static final Long GOOGLE_REFRESH_EXP = 604800L;
+    private static final String SPOTIFY_LOGIN_LINK = "https://accounts.spotify.com/authorize";
 
     @Value("${oauth.google.client_id}")
-    private String clientId;
+    private String googleClientId;
 
     @Value("${oauth.google.client_secret}")
-    private String clientSecret;
+    private String googleClientSecret;
 
-    @Value("${oauth.redirect_uri}")
-    private String redirectUri;
+    @Value("${oauth.google.redirect_uri}")
+    private String googleRedirectUri;
+
+    @Value("${oauth.spotify.client_id}")
+    private String spotifyClientId;
+
+    @Value("${oauth.spotify.client_secret}")
+    private String spotifyClientSecret;
+
+    @Value("${oauth.spotify.redirect_uri}")
+    private String spotifyRedirectUri;
 
     @Value("${jwt.refresh.exp}")
     private Long refreshExp;
@@ -49,19 +61,28 @@ public class UserServiceImpl implements UserService {
     private final JwtTokenProvider jwtTokenProvider;
 
     @Override
-    public GoogleLinkResponse getGoogleLink() {
-        return new GoogleLinkResponse(GOOGLE_LOGIN_LINK +
-                "?client_id=" + clientId +
+    public LinkResponse getGoogleLink() {
+        return new LinkResponse(GOOGLE_LOGIN_LINK +
+                "?client_id=" + googleClientId +
                 "&scope=https://www.googleapis.com/auth/youtube%20https://www.googleapis.com/auth/userinfo.email" +
                 "&response_type=code" +
                 "&access_type=offline" +
-                "&redirect_uri=" + redirectUri);
+                "&redirect_uri=" + URLEncoder.encode(googleRedirectUri, StandardCharsets.UTF_8));
+    }
+
+    @Override
+    public LinkResponse getSpotifyLink() {
+        return new LinkResponse(SPOTIFY_LOGIN_LINK +
+                "?client_id=" + spotifyClientId +
+                "&scope=" + URLEncoder.encode("user-read-email playlist-read-private", StandardCharsets.UTF_8) +
+                "&response_type=code" +
+                "&redirect_uri=" + URLEncoder.encode(spotifyRedirectUri, StandardCharsets.UTF_8));
     }
 
     @Override
     public TokenResponse getTokenByCode(String code) {
         GoogleTokenResponse response = googleAuthClient.getTokenByCode(
-                new CodeRequest(code, clientId, clientSecret, redirectUri, "authorization_code")
+                new CodeRequest(code, googleClientId, googleClientSecret, googleRedirectUri, "authorization_code")
         );
 
         String email = googleInfoClient.getEmail("Bearer" + response.getAccessToken()).getEmail();
@@ -99,7 +120,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public GoogleAccessTokenResponse getAccessToken(String refreshToken) {
         return googleAuthClient.getAccessTokenByRefreshToken(
-                new GoogleAccessTokenRequest(clientId, clientSecret, refreshToken, "refresh_token")
+                new GoogleAccessTokenRequest(googleClientId, googleClientSecret, refreshToken, "refresh_token")
         );
     }
 
