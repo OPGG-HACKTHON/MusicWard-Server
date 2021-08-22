@@ -34,4 +34,10 @@ public class PlaylistController {
 
         return ResponseEntity.ok(new CommonResponse(playlistService.save(requestDto)));
     }
+
+    @GetMapping("/playlists")
+    public ResponseEntity<CommonResponse> findAll() {
+
+        return ResponseEntity.ok(new CommonResponse(playlistService.findAll()));
+    }
 }
