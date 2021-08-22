@@ -90,4 +90,10 @@ public class User extends BaseEntity implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+    public User setSpotifyEmail(String spotifyEmail) {
+        this.spotifyEmail = spotifyEmail;
+        return this;
+    }
+
 }
