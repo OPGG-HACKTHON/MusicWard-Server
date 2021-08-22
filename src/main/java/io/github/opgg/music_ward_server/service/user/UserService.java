@@ -7,6 +7,7 @@ import io.github.opgg.music_ward_server.utils.api.dto.google.GoogleAccessTokenRe
 public interface UserService {
     LinkResponse getGoogleLink();
     LinkResponse getSpotifyLink();
-    TokenResponse getTokenByCode(String code);
-    GoogleAccessTokenResponse getAccessToken(String refreshToken);
+    TokenResponse getGoogleTokenByCode(String code);
+    GoogleAccessTokenResponse getGoogleAccessToken(String refreshToken);
+    TokenResponse getSpotifyTokenByCode(String code);
 }

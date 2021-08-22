@@ -11,13 +11,18 @@ import io.github.opgg.music_ward_server.entity.user.UserRepository;
 import io.github.opgg.music_ward_server.exception.EmailTooLongException;
 import io.github.opgg.music_ward_server.exception.UserNotFoundException;
 import io.github.opgg.music_ward_server.security.jwt.JwtTokenProvider;
-import io.github.opgg.music_ward_server.utils.api.client.GoogleAuthClient;
-import io.github.opgg.music_ward_server.utils.api.client.GoogleInfoClient;
-import io.github.opgg.music_ward_server.utils.api.dto.google.CodeRequest;
+import io.github.opgg.music_ward_server.utils.api.client.google.GoogleAuthClient;
+import io.github.opgg.music_ward_server.utils.api.client.google.GoogleInfoClient;
+import io.github.opgg.music_ward_server.utils.api.client.spotify.SpotifyAuthClient;
+import io.github.opgg.music_ward_server.utils.api.client.spotify.SpotifyInfoClient;
+import io.github.opgg.music_ward_server.utils.api.dto.google.GoogleCodeRequest;
 import io.github.opgg.music_ward_server.utils.api.dto.google.GoogleAccessTokenRequest;
 import io.github.opgg.music_ward_server.utils.api.dto.google.GoogleAccessTokenResponse;
 import io.github.opgg.music_ward_server.utils.api.dto.google.GoogleTokenResponse;
+import io.github.opgg.music_ward_server.utils.api.dto.spotify.SpotifyTokenResponse;
+import io.github.opgg.music_ward_server.utils.security.SecurityUtil;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -56,6 +61,8 @@ public class UserServiceImpl implements UserService {
 
     private final GoogleAuthClient googleAuthClient;
     private final GoogleInfoClient googleInfoClient;
+    private final SpotifyAuthClient spotifyAuthClient;
+    private final SpotifyInfoClient spotifyInfoClient;
     private final UserRepository userRepository;
     private final TokenRepository tokenRepository;
     private final JwtTokenProvider jwtTokenProvider;
@@ -80,9 +87,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public TokenResponse getTokenByCode(String code) {
+    public TokenResponse getGoogleTokenByCode(String code) {
         GoogleTokenResponse response = googleAuthClient.getTokenByCode(
-                new CodeRequest(code, googleClientId, googleClientSecret, googleRedirectUri, "authorization_code")
+                new GoogleCodeRequest(code, googleClientId, googleClientSecret, googleRedirectUri, "authorization_code")
         );
 
         String email = googleInfoClient.getEmail("Bearer" + response.getAccessToken()).getEmail();
@@ -103,6 +110,37 @@ public class UserServiceImpl implements UserService {
         Long userId = userRepository.findByGoogleEmail(email)
                 .orElseThrow(UserNotFoundException::new).getId();
 
+        return getToken(userId, response.getRefreshToken(), Type.GOOGLE, GOOGLE_REFRESH_EXP);
+    }
+
+    @Override
+    public GoogleAccessTokenResponse getGoogleAccessToken(String refreshToken) {
+        return googleAuthClient.getAccessTokenByRefreshToken(
+                new GoogleAccessTokenRequest(googleClientId, googleClientSecret, refreshToken, "refresh_token")
+        );
+    }
+
+    @Override
+    public TokenResponse getSpotifyTokenByCode(String code) {
+
+        Long userId = SecurityUtil.getCurrentUserId();
+
+        SpotifyTokenResponse response =
+                spotifyAuthClient.getTokenByCode("authorization_code", code,
+                spotifyRedirectUri, "Basic " +
+                Base64.encodeBase64String((spotifyClientId + ":" + spotifyClientSecret).getBytes())
+        );
+
+        String email = spotifyInfoClient.getEmail("Bearer " + response.getAccessToken())
+                .getEmail();
+
+        userRepository.findById(userId)
+                .map(user -> userRepository.save(user.setSpotifyEmail(email)));
+
+        return getToken(userId, response.getRefreshToken(), Type.SPOTIFY, -1L);
+    }
+
+    private TokenResponse getToken(Long userId, String oauthToken, Type type, Long oauthExp) {
         String accessToken = jwtTokenProvider.generateAccessToken(Math.toIntExact(userId));
         String refreshToken = jwtTokenProvider.generateRefreshToken(Math.toIntExact(userId));
 
@@ -110,18 +148,11 @@ public class UserServiceImpl implements UserService {
                 .or(() -> Optional.of(new Token(userId + Type.MUSICWARD.name(), refreshToken, refreshExp)))
                 .ifPresent(token -> tokenRepository.save(token.update(refreshToken, refreshExp)));
         tokenRepository.findById(userId + Type.GOOGLE.name())
-                .or(() -> Optional.of(new Token(userId + Type.GOOGLE.name(),
-                        response.getRefreshToken(), GOOGLE_REFRESH_EXP)))
-                .ifPresent(token -> tokenRepository.save(token.update(response.getRefreshToken(), GOOGLE_REFRESH_EXP)));
+                .or(() -> Optional.of(new Token(userId + type.name(),
+                        oauthToken, refreshExp)))
+                .ifPresent(token -> tokenRepository.save(token.update(refreshToken, oauthExp)));
 
-        return new TokenResponse(accessToken, refreshToken, response.getRefreshToken(), Type.GOOGLE.name());
-    }
-
-    @Override
-    public GoogleAccessTokenResponse getAccessToken(String refreshToken) {
-        return googleAuthClient.getAccessTokenByRefreshToken(
-                new GoogleAccessTokenRequest(googleClientId, googleClientSecret, refreshToken, "refresh_token")
-        );
+        return new TokenResponse(accessToken, refreshToken, oauthToken, type.name());
     }
 
 }

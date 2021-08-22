@@ -1,4 +1,4 @@
-package io.github.opgg.music_ward_server.utils.api.client;
+package io.github.opgg.music_ward_server.utils.api.client.google;
 
 import io.github.opgg.music_ward_server.utils.api.dto.google.YoutubePlaylistsResponse;
 import org.springframework.cloud.openfeign.FeignClient;
