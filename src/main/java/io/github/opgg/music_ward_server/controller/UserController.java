@@ -25,8 +25,13 @@ public class UserController {
     }
 
     @GetMapping("/auth/google/callback")
-    public TokenResponse getTokenByCode(@RequestParam("code") String code) {
-        return userService.getTokenByCode(code);
+    public TokenResponse getGoogleTokenByCode(@RequestParam("code") String code) {
+        return userService.getGoogleTokenByCode(code);
+    }
+
+    @GetMapping("/auth/spotify/callback")
+    public TokenResponse getSpotifyTokenByCode(@RequestParam("code") String code) {
+        return userService.getSpotifyTokenByCode(code);
     }
 
 }
