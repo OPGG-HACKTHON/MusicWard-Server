@@ -1,8 +1,8 @@
 package io.github.opgg.music_ward_server.controller;
 
 import io.github.opgg.music_ward_server.controller.response.CommonResponse;
-import io.github.opgg.music_ward_server.dto.playlist.NonPlaylistsResponse;
-import io.github.opgg.music_ward_server.dto.playlist.PlaylistSaveRequest;
+import io.github.opgg.music_ward_server.dto.playlist.response.NonPlaylistsResponse;
+import io.github.opgg.music_ward_server.dto.playlist.request.PlaylistSaveRequest;
 import io.github.opgg.music_ward_server.service.playlist.PlaylistService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

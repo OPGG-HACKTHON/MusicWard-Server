@@ -1,4 +1,4 @@
-package io.github.opgg.music_ward_server.dto.playlist;
+package io.github.opgg.music_ward_server.dto.playlist.request;
 
 import io.github.opgg.music_ward_server.entity.champion.Champion;
 import io.github.opgg.music_ward_server.entity.playlist.Image;

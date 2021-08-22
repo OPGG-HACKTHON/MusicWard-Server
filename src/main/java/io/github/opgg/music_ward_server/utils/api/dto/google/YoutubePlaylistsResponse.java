@@ -1,6 +1,6 @@
 package io.github.opgg.music_ward_server.utils.api.dto.google;
 
-import io.github.opgg.music_ward_server.dto.playlist.NonPlaylistsResponse;
+import io.github.opgg.music_ward_server.dto.playlist.response.NonPlaylistsResponse;
 import io.github.opgg.music_ward_server.entity.playlist.Provider;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
