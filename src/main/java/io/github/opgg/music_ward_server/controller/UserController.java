@@ -1,6 +1,6 @@
 package io.github.opgg.music_ward_server.controller;
 
-import io.github.opgg.music_ward_server.dto.user.response.GoogleLinkResponse;
+import io.github.opgg.music_ward_server.dto.user.response.LinkResponse;
 import io.github.opgg.music_ward_server.dto.user.response.TokenResponse;
 import io.github.opgg.music_ward_server.service.user.UserService;
 import lombok.RequiredArgsConstructor;
@@ -15,8 +15,13 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/auth/google")
-    public GoogleLinkResponse getGoogleLink() {
+    public LinkResponse getGoogleLink() {
         return userService.getGoogleLink();
+    }
+
+    @GetMapping("/auth/spotify")
+    public LinkResponse getSpotifyLink() {
+        return userService.getSpotifyLink();
     }
 
     @GetMapping("/auth/google/callback")
