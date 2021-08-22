@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CodeRequest {
+public class GoogleCodeRequest {
 
     private String code;
     private String clientId;
