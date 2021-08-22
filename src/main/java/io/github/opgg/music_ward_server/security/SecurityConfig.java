@@ -34,7 +34,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers(HttpMethod.GET, "/auth/google").permitAll()
                 .antMatchers(HttpMethod.GET, "/auth/google/callback").permitAll()
-                .antMatchers(HttpMethod.POST, "/auth/google").permitAll()
+                .antMatchers(HttpMethod.GET, "/auth/spotify").permitAll()
                 .antMatchers(HttpMethod.GET,"/championlist").permitAll()
                 .antMatchers(HttpMethod.GET,"/champion/{championId}").permitAll()
                 .anyRequest().authenticated()
