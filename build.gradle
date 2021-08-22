@@ -31,6 +31,7 @@ dependencies {
 
 //    open api
     implementation 'org.springframework.cloud:spring-cloud-starter-openfeign:3.0.3'
+    implementation 'io.github.openfeign:feign-httpclient:11.6'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
