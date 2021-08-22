@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class GoogleLinkResponse {
+public class LinkResponse {
 
     private String link;
 
