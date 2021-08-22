@@ -1,6 +1,6 @@
-package io.github.opgg.music_ward_server.utils.api.client;
+package io.github.opgg.music_ward_server.utils.api.client.google;
 
-import io.github.opgg.music_ward_server.utils.api.dto.google.CodeRequest;
+import io.github.opgg.music_ward_server.utils.api.dto.google.GoogleCodeRequest;
 import io.github.opgg.music_ward_server.utils.api.dto.google.GoogleAccessTokenRequest;
 import io.github.opgg.music_ward_server.utils.api.dto.google.GoogleAccessTokenResponse;
 import io.github.opgg.music_ward_server.utils.api.dto.google.GoogleTokenResponse;
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 public interface GoogleAuthClient {
 
     @PostMapping(value = "/token")
-    GoogleTokenResponse getTokenByCode(CodeRequest request);
+    GoogleTokenResponse getTokenByCode(GoogleCodeRequest request);
 
     @PostMapping(value = "/token")
     GoogleAccessTokenResponse getAccessTokenByRefreshToken(GoogleAccessTokenRequest request);
