@@ -67,7 +67,7 @@ public class Playlist extends BaseEntity {
         this.description = description;
         this.image = image;
         this.externalUrl = externalUrl;
-        this.view = 1;
+        this.view = 0;
         this.user = user;
         this.champion = champion;
     }

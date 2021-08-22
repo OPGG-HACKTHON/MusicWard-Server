@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 class PlaylistTest {
 
     static User generateUser() {
@@ -30,26 +32,39 @@ class PlaylistTest {
     void createByBuilder() {
 
         // given
+        String originalId = "1234";
+        Provider provider = Provider.YOUTUBE;
         String title = "테스트 플레이 리스트";
-        String thumbnailImageUrl = "/images/thumbnail/test.png";
+        String description = "테스트 설명";
+        Image image = new Image("url", "640", "640");
+        String externalUrl = "외부 url";
         User user = generateUser();
         Champion champion = generateChampion();
 
         // when
         Playlist playlist = Playlist.builder()
+                .originalId(originalId)
+                .provider(provider)
                 .title(title)
-                .thumbnailImageUrl(thumbnailImageUrl)
+                .description(description)
+                .image(image)
+                .externalUrl(externalUrl)
                 .user(user)
                 .champion(champion)
                 .build();
 
+
         // then
-        Assertions.assertAll(
-                () -> Assertions.assertEquals(title, playlist.getTitle()),
-                () -> Assertions.assertEquals(thumbnailImageUrl, playlist.getThumbnailImageUrl()),
-                () -> Assertions.assertEquals(0, playlist.getView()),
-                () -> Assertions.assertEquals(user, playlist.getUser()),
-                () -> Assertions.assertEquals(champion, playlist.getChampion())
+        assertAll(
+                () -> assertEquals(originalId, playlist.getOriginalId()),
+                () -> assertEquals(provider, playlist.getProvider()),
+                () -> assertEquals(title, playlist.getTitle()),
+                () -> assertEquals(description, playlist.getDescription()),
+                () -> assertEquals(image, playlist.getImage()),
+                () -> assertEquals(externalUrl, playlist.getExternalUrl()),
+                () -> assertEquals(0, playlist.getView()),
+                () -> assertEquals(user, playlist.getUser()),
+                () -> assertEquals(champion, playlist.getChampion())
         );
     }
 
@@ -58,16 +73,23 @@ class PlaylistTest {
     void addView() {
 
         // given
+        String originalId = "1234";
+        Provider provider = Provider.YOUTUBE;
         String title = "테스트 플레이 리스트";
-        String thumbnailImageUrl = "/images/thumbnail/test.png";
-        Provider serviceType = Provider.YOUTUBE;
+        String description = "테스트 설명";
+        Image image = new Image("url", "640", "640");
+        String externalUrl = "외부 url";
         User user = generateUser();
         Champion champion = generateChampion();
 
+        // when
         Playlist playlist = Playlist.builder()
+                .originalId(originalId)
+                .provider(provider)
                 .title(title)
-                .thumbnailImageUrl(thumbnailImageUrl)
-                .serviceType(serviceType)
+                .description(description)
+                .image(image)
+                .externalUrl(externalUrl)
                 .user(user)
                 .champion(champion)
                 .build();
