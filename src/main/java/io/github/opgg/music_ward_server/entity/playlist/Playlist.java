@@ -7,8 +7,10 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -28,14 +30,25 @@ public class Playlist extends BaseEntity {
     @Column(name = "playlist_id")
     private Long id;
 
+    @Column(nullable = false)
+    private String originalId;
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Provider provider;
+
+    @Column(nullable = false, length = 30)
     private String title;
 
-    private String thumbnailImageUrl;
+    @Column(nullable = false, length = 200)
+    private String description;
+
+    @Embedded
+    private Image image;
+
+    private String externalUrl;
 
     private Integer view;
-
-    @Enumerated(EnumType.STRING)
-    private Provider serviceType;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -46,11 +59,15 @@ public class Playlist extends BaseEntity {
     private Champion champion;
 
     @Builder
-    public Playlist(String title, String thumbnailImageUrl, Provider serviceType, User user, Champion champion) {
+    public Playlist(String originalId, Provider provider, String title, String description,
+                    Image image, String externalUrl, User user, Champion champion) {
+        this.originalId = originalId;
+        this.provider = provider;
         this.title = title;
-        this.thumbnailImageUrl = thumbnailImageUrl;
-        this.serviceType = serviceType;
-        this.view = 0;
+        this.description = description;
+        this.image = image;
+        this.externalUrl = externalUrl;
+        this.view = 1;
         this.user = user;
         this.champion = champion;
     }
