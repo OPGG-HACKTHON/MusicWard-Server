@@ -62,7 +62,7 @@ public class PlaylistServiceImpl implements PlaylistService {
         Token googleRefreshToken = tokenRepository.findById(userId + Type.GOOGLE.name())
                 .orElseThrow(EmptyRefreshTokenException::new);
 
-        GoogleAccessTokenResponse accessToken = userService.getAccessToken(googleRefreshToken.getRefreshToken());
+        GoogleAccessTokenResponse accessToken = userService.getGoogleAccessToken(googleRefreshToken.getRefreshToken());
 
         YoutubePlaylistResponse nonPlaylist = googleApiClient.getPlaylist(accessToken.getAccessTokenAndTokenType(),
                 "id,snippet,contentDetails,status", requestDto.getOriginalId(), "50");
