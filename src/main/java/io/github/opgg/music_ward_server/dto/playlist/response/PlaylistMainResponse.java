@@ -70,8 +70,6 @@ public class PlaylistMainResponse {
         this.champion = new ChampionMainResponse(playlist.getChampion());
         this.externalUrl = playlist.getExternalUrl();
         this.tags = tags;
-//        this.wards = new Wards(wards.getSize);
-//        this.comments = new Comments(comments.getSize);
         this.wards = null;
         this.comments = null;
         this.items = new Items(tracks.size(), tracks);

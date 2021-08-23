@@ -150,7 +150,7 @@ public class UserServiceImpl implements UserService {
         tokenRepository.findById(userId + Type.GOOGLE.name())
                 .or(() -> Optional.of(new Token(userId + type.name(),
                         oauthToken, refreshExp)))
-                .ifPresent(token -> tokenRepository.save(token.update(refreshToken, oauthExp)));
+                .ifPresent(token -> tokenRepository.save(token.update(oauthToken, oauthExp)));
 
         return new TokenResponse(accessToken, refreshToken, oauthToken, type.name());
     }
