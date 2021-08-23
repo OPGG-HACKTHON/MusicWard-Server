@@ -7,6 +7,7 @@ import io.github.opgg.music_ward_server.service.playlist.PlaylistService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,5 +40,11 @@ public class PlaylistController {
     public ResponseEntity<CommonResponse> findAll() {
 
         return ResponseEntity.ok(new CommonResponse(playlistService.findAll()));
+    }
+
+    @GetMapping("/playlists/{playlistId}")
+    public ResponseEntity<CommonResponse> findById(@PathVariable("playlistId") Long playlistId) {
+
+        return ResponseEntity.ok(new CommonResponse(playlistService.findById(playlistId)));
     }
 }
