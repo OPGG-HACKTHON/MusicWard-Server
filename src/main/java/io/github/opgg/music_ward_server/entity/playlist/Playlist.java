@@ -7,7 +7,6 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 import javax.persistence.Column;
 import javax.persistence.Embedded;
@@ -46,6 +45,7 @@ public class Playlist extends BaseEntity {
     @Embedded
     private Image image;
 
+    @Column(nullable = false)
     private String externalUrl;
 
     private Integer view;
@@ -74,5 +74,11 @@ public class Playlist extends BaseEntity {
 
     public void addView() {
         this.view++;
+    }
+
+    public void update(Playlist playlist) {
+        this.title = playlist.getTitle();
+        this.description = playlist.getDescription();
+        this.champion = playlist.getChampion();
     }
 }
