@@ -1,6 +1,7 @@
 package io.github.opgg.music_ward_server.entity.report;
 
 import io.github.opgg.music_ward_server.entity.champion.Champion;
+import io.github.opgg.music_ward_server.entity.playlist.Image;
 import io.github.opgg.music_ward_server.entity.playlist.Playlist;
 import io.github.opgg.music_ward_server.entity.playlist.Provider;
 import io.github.opgg.music_ward_server.entity.user.User;
@@ -29,14 +30,16 @@ class ReportTest {
 
     static Playlist generatePlaylist() {
         return Playlist.builder()
+                .originalId("1234")
+                .provider(Provider.YOUTUBE)
                 .title("테스트 플레이 리스트")
-                .thumbnailImageUrl("/images/thumbnail/test.png")
-                .serviceType(Provider.YOUTUBE)
+                .description("테스트 플레이 리스트 설명")
+                .image(new Image("url", "640", "640"))
+                .externalUrl("외부 url")
                 .user(generateUser())
                 .champion(generateChampion())
                 .build();
     }
-
     @Test
     @DisplayName("Builder를 활용하여 Report 객체를 생성하는 테스트 - 성공")
     void createByBuilder() {

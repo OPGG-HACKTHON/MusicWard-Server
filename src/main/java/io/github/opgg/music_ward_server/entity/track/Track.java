@@ -1,6 +1,8 @@
 package io.github.opgg.music_ward_server.entity.track;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.github.opgg.music_ward_server.entity.BaseEntity;
+import io.github.opgg.music_ward_server.entity.playlist.Image;
 import io.github.opgg.music_ward_server.entity.playlist.Playlist;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -8,6 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -25,18 +28,28 @@ public class Track extends BaseEntity {
     @Column(name = "track_id")
     private Long id;
 
+    private String originalId;
+
     private String title;
 
-    private String songUrl;
+    private String previewUrl;
+
+    private String artists;
+
+    @Embedded
+    private Image image;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "playlist_id")
     private Playlist playlist;
 
     @Builder
-    public Track(String title, String songUrl, Playlist playlist) {
+    public Track(String originalId, String title, String previewUrl, String artists, Image image, Playlist playlist) {
+        this.originalId = originalId;
         this.title = title;
-        this.songUrl = songUrl;
+        this.previewUrl = previewUrl;
+        this.artists = artists;
+        this.image = image;
         this.playlist = playlist;
     }
 }

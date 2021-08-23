@@ -154,5 +154,4 @@ public class UserServiceImpl implements UserService {
 
         return new TokenResponse(accessToken, refreshToken, oauthToken, type.name());
     }
-
 }

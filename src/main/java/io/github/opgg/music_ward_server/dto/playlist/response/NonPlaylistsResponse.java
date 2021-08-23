@@ -1,4 +1,4 @@
-package io.github.opgg.music_ward_server.dto.playlist;
+package io.github.opgg.music_ward_server.dto.playlist.response;
 
 import io.github.opgg.music_ward_server.entity.playlist.Provider;
 import lombok.Builder;

@@ -1,12 +1,15 @@
 package io.github.opgg.music_ward_server.entity.track;
 
 import io.github.opgg.music_ward_server.entity.champion.Champion;
+import io.github.opgg.music_ward_server.entity.playlist.Image;
 import io.github.opgg.music_ward_server.entity.playlist.Playlist;
 import io.github.opgg.music_ward_server.entity.playlist.Provider;
 import io.github.opgg.music_ward_server.entity.user.User;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 class TrackTest {
 
@@ -29,9 +32,12 @@ class TrackTest {
 
     static Playlist generatePlaylist() {
         return Playlist.builder()
+                .originalId("1234")
+                .provider(Provider.YOUTUBE)
                 .title("테스트 플레이 리스트")
-                .thumbnailImageUrl("/images/thumbnail/test.png")
-                .serviceType(Provider.YOUTUBE)
+                .description("테스트 플레이 리스트 설명")
+                .image(new Image("url", "640", "640"))
+                .externalUrl("외부 url")
                 .user(generateUser())
                 .champion(generateChampion())
                 .build();
@@ -42,22 +48,31 @@ class TrackTest {
     void createByBuilder() {
 
         // given
+        String originalId = "1234";
         String title = "테스트 노래";
-        String songUrl = "/song/test.mp3";
+        String previewUrl = "미리듣기 url";
+        String artists = "기리보이";
+        Image image = new Image("url", "640", "640");
         Playlist playlist = generatePlaylist();
 
         // when
-        Track song = Track.builder()
+        Track track = Track.builder()
+                .originalId(originalId)
                 .title(title)
-                .songUrl(songUrl)
+                .previewUrl(previewUrl)
+                .artists(artists)
+                .image(image)
                 .playlist(playlist)
                 .build();
 
         // then
-        Assertions.assertAll(
-                () -> Assertions.assertEquals(title, song.getTitle()),
-                () -> Assertions.assertEquals(songUrl, song.getSongUrl()),
-                () -> Assertions.assertEquals(playlist, song.getPlaylist())
+        assertAll(
+                () -> assertEquals(originalId, track.getOriginalId()),
+                () -> assertEquals(title, track.getTitle()),
+                () -> assertEquals(previewUrl, track.getPreviewUrl()),
+                () -> assertEquals(artists, track.getArtists()),
+                () -> assertEquals(image, track.getImage()),
+                () -> assertEquals(playlist, track.getPlaylist())
         );
     }
 }

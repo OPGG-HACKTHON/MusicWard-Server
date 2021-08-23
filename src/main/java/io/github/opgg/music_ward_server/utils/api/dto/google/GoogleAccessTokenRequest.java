@@ -9,8 +9,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class GoogleAccessTokenRequest {
 
-    private String clientId;
-    private String clientSecret;
-    private String refreshToken;
-    private String grantType;
+    private String client_id;
+    private String client_secret;
+    private String refresh_token;
+    private String grant_type;
 }
