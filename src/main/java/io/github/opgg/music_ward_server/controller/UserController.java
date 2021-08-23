@@ -1,5 +1,6 @@
 package io.github.opgg.music_ward_server.controller;
 
+import io.github.opgg.music_ward_server.controller.response.CommonResponse;
 import io.github.opgg.music_ward_server.dto.user.response.LinkResponse;
 import io.github.opgg.music_ward_server.dto.user.response.TokenResponse;
 import io.github.opgg.music_ward_server.service.user.UserService;
@@ -15,23 +16,23 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/auth/google")
-    public LinkResponse getGoogleLink() {
-        return userService.getGoogleLink();
+    public CommonResponse<LinkResponse> getGoogleLink() {
+        return new CommonResponse<>(userService.getGoogleLink());
     }
 
     @GetMapping("/auth/spotify")
-    public LinkResponse getSpotifyLink() {
-        return userService.getSpotifyLink();
+    public CommonResponse<LinkResponse> getSpotifyLink() {
+        return new CommonResponse<>(userService.getSpotifyLink());
     }
 
     @GetMapping("/auth/google/callback")
-    public TokenResponse getGoogleTokenByCode(@RequestParam("code") String code) {
-        return userService.getGoogleTokenByCode(code);
+    public CommonResponse<TokenResponse> getGoogleTokenByCode(@RequestParam("code") String code) {
+        return new CommonResponse<>(userService.getGoogleTokenByCode(code));
     }
 
     @GetMapping("/auth/spotify/callback")
-    public TokenResponse getSpotifyTokenByCode(@RequestParam("code") String code) {
-        return userService.getSpotifyTokenByCode(code);
+    public CommonResponse<TokenResponse> getSpotifyTokenByCode(@RequestParam("code") String code) {
+        return new CommonResponse<>(userService.getSpotifyTokenByCode(code));
     }
 
 }
