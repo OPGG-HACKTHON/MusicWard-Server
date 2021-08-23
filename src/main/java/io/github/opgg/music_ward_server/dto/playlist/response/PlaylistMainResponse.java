@@ -2,12 +2,14 @@ package io.github.opgg.music_ward_server.dto.playlist.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.github.opgg.music_ward_server.dto.champion.response.ChampionMainResponse;
+import io.github.opgg.music_ward_server.dto.comment.response.CommentMainResponse;
 import io.github.opgg.music_ward_server.dto.track.response.TrackMainResponse;
 import io.github.opgg.music_ward_server.entity.playlist.Image;
 import io.github.opgg.music_ward_server.entity.playlist.Playlist;
 import io.github.opgg.music_ward_server.entity.playlist.Provider;
 import lombok.Getter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -31,9 +33,16 @@ public class PlaylistMainResponse {
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private static class Comments {
         private final Integer total;
+        private final List<CommentMainResponse> items;
 
         public Comments(Integer total) {
             this.total = total;
+            this.items = new ArrayList<>();
+        }
+
+        public Comments(Integer total, List<CommentMainResponse> items) {
+            this.total = total;
+            this.items = items;
         }
     }
 
@@ -60,7 +69,8 @@ public class PlaylistMainResponse {
     }
 
     // 단 건 조회
-    public PlaylistMainResponse(Playlist playlist, List<String> tags, List<TrackMainResponse> tracks) {
+    public PlaylistMainResponse(Playlist playlist, List<String> tags, Integer wardTotal,
+                                List<CommentMainResponse> comments, List<TrackMainResponse> tracks) {
         this.playlistId = playlist.getId();
         this.provider = playlist.getProvider();
         this.originalId = playlist.getOriginalId();
@@ -70,8 +80,8 @@ public class PlaylistMainResponse {
         this.champion = new ChampionMainResponse(playlist.getChampion());
         this.externalUrl = playlist.getExternalUrl();
         this.tags = tags;
-        this.wards = null;
-        this.comments = null;
+        this.wards = new Wards(wardTotal);
+        this.comments = new Comments(comments.size(), comments);
         this.items = new Items(tracks.size(), tracks);
     }
 
