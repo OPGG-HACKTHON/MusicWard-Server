@@ -15,5 +15,6 @@ public interface PlaylistService {
     void update(Long playlistId, PlaylistUpdateRequest request);
     void synchronize(Long playlistId);
     void delete(Long playlistId);
+    void addView(Long playlistId);
     List<PlaylistMainResponse> findByUserId(Long userId);
 }
