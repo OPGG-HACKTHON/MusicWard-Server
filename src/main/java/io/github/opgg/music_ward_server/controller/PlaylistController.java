@@ -56,4 +56,12 @@ public class PlaylistController {
 
         return new ResponseEntity<>(new CommonResponse(playlistService.findById(playlistId)), HttpStatus.OK);
     }
+
+    @PostMapping("/playlists/{playlistId}")
+    public ResponseEntity<CommonResponse> synchronize(@PathVariable("playlistId") Long playlistId) {
+
+        playlistService.synchronize(playlistId);
+
+        return new ResponseEntity<>(new CommonResponse(playlistService.findById(playlistId)), HttpStatus.OK);
+    }
 }
