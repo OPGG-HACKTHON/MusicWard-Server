@@ -75,6 +75,14 @@ public class PlaylistController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    @PostMapping("playlists/{playlistId}/view")
+    public ResponseEntity<CommonResponse> addView(@PathVariable("playlistId") Long playlistId) {
+
+        playlistService.addView(playlistId);
+
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
     @GetMapping("users/{userId}/playlists")
     public ResponseEntity<CommonResponse> findByUserId(@PathVariable("userId") Long userId) {
 
