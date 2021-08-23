@@ -181,6 +181,30 @@ public class PlaylistServiceImpl implements PlaylistService {
         playlist.update(updateDto.toEntity(champion));
     }
 
+    @Override
+    @Transactional
+    public void synchronize(Long playlistId) {
+
+        trackRepository.deleteByPlaylistId(playlistId);
+
+        Playlist playlist = getPlaylist(playlistId);
+
+        Long userId = SecurityUtil.getCurrentUserId();
+
+        Token googleRefreshToken = tokenRepository.findById(userId + Type.GOOGLE.name())
+                .orElseThrow(EmptyRefreshTokenException::new);
+
+        GoogleAccessTokenResponse accessToken = userService.getGoogleAccessToken(googleRefreshToken.getRefreshToken());
+
+        YoutubePlaylistResponse nonPlaylist = googleApiClient.getPlaylist(accessToken.getAccessTokenAndTokenType(),
+                "id,snippet,contentDetails,status", playlist.getOriginalId(), "50");
+
+        List<TrackSaveRequest> trackSaveRequests = nonPlaylist.getTrackSaveRequests();
+        for (TrackSaveRequest trackSaveRequest : trackSaveRequests) {
+            trackRepository.save(trackSaveRequest.toEntity(playlist));
+        }
+    }
+
     private User getUser(Long id) {
         return userRepository.findById(id).orElseThrow(UserNotFoundException::new);
     }
