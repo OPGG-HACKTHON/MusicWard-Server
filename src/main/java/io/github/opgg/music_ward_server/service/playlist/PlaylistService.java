@@ -4,7 +4,10 @@ import io.github.opgg.music_ward_server.dto.playlist.response.NonPlaylistsRespon
 import io.github.opgg.music_ward_server.dto.playlist.response.PlaylistMainResponse;
 import io.github.opgg.music_ward_server.dto.playlist.request.PlaylistSaveRequest;
 
+import java.util.List;
+
 public interface PlaylistService {
-    PlaylistMainResponse save(PlaylistSaveRequest request);
     NonPlaylistsResponse getNonPlaylists();
+    PlaylistMainResponse save(PlaylistSaveRequest request);
+    List<PlaylistMainResponse> findAll();
 }

@@ -7,6 +7,7 @@ import io.github.opgg.music_ward_server.dto.track.request.TrackSaveRequest;
 import io.github.opgg.music_ward_server.dto.track.response.TrackMainResponse;
 import io.github.opgg.music_ward_server.entity.champion.Champion;
 import io.github.opgg.music_ward_server.entity.champion.ChampionRepository;
+import io.github.opgg.music_ward_server.entity.comment.CommentRepository;
 import io.github.opgg.music_ward_server.entity.playlist.Playlist;
 import io.github.opgg.music_ward_server.entity.playlist.PlaylistRepository;
 import io.github.opgg.music_ward_server.entity.tag.Tag;
@@ -18,6 +19,7 @@ import io.github.opgg.music_ward_server.entity.track.Track;
 import io.github.opgg.music_ward_server.entity.track.TrackRepository;
 import io.github.opgg.music_ward_server.entity.user.User;
 import io.github.opgg.music_ward_server.entity.user.UserRepository;
+import io.github.opgg.music_ward_server.entity.ward.WardRepository;
 import io.github.opgg.music_ward_server.exception.ChampionNotFoundException;
 import io.github.opgg.music_ward_server.exception.EmptyRefreshTokenException;
 import io.github.opgg.music_ward_server.exception.UserNotFoundException;
@@ -44,11 +46,29 @@ public class PlaylistServiceImpl implements PlaylistService {
     private final UserService userService;
     private final TagRepository tagRepository;
     private final UserRepository userRepository;
+    private final WardRepository wardRepository;
     private final TokenRepository tokenRepository;
     private final TrackRepository trackRepository;
+    private final CommentRepository commentRepository;
     private final PlaylistRepository playlistRepository;
     private final ChampionRepository championRepository;
     private final GoogleApiClient googleApiClient;
+
+    @Override
+    public NonPlaylistsResponse getNonPlaylists() {
+
+        Long userId = SecurityUtil.getCurrentUserId();
+
+        Token googleRefreshToken = tokenRepository.findById(userId + Type.GOOGLE.name())
+                .orElseThrow(EmptyRefreshTokenException::new);
+
+        GoogleAccessTokenResponse accessToken = userService.getGoogleAccessToken(googleRefreshToken.getRefreshToken());
+
+        YoutubePlaylistsResponse playlists = googleApiClient.getPlaylists(
+                accessToken.getAccessTokenAndTokenType(), "id,snippet,status", true);
+
+        return playlists.toNonPlaylists();
+    }
 
     @Override
     @Transactional
@@ -92,19 +112,25 @@ public class PlaylistServiceImpl implements PlaylistService {
     }
 
     @Override
-    public NonPlaylistsResponse getNonPlaylists() {
+    public List<PlaylistMainResponse> findAll() {
 
-        Long userId = SecurityUtil.getCurrentUserId();
+        List<Playlist> playlists = playlistRepository.findAll();
+        List<PlaylistMainResponse> playlistMainResponses = playlists.stream()
+                .map(playlist -> {
+                    List<Tag> findTags = tagRepository.findByPlaylistId(playlist.getId());
+                    List<String> tags = findTags.stream()
+                            .map(tag -> tag.getTitle())
+                            .collect(Collectors.toList());
 
-        Token googleRefreshToken = tokenRepository.findById(userId + Type.GOOGLE.name())
-                .orElseThrow(EmptyRefreshTokenException::new);
+                    Integer wardTotal = wardRepository.countByPlaylistId(playlist.getId());
+                    Integer commentTotal = commentRepository.countByPlaylistId(playlist.getId());
+                    Integer trackTotal = trackRepository.countByPlaylistId(playlist.getId());
 
-        GoogleAccessTokenResponse accessToken = userService.getGoogleAccessToken(googleRefreshToken.getRefreshToken());
+                    return new PlaylistMainResponse(playlist, tags, wardTotal, commentTotal, trackTotal);
+                })
+                .collect(Collectors.toList());
 
-        YoutubePlaylistsResponse playlists = googleApiClient.getPlaylists(
-                accessToken.getAccessTokenAndTokenType(), "id,snippet,status", true);
-
-        return playlists.toNonPlaylists();
+        return playlistMainResponses;
     }
 
     private User getUser(Long id) {
