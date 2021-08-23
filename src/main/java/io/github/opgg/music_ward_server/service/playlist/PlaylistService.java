@@ -10,4 +10,5 @@ public interface PlaylistService {
     NonPlaylistsResponse getNonPlaylists();
     PlaylistMainResponse save(PlaylistSaveRequest request);
     List<PlaylistMainResponse> findAll();
+    PlaylistMainResponse findById(Long playlistId);
 }

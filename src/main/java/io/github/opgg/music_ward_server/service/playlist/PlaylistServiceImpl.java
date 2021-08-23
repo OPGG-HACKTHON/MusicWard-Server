@@ -1,5 +1,6 @@
 package io.github.opgg.music_ward_server.service.playlist;
 
+import io.github.opgg.music_ward_server.dto.comment.response.CommentMainResponse;
 import io.github.opgg.music_ward_server.dto.playlist.response.NonPlaylistsResponse;
 import io.github.opgg.music_ward_server.dto.playlist.response.PlaylistMainResponse;
 import io.github.opgg.music_ward_server.dto.playlist.request.PlaylistSaveRequest;
@@ -7,6 +8,7 @@ import io.github.opgg.music_ward_server.dto.track.request.TrackSaveRequest;
 import io.github.opgg.music_ward_server.dto.track.response.TrackMainResponse;
 import io.github.opgg.music_ward_server.entity.champion.Champion;
 import io.github.opgg.music_ward_server.entity.champion.ChampionRepository;
+import io.github.opgg.music_ward_server.entity.comment.Comment;
 import io.github.opgg.music_ward_server.entity.comment.CommentRepository;
 import io.github.opgg.music_ward_server.entity.playlist.Playlist;
 import io.github.opgg.music_ward_server.entity.playlist.PlaylistRepository;
@@ -22,6 +24,7 @@ import io.github.opgg.music_ward_server.entity.user.UserRepository;
 import io.github.opgg.music_ward_server.entity.ward.WardRepository;
 import io.github.opgg.music_ward_server.exception.ChampionNotFoundException;
 import io.github.opgg.music_ward_server.exception.EmptyRefreshTokenException;
+import io.github.opgg.music_ward_server.exception.PlaylistNotFoundException;
 import io.github.opgg.music_ward_server.exception.UserNotFoundException;
 import io.github.opgg.music_ward_server.service.user.UserService;
 import io.github.opgg.music_ward_server.utils.api.client.google.GoogleApiClient;
@@ -103,12 +106,11 @@ public class PlaylistServiceImpl implements PlaylistService {
         }
 
         List<Track> tracks = trackRepository.findByPlaylistId(playlist.getId());
-
         List<TrackMainResponse> trackMainResponses = tracks.stream()
                 .map(TrackMainResponse::new)
                 .collect(Collectors.toList());
 
-        return new PlaylistMainResponse(playlist, requestDto.getTags(), trackMainResponses);
+        return new PlaylistMainResponse(playlist, requestDto.getTags(), null, null, trackMainResponses);
     }
 
     @Override
@@ -133,11 +135,40 @@ public class PlaylistServiceImpl implements PlaylistService {
         return playlistMainResponses;
     }
 
+    @Override
+    public PlaylistMainResponse findById(Long playlistId) {
+
+        Playlist playlist = getPlaylist(playlistId);
+
+        List<Tag> findTags = tagRepository.findByPlaylistId(playlist.getId());
+        List<String> tags = findTags.stream()
+                .map(tag -> tag.getTitle())
+                .collect(Collectors.toList());
+
+        Integer wardTotal = wardRepository.countByPlaylistId(playlist.getId());
+
+        List<Track> tracks = trackRepository.findByPlaylistId(playlist.getId());
+        List<TrackMainResponse> trackMainResponses = tracks.stream()
+                .map(TrackMainResponse::new)
+                .collect(Collectors.toList());
+
+        List<Comment> findComments = commentRepository.findByPlaylistId(playlist.getId());
+        List<CommentMainResponse> comments = findComments.stream()
+                .map(comment -> new CommentMainResponse(comment))
+                .collect(Collectors.toList());
+
+        return new PlaylistMainResponse(playlist, tags, wardTotal, comments, trackMainResponses);
+    }
+
     private User getUser(Long id) {
         return userRepository.findById(id).orElseThrow(UserNotFoundException::new);
     }
 
     private Champion getChampion(String championName) {
         return championRepository.findByName(championName).orElseThrow(ChampionNotFoundException::new);
+    }
+
+    private Playlist getPlaylist(Long id) {
+        return playlistRepository.findById(id).orElseThrow(PlaylistNotFoundException::new);
     }
 }
