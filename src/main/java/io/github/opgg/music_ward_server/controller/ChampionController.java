@@ -1,10 +1,10 @@
 package io.github.opgg.music_ward_server.controller;
 
-import io.github.opgg.music_ward_server.dto.champion.response.ChampionDataDTO;
-import io.github.opgg.music_ward_server.dto.champion.response.ChampionDetailDTO;
-import io.github.opgg.music_ward_server.dto.champion.response.ChampionListResponse;
+import io.github.opgg.music_ward_server.controller.response.CommonResponse;
 import io.github.opgg.music_ward_server.service.champion.ChampionService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,12 +15,14 @@ public class ChampionController {
     private final ChampionService championService;
 
     @GetMapping("/championlist")
-    public ChampionDataDTO getChampoinList() {
-        return new ChampionDataDTO<ChampionListResponse>(championService.getChampionList());
+    public ResponseEntity<CommonResponse> getChampoinList() {
+
+        return new ResponseEntity<>(new CommonResponse(championService.getChampionList()), HttpStatus.OK);
     }
 
     @GetMapping("/champion/{championId}")
-    public ChampionDataDTO getChampionDetail(@PathVariable("championId") Long championId) {
-        return new ChampionDataDTO<ChampionDetailDTO>(championService.getChampionDetail(championId));
+    public ResponseEntity<CommonResponse> getChampionDetail(@PathVariable("championId") Long championId) {
+
+        return new ResponseEntity<>(new CommonResponse(championService.getChampionDetail(championId)), HttpStatus.OK);
     }
 }
