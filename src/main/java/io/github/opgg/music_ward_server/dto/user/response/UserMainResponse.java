@@ -1,9 +1,12 @@
 package io.github.opgg.music_ward_server.dto.user.response;
 
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import io.github.opgg.music_ward_server.entity.user.User;
 import lombok.Getter;
 
 @Getter
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class UserMainResponse {
 
     private final Long userId;
