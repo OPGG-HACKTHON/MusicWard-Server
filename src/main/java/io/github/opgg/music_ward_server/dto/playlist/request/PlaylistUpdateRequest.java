@@ -1,5 +1,7 @@
 package io.github.opgg.music_ward_server.dto.playlist.request;
 
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import io.github.opgg.music_ward_server.entity.champion.Champion;
 import io.github.opgg.music_ward_server.entity.playlist.Playlist;
 import lombok.Builder;
@@ -13,10 +15,8 @@ import java.util.List;
 
 @Getter
 @NoArgsConstructor
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class PlaylistUpdateRequest {
-
-    @NotNull(message = "playlist id는 null을 허용하지 않습니다.")
-    private Long playlistId;
 
     @NotBlank(message = "title은 null과 공백을 허용하지 않습니다.")
     @Size(max = 30, message = "title은 30자를 넘을 수 없습니다.")
@@ -33,9 +33,7 @@ public class PlaylistUpdateRequest {
     private List<String> tags;
 
     @Builder
-    public PlaylistUpdateRequest(Long playlistId, String title, String description,
-                                 String championName, List<String> tags) {
-        this.playlistId = playlistId;
+    public PlaylistUpdateRequest(String title, String description, String championName, List<String> tags) {
         this.title = title;
         this.description = description;
         this.championName = championName;

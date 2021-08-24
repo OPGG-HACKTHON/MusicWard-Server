@@ -1,6 +1,8 @@
 package io.github.opgg.music_ward_server.dto.champion.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import io.github.opgg.music_ward_server.entity.champion.Champion;
 import lombok.Getter;
 
@@ -9,6 +11,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @Getter
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class ChampionMainResponse {
 
     private final Long championId;

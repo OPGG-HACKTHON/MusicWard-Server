@@ -1,5 +1,7 @@
 package io.github.opgg.music_ward_server.dto.playlist.request;
 
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import io.github.opgg.music_ward_server.entity.champion.Champion;
 import io.github.opgg.music_ward_server.entity.playlist.Image;
 import io.github.opgg.music_ward_server.entity.playlist.Playlist;
@@ -16,6 +18,7 @@ import java.util.List;
 
 @Getter
 @NoArgsConstructor
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class PlaylistSaveRequest {
 
     @NotBlank(message = "original id은 null과 공백을 허용하지 않습니다.")
