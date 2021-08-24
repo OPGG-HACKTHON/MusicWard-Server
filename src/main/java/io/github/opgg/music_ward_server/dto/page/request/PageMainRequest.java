@@ -1,9 +1,11 @@
 package io.github.opgg.music_ward_server.dto.page.request;
 
 import lombok.Getter;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 
 @Getter
-public class PageRequest {
+public class PageMainRequest {
 
     private static final int DEFAULT_SIZE = 10;
     private static final int MAX_SIZE = 50;
@@ -19,5 +21,7 @@ public class PageRequest {
         this.size = size > MAX_SIZE ? DEFAULT_SIZE : size;
     }
 
-    public PageRequest toPageRequest
+    public PageRequest toPageRequest() {
+        return PageRequest.of(page - 1, size, Sort.Direction.DESC, "lastModifiedDate");
+    }
 }
