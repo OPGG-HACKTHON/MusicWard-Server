@@ -4,6 +4,7 @@ import io.github.opgg.music_ward_server.controller.response.CommonResponse;
 import io.github.opgg.music_ward_server.dto.playlist.request.PlaylistSaveRequest;
 import io.github.opgg.music_ward_server.dto.playlist.request.PlaylistUpdateRequest;
 import io.github.opgg.music_ward_server.service.playlist.PlaylistService;
+import io.github.opgg.music_ward_server.utils.security.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -63,5 +64,19 @@ public class PlaylistController {
         playlistService.synchronize(playlistId);
 
         return new ResponseEntity<>(new CommonResponse(playlistService.findById(playlistId)), HttpStatus.OK);
+    }
+
+    @GetMapping("users/{userId}/playlists")
+    public ResponseEntity<CommonResponse> findByUserId(@PathVariable("userId") Long userId) {
+
+        return new ResponseEntity<>(new CommonResponse(playlistService.findByUserId(userId)), HttpStatus.OK);
+    }
+
+    @GetMapping("me/playlists")
+    public ResponseEntity<CommonResponse> findByMe() {
+
+        Long userId = SecurityUtil.getCurrentUserId();
+
+        return new ResponseEntity<>(new CommonResponse(playlistService.findByUserId(userId)), HttpStatus.OK);
     }
 }
