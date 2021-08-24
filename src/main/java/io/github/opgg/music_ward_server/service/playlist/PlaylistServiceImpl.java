@@ -35,6 +35,8 @@ import io.github.opgg.music_ward_server.utils.api.dto.google.YoutubePlaylistsRes
 import io.github.opgg.music_ward_server.utils.security.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -132,6 +134,26 @@ public class PlaylistServiceImpl implements PlaylistService {
                     return new PlaylistMainResponse(playlist, tags, wardTotal, commentTotal, trackTotal);
                 })
                 .collect(Collectors.toList());
+
+        return playlistMainResponses;
+    }
+
+    @Override
+    public Page<PlaylistMainResponse> findByChampionName(String championName, Pageable pageable) {
+
+        Page<Playlist> playlists = playlistRepository.findByChampionName(championName, pageable);
+        Page<PlaylistMainResponse> playlistMainResponses = playlists.map(playlist -> {
+            List<Tag> findTags = tagRepository.findByPlaylistId(playlist.getId());
+            List<String> tags = findTags.stream()
+                    .map(tag -> tag.getTitle())
+                    .collect(Collectors.toList());
+
+            Integer wardTotal = wardRepository.countByPlaylistId(playlist.getId());
+            Integer commentTotal = commentRepository.countByPlaylistId(playlist.getId());
+            Integer trackTotal = trackRepository.countByPlaylistId(playlist.getId());
+
+            return new PlaylistMainResponse(playlist, tags, wardTotal, commentTotal, trackTotal);
+        });
 
         return playlistMainResponses;
     }

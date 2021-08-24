@@ -1,11 +1,16 @@
 package io.github.opgg.music_ward_server.controller;
 
 import io.github.opgg.music_ward_server.controller.response.CommonResponse;
+import io.github.opgg.music_ward_server.controller.response.PageResponse;
+import io.github.opgg.music_ward_server.dto.page.request.PageMainRequest;
+import io.github.opgg.music_ward_server.dto.page.response.PageInfoResponse;
 import io.github.opgg.music_ward_server.dto.playlist.request.PlaylistSaveRequest;
 import io.github.opgg.music_ward_server.dto.playlist.request.PlaylistUpdateRequest;
+import io.github.opgg.music_ward_server.dto.playlist.response.PlaylistMainResponse;
 import io.github.opgg.music_ward_server.service.playlist.PlaylistService;
 import io.github.opgg.music_ward_server.utils.security.SecurityUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -15,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
@@ -39,7 +45,17 @@ public class PlaylistController {
     }
 
     @GetMapping("playlists")
-    public ResponseEntity<CommonResponse> findAll() {
+    public ResponseEntity<? extends CommonResponse> findAll(
+            @RequestParam(value = "champion_name", required = false) String championName,
+            PageMainRequest pageMainRequestDto) {
+
+        if (championName != null) {
+            Page<PlaylistMainResponse> page = playlistService.findByChampionName(
+                    championName, pageMainRequestDto.toPageRequest()
+            );
+
+            return new ResponseEntity<>(new PageResponse(page.getContent(),new PageInfoResponse(page)), HttpStatus.OK);
+        }
 
         return new ResponseEntity<>(new CommonResponse(playlistService.findAll()), HttpStatus.OK);
     }
