@@ -4,6 +4,8 @@ import io.github.opgg.music_ward_server.dto.playlist.request.PlaylistUpdateReque
 import io.github.opgg.music_ward_server.dto.playlist.response.NonPlaylistsResponse;
 import io.github.opgg.music_ward_server.dto.playlist.response.PlaylistMainResponse;
 import io.github.opgg.music_ward_server.dto.playlist.request.PlaylistSaveRequest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -11,6 +13,7 @@ public interface PlaylistService {
     NonPlaylistsResponse getNonPlaylists();
     PlaylistMainResponse save(PlaylistSaveRequest request);
     List<PlaylistMainResponse> findAll();
+    Page<PlaylistMainResponse> findByChampionName(String championName, Pageable pageable);
     PlaylistMainResponse findById(Long playlistId);
     void update(Long playlistId, PlaylistUpdateRequest request);
     void synchronize(Long playlistId);
