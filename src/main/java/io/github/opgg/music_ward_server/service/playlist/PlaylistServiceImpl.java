@@ -205,6 +205,28 @@ public class PlaylistServiceImpl implements PlaylistService {
         }
     }
 
+    @Override
+    public List<PlaylistMainResponse> findByUserId(Long userId) {
+
+        List<Playlist> playlists = playlistRepository.findByUserId(userId);
+        List<PlaylistMainResponse> playlistMainResponses = playlists.stream()
+                .map(playlist -> {
+                    List<Tag> findTags = tagRepository.findByPlaylistId(playlist.getId());
+                    List<String> tags = findTags.stream()
+                            .map(tag -> tag.getTitle())
+                            .collect(Collectors.toList());
+
+                    Integer wardTotal = wardRepository.countByPlaylistId(playlist.getId());
+                    Integer commentTotal = commentRepository.countByPlaylistId(playlist.getId());
+                    Integer trackTotal = trackRepository.countByPlaylistId(playlist.getId());
+
+                    return new PlaylistMainResponse(playlist, tags, wardTotal, commentTotal, trackTotal);
+                })
+                .collect(Collectors.toList());
+
+        return playlistMainResponses;
+    }
+
     private User getUser(Long id) {
         return userRepository.findById(id).orElseThrow(UserNotFoundException::new);
     }
