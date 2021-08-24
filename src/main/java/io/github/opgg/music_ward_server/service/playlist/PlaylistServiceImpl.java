@@ -187,11 +187,11 @@ public class PlaylistServiceImpl implements PlaylistService {
     @Transactional
     public void update(Long playlistId, PlaylistUpdateRequest updateDto) {
 
-        Playlist playlist = getPlaylist(playlistId);
+        Long userId = SecurityUtil.getCurrentUserId();
+        Playlist playlist = getPlaylistWithUser(playlistId, userId);
         Champion champion = getChampion(updateDto.getChampionName());
 
         tagRepository.deleteByPlaylistId(playlistId);
-
         for (String tag : updateDto.getTags()) {
             Tag buildTag = Tag.builder()
                     .title(tag)
@@ -278,5 +278,9 @@ public class PlaylistServiceImpl implements PlaylistService {
 
     private Playlist getPlaylist(Long id) {
         return playlistRepository.findById(id).orElseThrow(PlaylistNotFoundException::new);
+    }
+
+    private Playlist getPlaylistWithUser(Long playlistId, Long userId) {
+        return playlistRepository.findByIdAndUserId(playlistId, userId).orElseThrow(PlaylistNotFoundException::new);
     }
 }
