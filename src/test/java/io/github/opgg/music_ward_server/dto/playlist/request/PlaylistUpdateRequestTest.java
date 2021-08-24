@@ -25,7 +25,6 @@ class PlaylistUpdateRequestTest {
 
         // given
         PlaylistUpdateRequest request = PlaylistUpdateRequest.builder()
-                .playlistId(1L)
                 .title(" ")
                 .description("description은 공백을 허용합니다.")
                 .championName(" ")
@@ -45,7 +44,6 @@ class PlaylistUpdateRequestTest {
 
         // given
         PlaylistUpdateRequest request = PlaylistUpdateRequest.builder()
-                .playlistId(null)
                 .title(null)
                 .description(null)
                 .championName(null)
@@ -56,7 +54,7 @@ class PlaylistUpdateRequestTest {
         Set<ConstraintViolation<PlaylistUpdateRequest>> constraintViolations = validator.validate(request);
 
         // then
-        assertEquals(5, constraintViolations.size());
+        assertEquals(4, constraintViolations.size());
     }
 
     @Test
@@ -75,7 +73,6 @@ class PlaylistUpdateRequestTest {
         }
 
         PlaylistUpdateRequest request = PlaylistUpdateRequest.builder()
-                .playlistId(1L)
                 .title(title.toString())
                 .description(description.toString())
                 .championName("티모")
@@ -95,7 +92,6 @@ class PlaylistUpdateRequestTest {
 
         // given
         PlaylistUpdateRequest request = PlaylistUpdateRequest.builder()
-                .playlistId(1L)
                 .title("test title")
                 .description("test description")
                 .championName("티모")
