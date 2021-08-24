@@ -1,6 +1,5 @@
-package io.github.opgg.music_ward_server.dto.playlist;
+package io.github.opgg.music_ward_server.dto.playlist.request;
 
-import io.github.opgg.music_ward_server.dto.playlist.request.PlaylistSaveRequest;
 import io.github.opgg.music_ward_server.entity.playlist.Provider;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -28,7 +27,7 @@ class PlaylistSaveRequestTest {
                 .provider(Provider.YOUTUBE)
                 .title(" ")
                 .description("description은 공백을 허용합니다.")
-                .champion(" ")
+                .championName(" ")
                 .tags(new ArrayList<>(Arrays.asList(new String[]{"티모" , "매드무비"})))
                 .build();
 
@@ -49,7 +48,7 @@ class PlaylistSaveRequestTest {
                 .provider(Provider.YOUTUBE)
                 .title("")
                 .description("dereciption은 empty도 허용합니다.")
-                .champion("")
+                .championName("")
                 .tags(new ArrayList<>(Arrays.asList(new String[]{"티모" , "매드무비"})))
                 .build();
 
@@ -70,7 +69,7 @@ class PlaylistSaveRequestTest {
                 .provider(null)
                 .title(null)
                 .description(null)
-                .champion(null)
+                .championName(null)
                 .tags(null)
                 .build();
 
@@ -102,7 +101,7 @@ class PlaylistSaveRequestTest {
                 .provider(Provider.YOUTUBE)
                 .title(title.toString())
                 .description(description.toString())
-                .champion("티모")
+                .championName("티모")
                 .tags(new ArrayList<>(Arrays.asList(new String[]{"티모" , "매드무비"})))
                 .build();
 

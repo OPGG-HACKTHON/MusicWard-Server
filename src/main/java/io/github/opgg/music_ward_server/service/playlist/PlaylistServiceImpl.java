@@ -1,6 +1,7 @@
 package io.github.opgg.music_ward_server.service.playlist;
 
 import io.github.opgg.music_ward_server.dto.comment.response.CommentMainResponse;
+import io.github.opgg.music_ward_server.dto.playlist.request.PlaylistUpdateRequest;
 import io.github.opgg.music_ward_server.dto.playlist.response.NonPlaylistsResponse;
 import io.github.opgg.music_ward_server.dto.playlist.response.PlaylistMainResponse;
 import io.github.opgg.music_ward_server.dto.playlist.request.PlaylistSaveRequest;
@@ -158,6 +159,50 @@ public class PlaylistServiceImpl implements PlaylistService {
                 .collect(Collectors.toList());
 
         return new PlaylistMainResponse(playlist, tags, wardTotal, comments, trackMainResponses);
+    }
+
+    @Override
+    @Transactional
+    public void update(Long playlistId, PlaylistUpdateRequest updateDto) {
+
+        Playlist playlist = getPlaylist(playlistId);
+        Champion champion = getChampion(updateDto.getChampionName());
+
+        tagRepository.deleteByPlaylistId(playlistId);
+
+        for (String tag : updateDto.getTags()) {
+            Tag buildTag = Tag.builder()
+                    .title(tag)
+                    .playlist(playlist)
+                    .build();
+            tagRepository.save(buildTag);
+        }
+
+        playlist.update(updateDto.toEntity(champion));
+    }
+
+    @Override
+    @Transactional
+    public void synchronize(Long playlistId) {
+
+        trackRepository.deleteByPlaylistId(playlistId);
+
+        Playlist playlist = getPlaylist(playlistId);
+
+        Long userId = SecurityUtil.getCurrentUserId();
+
+        Token googleRefreshToken = tokenRepository.findById(userId + Type.GOOGLE.name())
+                .orElseThrow(EmptyRefreshTokenException::new);
+
+        GoogleAccessTokenResponse accessToken = userService.getGoogleAccessToken(googleRefreshToken.getRefreshToken());
+
+        YoutubePlaylistResponse nonPlaylist = googleApiClient.getPlaylist(accessToken.getAccessTokenAndTokenType(),
+                "id,snippet,contentDetails,status", playlist.getOriginalId(), "50");
+
+        List<TrackSaveRequest> trackSaveRequests = nonPlaylist.getTrackSaveRequests();
+        for (TrackSaveRequest trackSaveRequest : trackSaveRequests) {
+            trackRepository.save(trackSaveRequest.toEntity(playlist));
+        }
     }
 
     private User getUser(Long id) {

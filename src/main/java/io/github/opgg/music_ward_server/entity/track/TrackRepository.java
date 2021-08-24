@@ -10,4 +10,5 @@ public interface TrackRepository extends JpaRepository<Track, Long> {
 
     List<Track> findByPlaylistId(Long playlistId);
     Integer countByPlaylistId(Long playlistId);
+    void deleteByPlaylistId(Long playlistId);
 }
