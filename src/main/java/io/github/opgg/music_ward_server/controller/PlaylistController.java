@@ -8,6 +8,7 @@ import io.github.opgg.music_ward_server.utils.security.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,25 +32,25 @@ public class PlaylistController {
         return new ResponseEntity<>(new CommonResponse(playlistService.getNonPlaylists()), HttpStatus.OK);
     }
 
-    @PostMapping("/playlists")
+    @PostMapping("playlists")
     public ResponseEntity<CommonResponse> save(@Valid @RequestBody PlaylistSaveRequest requestDto) {
 
         return new ResponseEntity<>(new CommonResponse(playlistService.save(requestDto)), HttpStatus.CREATED);
     }
 
-    @GetMapping("/playlists")
+    @GetMapping("playlists")
     public ResponseEntity<CommonResponse> findAll() {
 
         return new ResponseEntity<>(new CommonResponse(playlistService.findAll()), HttpStatus.OK);
     }
 
-    @GetMapping("/playlists/{playlistId}")
+    @GetMapping("playlists/{playlistId}")
     public ResponseEntity<CommonResponse> findById(@PathVariable("playlistId") Long playlistId) {
 
         return new ResponseEntity<>(new CommonResponse(playlistService.findById(playlistId)), HttpStatus.OK);
     }
 
-    @PutMapping("/playlists/{playlistId}")
+    @PutMapping("playlists/{playlistId}")
     public ResponseEntity<CommonResponse> update(@PathVariable("playlistId") Long playlistId,
                                                  @RequestBody PlaylistUpdateRequest updateDto) {
 
@@ -58,12 +59,28 @@ public class PlaylistController {
         return new ResponseEntity<>(new CommonResponse(playlistService.findById(playlistId)), HttpStatus.OK);
     }
 
-    @PostMapping("/playlists/{playlistId}")
+    @PostMapping("playlists/{playlistId}")
     public ResponseEntity<CommonResponse> synchronize(@PathVariable("playlistId") Long playlistId) {
 
         playlistService.synchronize(playlistId);
 
         return new ResponseEntity<>(new CommonResponse(playlistService.findById(playlistId)), HttpStatus.OK);
+    }
+
+    @DeleteMapping("playlists/{playlistId}")
+    public ResponseEntity<CommonResponse> delete(@PathVariable("playlistId") Long playlistId) {
+
+        playlistService.delete(playlistId);
+
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PostMapping("playlists/{playlistId}/view")
+    public ResponseEntity<CommonResponse> addView(@PathVariable("playlistId") Long playlistId) {
+
+        playlistService.addView(playlistId);
+
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @GetMapping("users/{userId}/playlists")

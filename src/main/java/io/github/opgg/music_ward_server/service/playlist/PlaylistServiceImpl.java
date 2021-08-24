@@ -206,6 +206,25 @@ public class PlaylistServiceImpl implements PlaylistService {
     }
 
     @Override
+    @Transactional
+    public void delete(Long playlistId) {
+
+        trackRepository.deleteByPlaylistId(playlistId);
+        tagRepository.deleteByPlaylistId(playlistId);
+        wardRepository.deleteByPlaylistId(playlistId);
+
+        playlistRepository.deleteById(playlistId);
+    }
+
+    @Override
+    @Transactional
+    public void addView(Long playlistId) {
+
+        Playlist playlist = getPlaylist(playlistId);
+        playlist.addView();
+    }
+
+    @Override
     public List<PlaylistMainResponse> findByUserId(Long userId) {
 
         List<Playlist> playlists = playlistRepository.findByUserId(userId);
