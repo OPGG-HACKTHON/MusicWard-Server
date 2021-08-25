@@ -39,6 +39,7 @@ public class UserServiceImpl implements UserService {
     private static final String GOOGLE_LOGIN_LINK = "https://accounts.google.com/o/oauth2/v2/auth";
     private static final Long GOOGLE_REFRESH_EXP = 604800L;
     private static final String SPOTIFY_LOGIN_LINK = "https://accounts.spotify.com/authorize";
+    private static final Long SPOTIFY_REFRESH_EXP = -1L;
 
     @Value("${oauth.google.client_id}")
     private String googleClientId;
@@ -113,7 +114,7 @@ public class UserServiceImpl implements UserService {
         Long userId = userRepository.findByGoogleEmail(email)
                 .orElseThrow(UserNotFoundException::new).getId();
 
-        return getToken(userId, response.getRefreshToken(), Type.GOOGLE, GOOGLE_REFRESH_EXP);
+        return getToken(userId, response.getRefreshToken(), Type.GOOGLE);
     }
 
     @Override
@@ -141,7 +142,7 @@ public class UserServiceImpl implements UserService {
         userRepository.findById(userId)
                 .map(user -> userRepository.save(user.setSpotifyEmail(email)));
 
-        return getToken(userId, response.getRefreshToken(), Type.SPOTIFY, -1L);
+        return getToken(userId, response.getRefreshToken(), Type.SPOTIFY);
     }
 
     @Override
@@ -157,17 +158,23 @@ public class UserServiceImpl implements UserService {
         );
     }
 
-    private TokenResponse getToken(Long userId, String oauthToken, Type type, Long oauthExp) {
+    private TokenResponse getToken(Long userId, String oauthToken, Type type) {
         String accessToken = jwtTokenProvider.generateAccessToken(Math.toIntExact(userId));
         String refreshToken = jwtTokenProvider.generateRefreshToken(Math.toIntExact(userId));
 
         tokenRepository.findById(userId + Type.MUSICWARD.name())
                 .or(() -> Optional.of(new Token(userId + Type.MUSICWARD.name(), refreshToken, refreshExp)))
                 .ifPresent(token -> tokenRepository.save(token.update(refreshToken, refreshExp)));
-        tokenRepository.findById(userId + Type.GOOGLE.name())
-                .or(() -> Optional.of(new Token(userId + type.name(),
-                        oauthToken, refreshExp)))
-                .ifPresent(token -> tokenRepository.save(token.update(oauthToken, oauthExp)));
+
+        if (type == Type.GOOGLE) {
+            tokenRepository.findById(userId + Type.GOOGLE.name())
+                    .or(() -> Optional.of(new Token(userId + Type.GOOGLE.name(), oauthToken, GOOGLE_REFRESH_EXP)))
+                    .ifPresent(token -> tokenRepository.save(token.update(oauthToken, GOOGLE_REFRESH_EXP)));
+        } else if (type == Type.SPOTIFY) {
+            tokenRepository.findById(userId + Type.SPOTIFY.name())
+                    .or(() -> Optional.of(new Token(userId + Type.SPOTIFY.name(), oauthToken, SPOTIFY_REFRESH_EXP)))
+                    .ifPresent(token -> tokenRepository.save(token.update(oauthToken, SPOTIFY_REFRESH_EXP)));
+        }
 
         return new TokenResponse(accessToken, refreshToken, oauthToken, type.name());
     }
