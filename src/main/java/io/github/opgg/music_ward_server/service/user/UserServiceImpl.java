@@ -9,6 +9,7 @@ import io.github.opgg.music_ward_server.entity.token.Type;
 import io.github.opgg.music_ward_server.entity.user.Role;
 import io.github.opgg.music_ward_server.entity.user.User;
 import io.github.opgg.music_ward_server.entity.user.UserRepository;
+import io.github.opgg.music_ward_server.entity.ward.WardRepository;
 import io.github.opgg.music_ward_server.exception.EmailTooLongException;
 import io.github.opgg.music_ward_server.exception.UserNotFoundException;
 import io.github.opgg.music_ward_server.security.jwt.JwtTokenProvider;
@@ -27,6 +28,7 @@ import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Optional;
@@ -66,6 +68,7 @@ public class UserServiceImpl implements UserService {
     private final SpotifyInfoClient spotifyInfoClient;
     private final UserRepository userRepository;
     private final TokenRepository tokenRepository;
+    private final WardRepository wardRepository;
     private final JwtTokenProvider jwtTokenProvider;
 
     @Override
@@ -152,6 +155,30 @@ public class UserServiceImpl implements UserService {
                 user.getGoogleEmail(), user.getSpotifyEmail(),
                 user.getName(), user.getNickName()
         );
+    }
+
+    @Override
+    @Transactional
+    public void withdrawalUser() {
+        Long userId = SecurityUtil.getCurrentUserId();
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(UserNotFoundException::new);
+
+        User ghostUser = userRepository.findById(0L)
+                .orElseThrow(UserNotFoundException::new);
+
+        user.getComments().forEach(
+                comment -> comment.changeUser(ghostUser)
+        );
+
+        user.getPlaylists().forEach(
+                playlist -> playlist.changeUser(ghostUser)
+        );
+
+        wardRepository.deleteByUser(user);
+
+        userRepository.delete(user);
     }
 
     private TokenResponse getToken(Long userId, String oauthToken, Type type, Long oauthExp) {
