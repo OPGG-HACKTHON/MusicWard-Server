@@ -12,4 +12,5 @@ public interface UserService {
     GoogleAccessTokenResponse getGoogleAccessToken(String refreshToken);
     TokenResponse getSpotifyTokenByCode(String code);
     UserInfoResponse getUserInfo();
+    void withdrawalUser();
 }
