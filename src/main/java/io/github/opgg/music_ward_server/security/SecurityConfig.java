@@ -35,6 +35,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/users/auth/google").permitAll()
                 .antMatchers(HttpMethod.POST, "/users/auth/google").permitAll()
                 .antMatchers(HttpMethod.GET, "/users/auth/spotify").permitAll()
+                .antMatchers(HttpMethod.PUT, "/users/auth").permitAll()
                 .antMatchers(HttpMethod.GET,"/championlist").permitAll()
                 .antMatchers(HttpMethod.GET,"/champion/{championId}").permitAll()
                 .antMatchers(HttpMethod.GET,"/playlists/**").permitAll()
