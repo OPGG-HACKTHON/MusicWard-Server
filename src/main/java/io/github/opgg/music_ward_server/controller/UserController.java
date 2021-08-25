@@ -5,6 +5,8 @@ import io.github.opgg.music_ward_server.dto.user.response.LinkResponse;
 import io.github.opgg.music_ward_server.dto.user.response.TokenResponse;
 import io.github.opgg.music_ward_server.service.user.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -15,23 +17,23 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/auth/google")
-    public CommonResponse<LinkResponse> getGoogleLink() {
-        return new CommonResponse<>(userService.getGoogleLink());
+    public ResponseEntity<CommonResponse<LinkResponse>> getGoogleLink() {
+        return new ResponseEntity<>(new CommonResponse<>(userService.getGoogleLink()), HttpStatus.OK);
     }
 
     @GetMapping("/auth/spotify")
-    public CommonResponse<LinkResponse> getSpotifyLink() {
-        return new CommonResponse<>(userService.getSpotifyLink());
+    public ResponseEntity<CommonResponse<LinkResponse>> getSpotifyLink() {
+        return new ResponseEntity<>(new CommonResponse<>(userService.getSpotifyLink()), HttpStatus.OK);
     }
 
     @PostMapping("/auth/google")
-    public CommonResponse<TokenResponse> getGoogleTokenByCode(@RequestParam("code") String code) {
-        return new CommonResponse<>(userService.getGoogleTokenByCode(code));
+    public ResponseEntity<CommonResponse<TokenResponse>> getGoogleTokenByCode(@RequestParam("code") String code) {
+        return new ResponseEntity<>(new CommonResponse<>(userService.getGoogleTokenByCode(code)), HttpStatus.OK);
     }
 
     @PostMapping("/auth/spotify")
-    public CommonResponse<TokenResponse> getSpotifyTokenByCode(@RequestParam("code") String code) {
-        return new CommonResponse<>(userService.getSpotifyTokenByCode(code));
+    public ResponseEntity<CommonResponse<TokenResponse>> getSpotifyTokenByCode(@RequestParam("code") String code) {
+        return new ResponseEntity<>(new CommonResponse<>(userService.getSpotifyTokenByCode(code)), HttpStatus.OK);
     }
 
 }
