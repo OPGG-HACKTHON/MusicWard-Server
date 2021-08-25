@@ -4,6 +4,7 @@ import io.github.opgg.music_ward_server.dto.user.request.RefreshTokenRequest;
 import io.github.opgg.music_ward_server.dto.user.response.LinkResponse;
 import io.github.opgg.music_ward_server.dto.user.response.TokenResponse;
 import io.github.opgg.music_ward_server.dto.user.response.UserInfoResponse;
+import io.github.opgg.music_ward_server.entity.report.ReportRepository;
 import io.github.opgg.music_ward_server.entity.token.Token;
 import io.github.opgg.music_ward_server.entity.token.TokenRepository;
 import io.github.opgg.music_ward_server.entity.token.Type;
@@ -70,6 +71,7 @@ public class UserServiceImpl implements UserService {
     private final SpotifyAuthClient spotifyAuthClient;
     private final SpotifyInfoClient spotifyInfoClient;
     private final UserRepository userRepository;
+    private final ReportRepository reportRepository;
     private final TokenRepository tokenRepository;
     private final WardRepository wardRepository;
     private final JwtTokenProvider jwtTokenProvider;
@@ -202,6 +204,8 @@ public class UserServiceImpl implements UserService {
         );
 
         wardRepository.deleteByUser(user);
+
+        reportRepository.deleteByUser(user);
 
         userRepository.delete(user);
     }
