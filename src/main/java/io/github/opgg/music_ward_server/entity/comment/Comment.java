@@ -42,4 +42,13 @@ public class Comment extends BaseEntity {
         this.user = user;
         this.playlist = playlist;
     }
+
+    public void changeUser(User user) {
+        if(this.user != null) {
+            this.user.getComments().remove(this);
+        }
+        this.user = user;
+        user.getComments().add(this);
+    }
+
 }

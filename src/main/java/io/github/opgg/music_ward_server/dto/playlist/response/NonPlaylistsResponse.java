@@ -24,6 +24,7 @@ public class NonPlaylistsResponse {
 
     @Getter
     @NoArgsConstructor
+    @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
     public static class Playlist {
         private String originalId;
         private String originalTitle;
@@ -43,6 +44,7 @@ public class NonPlaylistsResponse {
 
         @Getter
         @NoArgsConstructor
+        @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
         public static class Image {
             private String url;
             private String width;

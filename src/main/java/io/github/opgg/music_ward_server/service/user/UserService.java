@@ -14,4 +14,5 @@ public interface UserService {
     TokenResponse getSpotifyTokenByCode(String code);
     UserInfoResponse getUserInfo();
     TokenResponse refreshToken(RefreshTokenRequest request);
+    void withdrawalUser();
 }

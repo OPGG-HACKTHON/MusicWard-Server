@@ -53,5 +53,11 @@ public class UserController {
         return new ResponseEntity<>(
                 new CommonResponse<>(userService.refreshToken(request)), HttpStatus.OK);
     }
+  
+    @DeleteMapping("/withdrawal")
+    public ResponseEntity withdrawalUser() {
+        userService.withdrawalUser();
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
 
 }
