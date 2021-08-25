@@ -5,11 +5,10 @@ import io.github.opgg.music_ward_server.dto.user.response.LinkResponse;
 import io.github.opgg.music_ward_server.dto.user.response.TokenResponse;
 import io.github.opgg.music_ward_server.service.user.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping("/users")
 @RequiredArgsConstructor
 public class UserController {
 
@@ -25,12 +24,12 @@ public class UserController {
         return new CommonResponse<>(userService.getSpotifyLink());
     }
 
-    @GetMapping("/auth/google/callback")
+    @PostMapping("/auth/google")
     public CommonResponse<TokenResponse> getGoogleTokenByCode(@RequestParam("code") String code) {
         return new CommonResponse<>(userService.getGoogleTokenByCode(code));
     }
 
-    @GetMapping("/auth/spotify/callback")
+    @PostMapping("/auth/spotify")
     public CommonResponse<TokenResponse> getSpotifyTokenByCode(@RequestParam("code") String code) {
         return new CommonResponse<>(userService.getSpotifyTokenByCode(code));
     }

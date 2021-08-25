@@ -32,9 +32,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http
                 .authorizeRequests()
-                .antMatchers(HttpMethod.GET, "/auth/google").permitAll()
-                .antMatchers(HttpMethod.GET, "/auth/google/callback").permitAll()
-                .antMatchers(HttpMethod.GET, "/auth/spotify").permitAll()
+                .antMatchers(HttpMethod.GET, "/users/auth/google").permitAll()
+                .antMatchers(HttpMethod.POST, "/users/auth/google").permitAll()
+                .antMatchers(HttpMethod.GET, "/users/auth/spotify").permitAll()
                 .antMatchers(HttpMethod.GET,"/championlist").permitAll()
                 .antMatchers(HttpMethod.GET,"/champion/{championId}").permitAll()
                 .antMatchers(HttpMethod.GET,"/playlists/**").permitAll()
