@@ -24,6 +24,7 @@ import io.github.opgg.music_ward_server.utils.api.dto.google.GoogleCodeRequest;
 import io.github.opgg.music_ward_server.utils.api.dto.google.GoogleAccessTokenRequest;
 import io.github.opgg.music_ward_server.utils.api.dto.google.GoogleAccessTokenResponse;
 import io.github.opgg.music_ward_server.utils.api.dto.google.GoogleTokenResponse;
+import io.github.opgg.music_ward_server.utils.api.dto.spotify.SpotifyAccessTokenResponse;
 import io.github.opgg.music_ward_server.utils.api.dto.spotify.SpotifyTokenResponse;
 import io.github.opgg.music_ward_server.utils.security.SecurityUtil;
 import lombok.RequiredArgsConstructor;
@@ -149,6 +150,15 @@ public class UserServiceImpl implements UserService {
                 .map(user -> userRepository.save(user.setSpotifyEmail(email)));
 
         return getToken(userId, response.getRefreshToken(), Type.SPOTIFY, -1L);
+    }
+
+    @Override
+    public SpotifyAccessTokenResponse getSpotifyAccessToken(String refreshToken) {
+
+        String authorization = "Basic " +
+                Base64.encodeBase64String((spotifyClientId + ":" + spotifyClientSecret).getBytes());
+
+        return spotifyAuthClient.getAccessTokenByRefreshToken(authorization, "refresh_token", refreshToken);
     }
 
     @Override
