@@ -1,15 +1,18 @@
 package io.github.opgg.music_ward_server.dto.user.response;
 
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class TokenResponse {
 
-    private String accessToken;
-    private String refreshToken;
-    private String oauthRefreshToken;
-    private String type;
+    private final String accessToken;
+    private final String refreshToken;
+    private final String oauthRefreshToken;
+    private final String type;
 
 }
