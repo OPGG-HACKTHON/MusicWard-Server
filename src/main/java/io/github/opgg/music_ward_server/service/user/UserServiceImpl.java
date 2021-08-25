@@ -2,6 +2,7 @@ package io.github.opgg.music_ward_server.service.user;
 
 import io.github.opgg.music_ward_server.dto.user.response.LinkResponse;
 import io.github.opgg.music_ward_server.dto.user.response.TokenResponse;
+import io.github.opgg.music_ward_server.dto.user.response.UserInfoResponse;
 import io.github.opgg.music_ward_server.entity.token.Token;
 import io.github.opgg.music_ward_server.entity.token.TokenRepository;
 import io.github.opgg.music_ward_server.entity.token.Type;
@@ -138,6 +139,19 @@ public class UserServiceImpl implements UserService {
                 .map(user -> userRepository.save(user.setSpotifyEmail(email)));
 
         return getToken(userId, response.getRefreshToken(), Type.SPOTIFY, -1L);
+    }
+
+    @Override
+    public UserInfoResponse getUserInfo() {
+        Long userId = SecurityUtil.getCurrentUserId();
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(UserNotFoundException::new);
+
+        return new UserInfoResponse(
+                user.getGoogleEmail(), user.getSpotifyEmail(),
+                user.getName(), user.getNickName()
+        );
     }
 
     private TokenResponse getToken(Long userId, String oauthToken, Type type, Long oauthExp) {

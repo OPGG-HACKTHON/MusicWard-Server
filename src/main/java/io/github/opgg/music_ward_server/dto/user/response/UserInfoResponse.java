@@ -8,8 +8,11 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class LinkResponse {
+public class UserInfoResponse {
 
-    private final String link;
+    private final String googleEmail;
+    private final String spotifyEmail;
+    private final String name;
+    private final String nickName;
 
 }
