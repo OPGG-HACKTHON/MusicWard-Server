@@ -1,5 +1,6 @@
 package io.github.opgg.music_ward_server.service.user;
 
+import io.github.opgg.music_ward_server.dto.user.request.RefreshTokenRequest;
 import io.github.opgg.music_ward_server.dto.user.response.LinkResponse;
 import io.github.opgg.music_ward_server.dto.user.response.TokenResponse;
 import io.github.opgg.music_ward_server.dto.user.response.UserInfoResponse;
@@ -11,6 +12,7 @@ import io.github.opgg.music_ward_server.entity.user.User;
 import io.github.opgg.music_ward_server.entity.user.UserRepository;
 import io.github.opgg.music_ward_server.entity.ward.WardRepository;
 import io.github.opgg.music_ward_server.exception.EmailTooLongException;
+import io.github.opgg.music_ward_server.exception.ExpiredRefreshTokenException;
 import io.github.opgg.music_ward_server.exception.UserNotFoundException;
 import io.github.opgg.music_ward_server.security.jwt.JwtTokenProvider;
 import io.github.opgg.music_ward_server.utils.api.client.google.GoogleAuthClient;
@@ -160,6 +162,26 @@ public class UserServiceImpl implements UserService {
         );
     }
 
+    @Override
+    public TokenResponse refreshToken(RefreshTokenRequest request) {
+        Integer userId = Integer.valueOf(
+                jwtTokenProvider.parseRefreshToken(request.getRefreshToken()));
+
+        tokenRepository.findByRefreshToken(request.getRefreshToken())
+                .orElseThrow(ExpiredRefreshTokenException::new);
+
+        String accessToken = jwtTokenProvider
+                .generateAccessToken(userId);
+        String refreshToken = jwtTokenProvider
+                .generateRefreshToken(userId);
+
+        tokenRepository.findById(userId + Type.MUSICWARD.name())
+                .ifPresent(token -> tokenRepository.save(token.update(refreshToken, refreshExp)));
+
+        return new TokenResponse(accessToken, refreshToken,
+                null, Type.MUSICWARD.name());
+    }
+  
     @Override
     @Transactional
     public void withdrawalUser() {

@@ -1,6 +1,7 @@
 package io.github.opgg.music_ward_server.controller;
 
 import io.github.opgg.music_ward_server.controller.response.CommonResponse;
+import io.github.opgg.music_ward_server.dto.user.request.RefreshTokenRequest;
 import io.github.opgg.music_ward_server.dto.user.response.LinkResponse;
 import io.github.opgg.music_ward_server.dto.user.response.TokenResponse;
 import io.github.opgg.music_ward_server.dto.user.response.UserInfoResponse;
@@ -47,6 +48,12 @@ public class UserController {
                 new CommonResponse<>(userService.getUserInfo()), HttpStatus.OK);
     }
 
+    @PutMapping("/auth")
+    public ResponseEntity<CommonResponse<TokenResponse>> refreshToken(@RequestBody RefreshTokenRequest request) {
+        return new ResponseEntity<>(
+                new CommonResponse<>(userService.refreshToken(request)), HttpStatus.OK);
+    }
+  
     @DeleteMapping("/withdrawal")
     public ResponseEntity withdrawalUser() {
         userService.withdrawalUser();
