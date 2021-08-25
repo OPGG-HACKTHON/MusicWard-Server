@@ -11,6 +11,7 @@ import io.github.opgg.music_ward_server.entity.playlist.Playlist;
 import io.github.opgg.music_ward_server.entity.playlist.Provider;
 import lombok.Getter;
 
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,9 +29,12 @@ public class PlaylistMainResponse {
     private final ChampionMainResponse champion;
     private final String externalUrl;
     private final List<String> tags;
+    private final Integer view;
     private final Comments comments;
     private final Wards wards;
-    private final Items items;
+    private final Items tracks;
+    private final String createdDate;
+    private final String lastModifiedDate;
 
     @Getter
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -83,9 +87,14 @@ public class PlaylistMainResponse {
         this.champion = new ChampionMainResponse(playlist.getChampion());
         this.externalUrl = playlist.getExternalUrl();
         this.tags = tags;
-        this.wards = new Wards(wardTotal);
-        this.comments = new Comments(comments.size(), comments);
-        this.items = new Items(tracks.size(), tracks);
+        this.view = playlist.getView();
+        this.wards = wardTotal == null ? null : new Wards(wardTotal);
+        this.comments = comments == null ? null : new Comments(comments.size(), comments);
+        this.tracks = new Items(tracks.size(), tracks);
+        this.createdDate = playlist.getCreatedDate()
+                .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        this.lastModifiedDate = playlist.getLastModifiedDate()
+                .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
     }
 
     // 목록 조회
@@ -100,8 +109,13 @@ public class PlaylistMainResponse {
         this.champion = new ChampionMainResponse(playlist.getChampion());
         this.externalUrl = playlist.getExternalUrl();
         this.tags = tags;
+        this.view = playlist.getView();
         this.wards = new Wards(wardTotal);
         this.comments = new Comments(commentTotal);
-        this.items = new Items(trackTotal, null);
+        this.tracks = new Items(trackTotal, null);
+        this.createdDate = playlist.getCreatedDate()
+                .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        this.lastModifiedDate = playlist.getLastModifiedDate()
+                .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
     }
 }

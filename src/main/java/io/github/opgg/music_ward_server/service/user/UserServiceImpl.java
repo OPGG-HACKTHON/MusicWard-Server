@@ -29,6 +29,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Optional;
@@ -93,7 +94,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public TokenResponse getGoogleTokenByCode(String code) {
         GoogleTokenResponse response = googleAuthClient.getTokenByCode(
-                new GoogleCodeRequest(code, googleClientId, googleClientSecret, googleRedirectUri, "authorization_code")
+                new GoogleCodeRequest(URLDecoder.decode(code, StandardCharsets.UTF_8),
+                        googleClientId, googleClientSecret, googleRedirectUri, "authorization_code")
         );
 
         String email = googleInfoClient.getEmail("Bearer" + response.getAccessToken()).getEmail();
@@ -130,7 +132,8 @@ public class UserServiceImpl implements UserService {
         Long userId = SecurityUtil.getCurrentUserId();
 
         SpotifyTokenResponse response =
-                spotifyAuthClient.getTokenByCode("authorization_code", code,
+                spotifyAuthClient.getTokenByCode("authorization_code",
+                URLDecoder.decode(code, StandardCharsets.UTF_8),
                 spotifyRedirectUri, "Basic " +
                 Base64.encodeBase64String((spotifyClientId + ":" + spotifyClientSecret).getBytes())
         );
