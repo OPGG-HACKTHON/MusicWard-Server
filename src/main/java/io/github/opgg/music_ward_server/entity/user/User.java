@@ -1,6 +1,8 @@
 package io.github.opgg.music_ward_server.entity.user;
 
 import io.github.opgg.music_ward_server.entity.BaseEntity;
+import io.github.opgg.music_ward_server.entity.comment.Comment;
+import io.github.opgg.music_ward_server.entity.playlist.Playlist;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,6 +14,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -43,6 +47,12 @@ public class User extends BaseEntity implements UserDetails {
 
     @Column(columnDefinition = "BIT(1)")
     private boolean withdrawal;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    private Set<Comment> comments = new HashSet<>();
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    private Set<Playlist> playlists = new HashSet<>();
 
     @Builder
     public User(String googleEmail, String spotifyEmail, String name, Role role,
