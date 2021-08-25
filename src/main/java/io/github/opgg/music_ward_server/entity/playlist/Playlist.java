@@ -82,9 +82,12 @@ public class Playlist extends BaseEntity {
         this.champion = playlist.getChampion();
     }
 
-    public Playlist changeUser(User user) {
+    public void changeUser(User user) {
+        if(this.user != null) {
+            this.user.getPlaylists().remove(this);
+        }
         this.user = user;
-        return this;
+        user.getPlaylists().add(this);
     }
 
 }
