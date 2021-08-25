@@ -213,7 +213,7 @@ public class UserServiceImpl implements UserService {
         tokenRepository.findById(userId + Type.MUSICWARD.name())
                 .or(() -> Optional.of(new Token(userId + Type.MUSICWARD.name(), refreshToken, refreshExp)))
                 .ifPresent(token -> tokenRepository.save(token.update(refreshToken, refreshExp)));
-        tokenRepository.findById(userId + Type.GOOGLE.name())
+        tokenRepository.findById(userId + type.name())
                 .or(() -> Optional.of(new Token(userId + type.name(),
                         oauthToken, refreshExp)))
                 .ifPresent(token -> tokenRepository.save(token.update(oauthToken, oauthExp)));
