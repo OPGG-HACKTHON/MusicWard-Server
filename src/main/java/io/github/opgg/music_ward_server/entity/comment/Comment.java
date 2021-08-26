@@ -51,4 +51,8 @@ public class Comment extends BaseEntity {
         user.getComments().add(this);
     }
 
+    public void editContent(String content) {
+        this.content = content;
+    }
+
 }
