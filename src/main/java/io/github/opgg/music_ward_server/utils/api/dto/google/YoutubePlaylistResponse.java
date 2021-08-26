@@ -2,6 +2,7 @@ package io.github.opgg.music_ward_server.utils.api.dto.google;
 
 import io.github.opgg.music_ward_server.dto.track.request.TrackSaveRequest;
 import io.github.opgg.music_ward_server.entity.playlist.Image;
+import io.github.opgg.music_ward_server.utils.api.dto.PlaylistResponse;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,7 +14,7 @@ import java.util.Map;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class YoutubePlaylistResponse {
+public class YoutubePlaylistResponse implements PlaylistResponse {
 
     private String kind;
     private String etag;
@@ -68,6 +69,7 @@ public class YoutubePlaylistResponse {
         }
     }
 
+    @Override
     public Image getImage() {
         if (items.size() != 0) {
             Item.Snippet.Thumbnail thumbnail = items.get(0).getSnippet().getThumbnails().get("maxres");
@@ -76,7 +78,8 @@ public class YoutubePlaylistResponse {
 
         return null;
     }
-    
+
+    @Override
     public List<TrackSaveRequest> getTrackSaveRequests() {
         
         List<TrackSaveRequest> trackSaveRequests = new ArrayList<>();
