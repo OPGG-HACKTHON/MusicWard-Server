@@ -19,7 +19,8 @@ public enum ErrorCode {
     CREDENTIALS_NOT_FOUND(401, "Credentials not found."),
     EMPTY_REFRESH_TOKEN(401, "Empty refresh token."),
     INVALID_INPUT_VALUE(400, "Invalid input value."),
-    PLAYLIST_NOT_FOUND(400, "Playlist not found.");
+    PLAYLIST_NOT_FOUND(400, "Playlist not found."),
+    UNSUPPORTED_PROVIDER(400, "Unsupported provider.");
 
     private final int status;
     private final String message;

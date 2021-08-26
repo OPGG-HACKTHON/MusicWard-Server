@@ -10,7 +10,7 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 public interface PlaylistService {
-    NonPlaylistsResponse getNonPlaylists();
+    NonPlaylistsResponse getNonPlaylists(String provider);
     PlaylistMainResponse save(PlaylistSaveRequest request);
     List<PlaylistMainResponse> findAll();
     Page<PlaylistMainResponse> findByChampionName(String championName, Pageable pageable);

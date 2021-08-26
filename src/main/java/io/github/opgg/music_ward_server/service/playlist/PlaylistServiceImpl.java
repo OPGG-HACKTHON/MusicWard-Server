@@ -13,6 +13,7 @@ import io.github.opgg.music_ward_server.entity.comment.Comment;
 import io.github.opgg.music_ward_server.entity.comment.CommentRepository;
 import io.github.opgg.music_ward_server.entity.playlist.Playlist;
 import io.github.opgg.music_ward_server.entity.playlist.PlaylistRepository;
+import io.github.opgg.music_ward_server.entity.playlist.Provider;
 import io.github.opgg.music_ward_server.entity.tag.Tag;
 import io.github.opgg.music_ward_server.entity.tag.TagRepository;
 import io.github.opgg.music_ward_server.entity.token.Token;
@@ -26,12 +27,16 @@ import io.github.opgg.music_ward_server.entity.ward.WardRepository;
 import io.github.opgg.music_ward_server.exception.ChampionNotFoundException;
 import io.github.opgg.music_ward_server.exception.EmptyRefreshTokenException;
 import io.github.opgg.music_ward_server.exception.PlaylistNotFoundException;
+import io.github.opgg.music_ward_server.exception.UnsupportedProviderException;
 import io.github.opgg.music_ward_server.exception.UserNotFoundException;
 import io.github.opgg.music_ward_server.service.user.UserService;
 import io.github.opgg.music_ward_server.utils.api.client.google.GoogleApiClient;
+import io.github.opgg.music_ward_server.utils.api.client.spotify.SpotifyApiClient;
 import io.github.opgg.music_ward_server.utils.api.dto.google.GoogleAccessTokenResponse;
 import io.github.opgg.music_ward_server.utils.api.dto.google.YoutubePlaylistResponse;
 import io.github.opgg.music_ward_server.utils.api.dto.google.YoutubePlaylistsResponse;
+import io.github.opgg.music_ward_server.utils.api.dto.spotify.SpotifyAccessTokenResponse;
+import io.github.opgg.music_ward_server.utils.api.dto.spotify.SpotifyPlaylistsResponse;
 import io.github.opgg.music_ward_server.utils.security.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -59,21 +64,38 @@ public class PlaylistServiceImpl implements PlaylistService {
     private final PlaylistRepository playlistRepository;
     private final ChampionRepository championRepository;
     private final GoogleApiClient googleApiClient;
+    private final SpotifyApiClient spotifyApiClient;
 
     @Override
-    public NonPlaylistsResponse getNonPlaylists() {
+    public NonPlaylistsResponse getNonPlaylists(String provider) {
 
         Long userId = SecurityUtil.getCurrentUserId();
 
-        Token googleRefreshToken = tokenRepository.findById(userId + Type.GOOGLE.name())
-                .orElseThrow(EmptyRefreshTokenException::new);
+        if (provider.equals(Provider.YOUTUBE.name())) {
+            Token token = tokenRepository.findById(userId + Type.GOOGLE.name())
+                    .orElseThrow(EmptyRefreshTokenException::new);
 
-        GoogleAccessTokenResponse accessToken = userService.getGoogleAccessToken(googleRefreshToken.getRefreshToken());
+            GoogleAccessTokenResponse accessToken = userService.getGoogleAccessToken(token.getRefreshToken());
 
-        YoutubePlaylistsResponse playlists = googleApiClient.getPlaylists(
-                accessToken.getAccessTokenAndTokenType(), "id,snippet,status", true);
+            YoutubePlaylistsResponse playlists = googleApiClient.getPlaylists(
+                    accessToken.getAccessTokenAndTokenType(), "id,snippet,status", true);
 
-        return playlists.toNonPlaylists();
+            return playlists.toNonPlaylists();
+
+        } else if (provider.equals(Provider.SPOTIFY.name())) {
+            Token token = tokenRepository.findById(userId + Type.SPOTIFY.name())
+                    .orElseThrow(EmptyRefreshTokenException::new);
+
+            SpotifyAccessTokenResponse accessToken = userService.getSpotifyAccessToken(token.getRefreshToken());
+
+            SpotifyPlaylistsResponse playlists = spotifyApiClient.getPlaylists(
+                    accessToken.getAccessTokenAndTokenType());
+
+            return playlists.toNonPlaylists();
+
+        } else {
+            throw new UnsupportedProviderException();
+        }
     }
 
     @Override

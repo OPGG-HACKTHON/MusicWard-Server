@@ -7,6 +7,7 @@ import io.github.opgg.music_ward_server.dto.page.response.PageInfoResponse;
 import io.github.opgg.music_ward_server.dto.playlist.request.PlaylistSaveRequest;
 import io.github.opgg.music_ward_server.dto.playlist.request.PlaylistUpdateRequest;
 import io.github.opgg.music_ward_server.dto.playlist.response.PlaylistMainResponse;
+import io.github.opgg.music_ward_server.entity.playlist.Provider;
 import io.github.opgg.music_ward_server.service.playlist.PlaylistService;
 import io.github.opgg.music_ward_server.utils.security.SecurityUtil;
 import lombok.RequiredArgsConstructor;
@@ -33,9 +34,9 @@ public class PlaylistController {
     private final PlaylistService playlistService;
 
     @GetMapping("non-playlists")
-    public ResponseEntity<CommonResponse> getNonPlaylists() {
+    public ResponseEntity<CommonResponse> getNonPlaylists(@RequestParam(value = "provider") String provider) {
 
-        return new ResponseEntity<>(new CommonResponse(playlistService.getNonPlaylists()), HttpStatus.OK);
+        return new ResponseEntity<>(new CommonResponse(playlistService.getNonPlaylists(provider)), HttpStatus.OK);
     }
 
     @PostMapping("playlists")
