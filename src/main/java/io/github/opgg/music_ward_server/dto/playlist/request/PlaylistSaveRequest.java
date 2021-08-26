@@ -25,7 +25,7 @@ public class PlaylistSaveRequest {
     private String originalId;
 
     @NotNull(message = "provider은 null을 허용하지 않습니다.")
-    private Provider provider;
+    private String provider;
 
     @NotBlank(message = "title은 null과 공백을 허용하지 않습니다.")
     @Size(max = 30, message = "title은 30자를 넘을 수 없습니다.")
@@ -42,7 +42,7 @@ public class PlaylistSaveRequest {
     private List<String> tags;
 
     @Builder
-    public PlaylistSaveRequest(String originalId, Provider provider, String title,
+    public PlaylistSaveRequest(String originalId, String provider, String title,
                                String description, String championName, List<String> tags) {
         this.originalId = originalId;
         this.provider = provider;
@@ -55,7 +55,7 @@ public class PlaylistSaveRequest {
     public Playlist toEntity(Image image, User user, Champion champion) {
         return Playlist.builder()
                 .originalId(originalId)
-                .provider(provider)
+                .provider(Provider.toProvider(provider))
                 .title(title)
                 .description(description)
                 .image(image)
@@ -66,6 +66,12 @@ public class PlaylistSaveRequest {
     }
 
     private String getExternalUrl() {
-        return "https://music.youtube.com/playlist?list=" + this.originalId;
+        if (Provider.toProvider(provider) == Provider.SPOTIFY) {
+            return "https://open.spotify.com/playlist/" + this.originalId;
+        } else if (Provider.toProvider(provider) == Provider.YOUTUBE) {
+            return "https://music.youtube.com/playlist?list=" + this.originalId;
+        } else {
+            return null;
+        }
     }
 }
