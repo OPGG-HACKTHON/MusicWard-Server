@@ -88,7 +88,7 @@ public class SpotifyPlaylistsResponse {
                     .originalTitle(item.getName())
                     .originalDescription(item.getDescription())
                     .image(image)
-                    .externalUrl(item.getHref())
+                    .externalUrl(item.getExternal_urls().getSpotify())
                     .build();
 
             nonPlaylists.add(nonPlaylist);
