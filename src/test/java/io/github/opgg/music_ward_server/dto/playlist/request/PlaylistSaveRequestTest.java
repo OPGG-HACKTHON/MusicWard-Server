@@ -24,7 +24,7 @@ class PlaylistSaveRequestTest {
         // given
         PlaylistSaveRequest request = PlaylistSaveRequest.builder()
                 .originalId(" ")
-                .provider(Provider.YOUTUBE)
+                .provider("YOUTUBE")
                 .title(" ")
                 .description("description은 공백을 허용합니다.")
                 .championName(" ")
@@ -45,7 +45,7 @@ class PlaylistSaveRequestTest {
         // given
         PlaylistSaveRequest request = PlaylistSaveRequest.builder()
                 .originalId("")
-                .provider(Provider.YOUTUBE)
+                .provider("YOUTUBE")
                 .title("")
                 .description("dereciption은 empty도 허용합니다.")
                 .championName("")
@@ -98,7 +98,7 @@ class PlaylistSaveRequestTest {
 
         PlaylistSaveRequest request = PlaylistSaveRequest.builder()
                 .originalId("1234")
-                .provider(Provider.YOUTUBE)
+                .provider("YOUTUBE")
                 .title(title.toString())
                 .description(description.toString())
                 .championName("티모")
