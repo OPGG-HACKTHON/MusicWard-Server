@@ -1,5 +1,6 @@
 package io.github.opgg.music_ward_server.utils.api.client.spotify;
 
+import io.github.opgg.music_ward_server.utils.api.dto.spotify.SpotifyAccessTokenResponse;
 import io.github.opgg.music_ward_server.utils.api.dto.spotify.SpotifyTokenResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
@@ -16,4 +17,8 @@ public interface SpotifyAuthClient {
                                         @RequestParam("redirect_uri") String redirectUri,
                                         @RequestHeader("Authorization") String authorization);
 
+    @PostMapping(value = "/api/token", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    SpotifyAccessTokenResponse getAccessTokenByRefreshToken(@RequestHeader("Authorization") String authorization,
+                                                            @RequestParam("grant_type") String grantType,
+                                                            @RequestParam("refresh_token") String refreshToken);
 }

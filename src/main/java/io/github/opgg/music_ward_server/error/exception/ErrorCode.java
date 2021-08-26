@@ -13,6 +13,7 @@ public enum ErrorCode {
     PLAYLIST_NOT_FOUND(400, "Playlist not found."),
     EMAIL_TOO_LONG(400, "Email too long."),
     REQUEST_FAIL_TO_OTHER_SERVER(400, "Request fail to other server."),
+    UNSUPPORTED_PROVIDER(400, "Unsupported provider."),
     INVALID_TOKEN(401, "Invalid token."),
     EXPIRED_ACCESS_TOKEN(401, "Expired access token."),
     EXPIRED_REFRESH_TOKEN(401, "Expired refresh token."),
