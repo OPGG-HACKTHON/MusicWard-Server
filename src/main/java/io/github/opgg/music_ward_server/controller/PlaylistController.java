@@ -4,25 +4,17 @@ import io.github.opgg.music_ward_server.controller.response.CommonResponse;
 import io.github.opgg.music_ward_server.controller.response.PageResponse;
 import io.github.opgg.music_ward_server.dto.page.request.PageMainRequest;
 import io.github.opgg.music_ward_server.dto.page.response.PageInfoResponse;
+import io.github.opgg.music_ward_server.dto.playlist.request.PlaylistReportRequest;
 import io.github.opgg.music_ward_server.dto.playlist.request.PlaylistSaveRequest;
 import io.github.opgg.music_ward_server.dto.playlist.request.PlaylistUpdateRequest;
 import io.github.opgg.music_ward_server.dto.playlist.response.PlaylistMainResponse;
-import io.github.opgg.music_ward_server.entity.playlist.Provider;
 import io.github.opgg.music_ward_server.service.playlist.PlaylistService;
 import io.github.opgg.music_ward_server.utils.security.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -113,4 +105,12 @@ public class PlaylistController {
 
         return new ResponseEntity<>(new CommonResponse(playlistService.findByUserId(userId)), HttpStatus.OK);
     }
+
+    @PostMapping("playlists/report")
+    public ResponseEntity report(@RequestBody @Valid PlaylistReportRequest request) {
+        playlistService.report(request);
+
+        return new ResponseEntity(HttpStatus.CREATED);
+    }
+
 }
