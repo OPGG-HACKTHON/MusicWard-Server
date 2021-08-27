@@ -40,6 +40,7 @@ import io.github.opgg.music_ward_server.utils.api.dto.google.GoogleAccessTokenRe
 import io.github.opgg.music_ward_server.utils.api.dto.google.YoutubePlaylistResponse;
 import io.github.opgg.music_ward_server.utils.api.dto.google.YoutubePlaylistsResponse;
 import io.github.opgg.music_ward_server.utils.api.dto.spotify.SpotifyAccessTokenResponse;
+import io.github.opgg.music_ward_server.utils.api.dto.spotify.SpotifyPlaylistResponse;
 import io.github.opgg.music_ward_server.utils.api.dto.spotify.SpotifyPlaylistsResponse;
 import io.github.opgg.music_ward_server.utils.security.SecurityUtil;
 import lombok.RequiredArgsConstructor;
@@ -260,17 +261,35 @@ public class PlaylistServiceImpl implements PlaylistService {
 
         Long userId = SecurityUtil.getCurrentUserId();
 
-        Token googleRefreshToken = tokenRepository.findById(userId + Type.GOOGLE.name())
-                .orElseThrow(EmptyRefreshTokenException::new);
+        if (playlist.getProvider() == Provider.YOUTUBE) {
 
-        GoogleAccessTokenResponse accessToken = userService.getGoogleAccessToken(googleRefreshToken.getRefreshToken());
+            Token token = tokenRepository.findById(userId + Type.GOOGLE.name())
+                    .orElseThrow(EmptyRefreshTokenException::new);
 
-        YoutubePlaylistResponse nonPlaylist = googleApiClient.getPlaylist(accessToken.getAccessTokenAndTokenType(),
-                "id,snippet,contentDetails,status", playlist.getOriginalId(), "50");
+            GoogleAccessTokenResponse accessToken = userService.getGoogleAccessToken(token.getRefreshToken());
 
-        List<TrackSaveRequest> trackSaveRequests = nonPlaylist.getTrackSaveRequests();
-        for (TrackSaveRequest trackSaveRequest : trackSaveRequests) {
-            trackRepository.save(trackSaveRequest.toEntity(playlist));
+            YoutubePlaylistResponse nonPlaylist = googleApiClient.getPlaylist(accessToken.getAccessTokenAndTokenType(),
+                    "id,snippet,contentDetails,status", playlist.getOriginalId(), "50");
+
+            List<TrackSaveRequest> trackSaveRequests = nonPlaylist.getTrackSaveRequests();
+            for (TrackSaveRequest trackSaveRequest : trackSaveRequests) {
+                trackRepository.save(trackSaveRequest.toEntity(playlist));
+            }
+
+        } else if (playlist.getProvider() == Provider.SPOTIFY) {
+
+            Token token = tokenRepository.findById(userId + Type.SPOTIFY.name())
+                    .orElseThrow(EmptyRefreshTokenException::new);
+
+            SpotifyAccessTokenResponse accessToken = userService.getSpotifyAccessToken(token.getRefreshToken());
+
+            SpotifyPlaylistResponse nonPlaylist = spotifyApiClient.getPlaylist(
+                    accessToken.getAccessTokenAndTokenType(), playlist.getOriginalId());
+
+            List<TrackSaveRequest> trackSaveRequests = nonPlaylist.getTrackSaveRequests();
+            for (TrackSaveRequest trackSaveRequest : trackSaveRequests) {
+                trackRepository.save(trackSaveRequest.toEntity(playlist));
+            }
         }
     }
 
