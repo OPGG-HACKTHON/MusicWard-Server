@@ -28,7 +28,7 @@ public class WardServiceImpl implements WardService {
         Playlist playlist = playlistRepository.findById(request.getPlaylistId())
                 .orElseThrow(PlaylistNotFoundException::new);
 
-        if(wardRepository.findByUserAndPlaylist(user, playlist).isEmpty())
+        if(wardRepository.findByUserAndPlaylist(user, playlist).isPresent())
             throw new AlreadyWardedPlaylistException();
 
         wardRepository.save(
