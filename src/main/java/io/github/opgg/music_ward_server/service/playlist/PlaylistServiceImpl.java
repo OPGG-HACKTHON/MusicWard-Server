@@ -1,6 +1,7 @@
 package io.github.opgg.music_ward_server.service.playlist;
 
 import io.github.opgg.music_ward_server.dto.comment.response.CommentMainResponse;
+import io.github.opgg.music_ward_server.dto.playlist.request.PlaylistReportRequest;
 import io.github.opgg.music_ward_server.dto.playlist.request.PlaylistUpdateRequest;
 import io.github.opgg.music_ward_server.dto.playlist.response.NonPlaylistsResponse;
 import io.github.opgg.music_ward_server.dto.playlist.response.PlaylistMainResponse;
@@ -14,6 +15,8 @@ import io.github.opgg.music_ward_server.entity.comment.CommentRepository;
 import io.github.opgg.music_ward_server.entity.playlist.Playlist;
 import io.github.opgg.music_ward_server.entity.playlist.PlaylistRepository;
 import io.github.opgg.music_ward_server.entity.playlist.Provider;
+import io.github.opgg.music_ward_server.entity.report.Report;
+import io.github.opgg.music_ward_server.entity.report.ReportRepository;
 import io.github.opgg.music_ward_server.entity.tag.Tag;
 import io.github.opgg.music_ward_server.entity.tag.TagRepository;
 import io.github.opgg.music_ward_server.entity.token.Token;
@@ -64,6 +67,7 @@ public class PlaylistServiceImpl implements PlaylistService {
     private final CommentRepository commentRepository;
     private final PlaylistRepository playlistRepository;
     private final ChampionRepository championRepository;
+    private final ReportRepository reportRepository;
     private final GoogleApiClient googleApiClient;
     private final SpotifyApiClient spotifyApiClient;
 
@@ -309,6 +313,22 @@ public class PlaylistServiceImpl implements PlaylistService {
                 .collect(Collectors.toList());
 
         return playlistMainResponses;
+    }
+
+    @Override
+    @Transactional
+    public void report(PlaylistReportRequest request) {
+        Long userId = SecurityUtil.getCurrentUserId();
+
+        User user = getUser(userId);
+        Playlist playlist = getPlaylist(request.getPlaylistId());
+
+        reportRepository.save(
+                Report.builder()
+                .user(user)
+                .playlist(playlist)
+                .build()
+        );
     }
 
     private User getUser(Long id) {
