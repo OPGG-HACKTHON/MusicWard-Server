@@ -13,4 +13,5 @@ public interface WardRepository extends JpaRepository<Ward, Long> {
     Optional<Ward> findByUserAndPlaylist(User user, Playlist playlist);
     void deleteByPlaylistId(Long playlistId);
     void deleteByUser(User user);
+    void deleteByUserAndPlaylist(User user, Playlist playlist);
 }
