@@ -11,6 +11,6 @@ import lombok.NoArgsConstructor;
 public class CommentRequest {
 
     private String comment;
-    private Integer playlistId;
+    private long playlistId;
 
 }
