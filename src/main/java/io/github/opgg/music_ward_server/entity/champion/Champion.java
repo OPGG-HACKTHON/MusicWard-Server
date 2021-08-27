@@ -2,6 +2,7 @@ package io.github.opgg.music_ward_server.entity.champion;
 
 import io.github.opgg.music_ward_server.dto.champion.response.ChampionListDTO;
 import io.github.opgg.music_ward_server.entity.BaseEntity;
+import io.github.opgg.music_ward_server.entity.playlist.Playlist;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,9 +13,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 @Getter
@@ -40,6 +41,9 @@ public class Champion extends BaseEntity {
     private String profileImageUrl;
 
     private String imageUrl;
+
+    @OneToMany(mappedBy = "champion")
+    private List<Playlist> playlists = new ArrayList<>();
 
     @Builder
     public Champion(String name, String englishName, String story,

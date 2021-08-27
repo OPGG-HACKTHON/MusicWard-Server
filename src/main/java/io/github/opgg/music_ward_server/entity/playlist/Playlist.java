@@ -2,7 +2,9 @@ package io.github.opgg.music_ward_server.entity.playlist;
 
 import io.github.opgg.music_ward_server.entity.BaseEntity;
 import io.github.opgg.music_ward_server.entity.champion.Champion;
+import io.github.opgg.music_ward_server.entity.comment.Comment;
 import io.github.opgg.music_ward_server.entity.user.User;
+import io.github.opgg.music_ward_server.entity.ward.Ward;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -19,6 +21,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -58,6 +63,12 @@ public class Playlist extends BaseEntity {
     @JoinColumn(name = "champion_id")
     private Champion champion;
 
+    @OneToMany(mappedBy = "playlist")
+    List<Comment> comments = new ArrayList<>();
+
+    @OneToMany(mappedBy = "playlist")
+    List<Ward> wards = new ArrayList<>();
+
     @Builder
     public Playlist(String originalId, Provider provider, String title, String description,
                     Image image, String externalUrl, User user, Champion champion) {
@@ -70,6 +81,7 @@ public class Playlist extends BaseEntity {
         this.view = 0;
         this.user = user;
         this.champion = champion;
+        this.champion.getPlaylists().add(this);
     }
 
     public void addView() {
