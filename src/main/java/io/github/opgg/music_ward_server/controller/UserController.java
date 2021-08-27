@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/users")
 @RequiredArgsConstructor
@@ -49,7 +51,7 @@ public class UserController {
     }
 
     @PutMapping("/auth")
-    public ResponseEntity<CommonResponse<TokenResponse>> refreshToken(@RequestBody RefreshTokenRequest request) {
+    public ResponseEntity<CommonResponse<TokenResponse>> refreshToken(@RequestBody @Valid RefreshTokenRequest request) {
         return new ResponseEntity<>(
                 new CommonResponse<>(userService.refreshToken(request)), HttpStatus.OK);
     }
