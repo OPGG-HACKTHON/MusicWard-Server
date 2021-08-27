@@ -7,6 +7,7 @@ import io.github.opgg.music_ward_server.entity.user.User;
 import io.github.opgg.music_ward_server.entity.user.UserRepository;
 import io.github.opgg.music_ward_server.entity.ward.Ward;
 import io.github.opgg.music_ward_server.entity.ward.WardRepository;
+import io.github.opgg.music_ward_server.exception.AlreadyWardedPlaylistException;
 import io.github.opgg.music_ward_server.exception.PlaylistNotFoundException;
 import io.github.opgg.music_ward_server.exception.UserNotFoundException;
 import io.github.opgg.music_ward_server.utils.security.SecurityUtil;
@@ -26,6 +27,9 @@ public class WardServiceImpl implements WardService {
         User user = getCurrentUser();
         Playlist playlist = playlistRepository.findById(request.getPlaylistId())
                 .orElseThrow(PlaylistNotFoundException::new);
+
+        if(wardRepository.findByUserAndPlaylist(user, playlist).isEmpty())
+            throw new AlreadyWardedPlaylistException();
 
         wardRepository.save(
                 Ward.builder()
