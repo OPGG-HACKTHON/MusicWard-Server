@@ -28,7 +28,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public void postComment(CommentRequest request) {
-        User user = getUser();
+        User user = getCurrentUser();
 
         Playlist playlist = playlistRepository
                 .findById(request.getPlaylistId())
@@ -46,7 +46,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public void editComment(EditCommentRequest request) {
-        User user = getUser();
+        User user = getCurrentUser();
 
         Comment comment = getComment(request.getCommentId());
 
@@ -60,7 +60,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public void removeComment(RemoveCommentRequest request) {
-        User user = getUser();
+        User user = getCurrentUser();
 
         Comment comment = getComment(request.getComment_id());
 
@@ -70,7 +70,7 @@ public class CommentServiceImpl implements CommentService {
         commentRepository.delete(comment);
     }
 
-    private User getUser() {
+    private User getCurrentUser() {
         return userRepository.findById(SecurityUtil.getCurrentUserId())
                 .orElseThrow(UserNotFoundException::new);
     }
