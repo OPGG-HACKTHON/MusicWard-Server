@@ -23,7 +23,8 @@ public enum ErrorCode {
     NOT_YOUR_COMMENT(403, "Not your comment."),
     USER_NOT_FOUND(404, "User not found."),
     CHAMPION_NOT_FOUND(404, "Champion not found."),
-    COMMENT_NOT_FOUND(404, "Comment not found.");
+    COMMENT_NOT_FOUND(404, "Comment not found."),
+    WARD_NOT_FOUND(404, "Ward not found.");
 
     private final int status;
     private final String message;
