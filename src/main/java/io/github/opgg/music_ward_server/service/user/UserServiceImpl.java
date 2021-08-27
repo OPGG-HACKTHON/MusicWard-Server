@@ -165,8 +165,7 @@ public class UserServiceImpl implements UserService {
     public UserInfoResponse getUserInfo() {
         Long userId = SecurityUtil.getCurrentUserId();
 
-        User user = userRepository.findById(userId)
-                .orElseThrow(UserNotFoundException::new);
+        User user = getUser(userId);
 
         return new UserInfoResponse(
                 user.getGoogleEmail(), user.getSpotifyEmail(),
@@ -199,11 +198,9 @@ public class UserServiceImpl implements UserService {
     public void withdrawalUser() {
         Long userId = SecurityUtil.getCurrentUserId();
 
-        User user = userRepository.findById(userId)
-                .orElseThrow(UserNotFoundException::new);
+        User user = getUser(userId);
 
-        User ghostUser = userRepository.findById(0L)
-                .orElseThrow(UserNotFoundException::new);
+        User ghostUser = getUser(0L);
 
         user.getComments().forEach(
                 comment -> comment.changeUser(ghostUser)
@@ -234,4 +231,10 @@ public class UserServiceImpl implements UserService {
 
         return new TokenResponse(accessToken, refreshToken, oauthToken, type.name());
     }
+
+    private User getUser(Long userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(UserNotFoundException::new);
+    }
+
 }
