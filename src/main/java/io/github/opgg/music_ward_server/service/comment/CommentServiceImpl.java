@@ -2,6 +2,7 @@ package io.github.opgg.music_ward_server.service.comment;
 
 import io.github.opgg.music_ward_server.dto.comment.request.CommentRequest;
 import io.github.opgg.music_ward_server.dto.comment.request.EditCommentRequest;
+import io.github.opgg.music_ward_server.dto.comment.request.RemoveCommentRequest;
 import io.github.opgg.music_ward_server.entity.comment.Comment;
 import io.github.opgg.music_ward_server.entity.comment.CommentRepository;
 import io.github.opgg.music_ward_server.entity.playlist.Playlist;
@@ -27,13 +28,10 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public void postComment(CommentRequest request) {
-        Long userId = SecurityUtil.getCurrentUserId();
-
-        User user = userRepository.findById(userId)
-                .orElseThrow(UserNotFoundException::new);
+        User user = getUser();
 
         Playlist playlist = playlistRepository
-                .findById(Long.valueOf(request.getPlaylistId()))
+                .findById(request.getPlaylistId())
                 .orElseThrow(PlaylistNotFoundException::new);
 
         commentRepository.save(
@@ -48,13 +46,9 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public void editComment(EditCommentRequest request) {
-        Long userId = SecurityUtil.getCurrentUserId();
+        User user = getUser();
 
-        User user = userRepository.findById(userId)
-                .orElseThrow(UserNotFoundException::new);
-
-        Comment comment = commentRepository.findById(Long.valueOf(request.getCommentId()))
-                .orElseThrow(CommentNotFoundException::new);
+        Comment comment = getComment(request.getCommentId());
 
         if(!user.getId().equals(comment.getUser().getId()))
             throw new NotYourCommentException();
@@ -63,4 +57,27 @@ public class CommentServiceImpl implements CommentService {
 
         commentRepository.save(comment);
     }
+
+    @Override
+    public void removeComment(RemoveCommentRequest request) {
+        User user = getUser();
+
+        Comment comment = getComment(request.getComment_id());
+
+        if(!user.getId().equals(comment.getUser().getId()))
+            throw new NotYourCommentException();
+
+        commentRepository.delete(comment);
+    }
+
+    private User getUser() {
+        return userRepository.findById(SecurityUtil.getCurrentUserId())
+                .orElseThrow(UserNotFoundException::new);
+    }
+
+    private Comment getComment(Long commentId) {
+        return commentRepository.findById(commentId)
+                .orElseThrow(CommentNotFoundException::new);
+    }
+
 }
