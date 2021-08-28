@@ -33,6 +33,8 @@ dependencies {
     implementation 'org.springframework.cloud:spring-cloud-starter-openfeign:3.0.3'
     implementation 'io.github.openfeign:feign-httpclient:11.6'
 
+    implementation 'org.springdoc:springdoc-openapi-ui:1.5.10'
+
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
