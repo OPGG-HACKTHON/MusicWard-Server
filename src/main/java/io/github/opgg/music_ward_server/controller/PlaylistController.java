@@ -56,6 +56,8 @@ public class PlaylistController {
     @GetMapping("playlists/{playlistId}")
     public ResponseEntity<CommonResponse> findById(@PathVariable("playlistId") Long playlistId) {
 
+        playlistService.addView(playlistId);
+
         return new ResponseEntity<>(new CommonResponse(playlistService.findById(playlistId)), HttpStatus.OK);
     }
 
@@ -80,14 +82,6 @@ public class PlaylistController {
     public ResponseEntity<CommonResponse> delete(@PathVariable("playlistId") Long playlistId) {
 
         playlistService.delete(playlistId);
-
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
-
-    @PostMapping("playlists/{playlistId}/view")
-    public ResponseEntity<CommonResponse> addView(@PathVariable("playlistId") Long playlistId) {
-
-        playlistService.addView(playlistId);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
