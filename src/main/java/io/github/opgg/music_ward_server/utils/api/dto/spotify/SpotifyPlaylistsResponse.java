@@ -74,24 +74,25 @@ public class SpotifyPlaylistsResponse {
         List<NonPlaylistsResponse.Playlist> nonPlaylists = new ArrayList<>();
 
         for (Item item : items) {
+            if (item != null && !item.images.isEmpty()) {
+                Item.Image originalImage = item.images.get(0);
+                NonPlaylistsResponse.Playlist.Image image = NonPlaylistsResponse.Playlist.Image
+                        .builder()
+                        .url(originalImage.getUrl())
+                        .width(originalImage.getWidth())
+                        .height(originalImage.getHeight())
+                        .build();
 
-            Item.Image originalImage = item.images.get(0);
-            NonPlaylistsResponse.Playlist.Image image = NonPlaylistsResponse.Playlist.Image
-                    .builder()
-                    .url(originalImage.getUrl())
-                    .width(originalImage.getWidth())
-                    .height(originalImage.getHeight())
-                    .build();
+                NonPlaylistsResponse.Playlist nonPlaylist = NonPlaylistsResponse.Playlist.builder()
+                        .originalId(item.getId())
+                        .originalTitle(item.getName())
+                        .originalDescription(item.getDescription())
+                        .image(image)
+                        .externalUrl(item.getExternal_urls().getSpotify())
+                        .build();
 
-            NonPlaylistsResponse.Playlist nonPlaylist = NonPlaylistsResponse.Playlist.builder()
-                    .originalId(item.getId())
-                    .originalTitle(item.getName())
-                    .originalDescription(item.getDescription())
-                    .image(image)
-                    .externalUrl(item.getExternal_urls().getSpotify())
-                    .build();
-
-            nonPlaylists.add(nonPlaylist);
+                nonPlaylists.add(nonPlaylist);
+            }
         }
 
         return NonPlaylistsResponse.builder()
