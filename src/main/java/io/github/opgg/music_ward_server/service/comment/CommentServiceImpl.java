@@ -62,7 +62,7 @@ public class CommentServiceImpl implements CommentService {
     public void removeComment(RemoveCommentRequest request) {
         User user = getCurrentUser();
 
-        Comment comment = getComment(request.getComment_id());
+        Comment comment = getComment(request.getCommentId());
 
         if(!user.getId().equals(comment.getUser().getId()))
             throw new NotYourCommentException();
