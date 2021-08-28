@@ -15,5 +15,5 @@ public interface ChampionRepository extends JpaRepository<Champion, Long> {
     @Query("select distinct c " +
             "from tbl_champion c " +
             "join fetch c.playlists")
-    List<Champion> findAll();
+    List<Champion> findAllDistinct();
 }

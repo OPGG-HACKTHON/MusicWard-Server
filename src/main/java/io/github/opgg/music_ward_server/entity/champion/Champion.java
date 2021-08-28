@@ -1,6 +1,5 @@
 package io.github.opgg.music_ward_server.entity.champion;
 
-import io.github.opgg.music_ward_server.dto.champion.response.ChampionListDTO;
 import io.github.opgg.music_ward_server.entity.BaseEntity;
 import io.github.opgg.music_ward_server.entity.playlist.Playlist;
 import lombok.AccessLevel;
@@ -15,7 +14,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Getter
@@ -55,11 +53,5 @@ public class Champion extends BaseEntity {
         this.profileImageUrl = profileImageUrl;
         this.imageUrl = imageUrl;
         this.title = title;
-    }
-
-    public ChampionListDTO toDTO() {
-        String[] splitPositions = position.split(",");
-        List<String> positions = new ArrayList<>(Arrays.asList(splitPositions));
-        return new ChampionListDTO(id, englishName, name, positions, imageUrl);
     }
 }
