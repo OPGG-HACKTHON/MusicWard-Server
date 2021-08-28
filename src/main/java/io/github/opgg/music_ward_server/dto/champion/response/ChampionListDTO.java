@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-
 @Getter
 @AllArgsConstructor
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
@@ -22,8 +21,18 @@ public class ChampionListDTO {
 
     private String name;
 
-    private List<String> position;
+    private List<String> positions;
 
     private String imageUrl;
 
+    public ChampionListDTO(Champion champion) {
+        this.championId = champion.getId();
+        this.englishName = champion.getEnglishName();
+        this.name = champion.getName();
+
+        String[] splitPositions = champion.getPosition().split(",");
+        this.positions = new ArrayList<>(Arrays.asList(splitPositions));
+
+        this.imageUrl = champion.getImageUrl();
+    }
 }

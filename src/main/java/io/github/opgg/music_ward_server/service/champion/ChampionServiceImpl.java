@@ -25,7 +25,7 @@ public class ChampionServiceImpl implements ChampionService {
 
         List<ChampionListDTO> championListDTO = championRepository.findAll()
                 .stream()
-                .map(Champion::toDTO)
+                .map(ChampionListDTO::new)
                 .collect(Collectors.toList());
         return new ChampionListResponse(championListDTO);
 
@@ -41,7 +41,7 @@ public class ChampionServiceImpl implements ChampionService {
     @Override
     public List<ChampionRankingResponse> getRanking() {
 
-        return championRepository.findAll()
+        return championRepository.findAllDistinct()
                 .stream()
                 .map(champion -> {
                     List<Playlist> playlists = champion.getPlaylists();
