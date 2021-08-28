@@ -41,6 +41,7 @@ public class Comment extends BaseEntity {
         this.content = content;
         this.user = user;
         this.playlist = playlist;
+        this.playlist.getComments().add(this);
     }
 
     public void changeUser(User user) {

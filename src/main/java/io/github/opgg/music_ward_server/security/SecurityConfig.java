@@ -40,6 +40,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET,"/champion/{championId}").permitAll()
                 .antMatchers(HttpMethod.GET,"/playlists/**").permitAll()
                 .antMatchers(HttpMethod.GET,"/users/**/playlists").permitAll()
+                .antMatchers(HttpMethod.GET,"/ranking/**").permitAll()
                 .anyRequest().authenticated()
                 .and().apply(new FilterConfigure(jwtTokenProvider, exceptionHandlerFilter));
     }
