@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/playlists")
 @RequiredArgsConstructor
@@ -17,13 +19,13 @@ public class CommentController {
     private final CommentService commentService;
 
     @PostMapping("/comment")
-    public ResponseEntity postComment(@RequestBody CommentRequest request) {
+    public ResponseEntity postComment(@RequestBody @Valid CommentRequest request) {
         commentService.postComment(request);
         return new ResponseEntity(HttpStatus.OK);
     }
 
     @PatchMapping("/comment")
-    public ResponseEntity editComment(@RequestBody EditCommentRequest request) {
+    public ResponseEntity editComment(@RequestBody @Valid EditCommentRequest request) {
         commentService.editComment(request);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
