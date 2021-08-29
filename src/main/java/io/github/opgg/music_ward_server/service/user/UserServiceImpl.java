@@ -169,7 +169,7 @@ public class UserServiceImpl implements UserService {
 
         return new UserInfoResponse(
                 user.getGoogleEmail(), user.getSpotifyEmail(),
-                user.getName(), user.getNickName()
+                user.getName(), user.getNickname()
         );
     }
 
