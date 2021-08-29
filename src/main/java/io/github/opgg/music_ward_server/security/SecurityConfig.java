@@ -34,6 +34,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http
                 .authorizeRequests()
+                .antMatchers("/swagger-ui.html/**", "/swagger-resources/**").permitAll()
+                .antMatchers("/v3/**", "/swagger-ui/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/users/auth/google").permitAll()
                 .antMatchers(HttpMethod.POST, "/users/auth/google").permitAll()
                 .antMatchers(HttpMethod.GET, "/users/auth/spotify").permitAll()
