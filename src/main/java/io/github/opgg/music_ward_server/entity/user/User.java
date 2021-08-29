@@ -43,7 +43,7 @@ public class User extends BaseEntity implements UserDetails {
     private String provider;
 
     @Column(length = 10)
-    private String nickName;
+    private String nickname;
 
     @Column(columnDefinition = "BIT(1)")
     private boolean withdrawal;
@@ -56,13 +56,13 @@ public class User extends BaseEntity implements UserDetails {
 
     @Builder
     public User(String googleEmail, String spotifyEmail, String name, Role role,
-                String provider, String nickName, boolean withdrawal) {
+                String provider, String nickname, boolean withdrawal) {
         this.googleEmail = googleEmail;
         this.spotifyEmail = spotifyEmail;
         this.name = name;
         this.role = role;
         this.provider = provider;
-        this.nickName = nickName;
+        this.nickname = nickname;
         this.withdrawal = withdrawal;
     }
 
@@ -104,6 +104,10 @@ public class User extends BaseEntity implements UserDetails {
     public User setSpotifyEmail(String spotifyEmail) {
         this.spotifyEmail = spotifyEmail;
         return this;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 
 }

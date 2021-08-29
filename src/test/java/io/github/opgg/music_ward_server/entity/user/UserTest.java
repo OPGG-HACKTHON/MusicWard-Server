@@ -26,7 +26,7 @@ class UserTest {
                 .spotifyEmail(spotifyEmail)
                 .name(name)
                 .provider(provider)
-                .nickName(nickname)
+                .nickname(nickname)
                 .withdrawal(false)
                 .build();
 
@@ -37,7 +37,7 @@ class UserTest {
                 () -> Assertions.assertEquals(spotifyEmail, user.getSpotifyEmail()),
                 () -> Assertions.assertEquals(name, user.getName()),
                 () -> Assertions.assertEquals(provider, user.getProvider()),
-                () -> Assertions.assertEquals(nickname, user.getNickName())
+                () -> Assertions.assertEquals(nickname, user.getNickname())
         );
     }
 

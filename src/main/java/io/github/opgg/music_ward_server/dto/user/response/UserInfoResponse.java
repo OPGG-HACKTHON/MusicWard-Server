@@ -13,6 +13,6 @@ public class UserInfoResponse {
     private final String googleEmail;
     private final String spotifyEmail;
     private final String name;
-    private final String nickName;
+    private final String nickname;
 
 }

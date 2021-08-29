@@ -13,13 +13,13 @@ public class UserMainResponse {
     private final String googleEmail;
     private final String spotifyEmail;
     private final String name;
-    private final String nickName;
+    private final String nickname;
 
     public UserMainResponse(User user) {
         this.userId = user.getId();
         this.googleEmail = user.getGoogleEmail();
         this.spotifyEmail = user.getSpotifyEmail();
         this.name = user.getName();
-        this.nickName = user.getNickName();
+        this.nickname = user.getNickname();
     }
 }
