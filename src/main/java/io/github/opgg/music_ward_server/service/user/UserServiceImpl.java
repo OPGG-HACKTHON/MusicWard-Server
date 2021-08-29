@@ -1,5 +1,6 @@
 package io.github.opgg.music_ward_server.service.user;
 
+import io.github.opgg.music_ward_server.dto.user.request.ModifyNicknameRequest;
 import io.github.opgg.music_ward_server.dto.user.request.RefreshTokenRequest;
 import io.github.opgg.music_ward_server.dto.user.response.LinkResponse;
 import io.github.opgg.music_ward_server.dto.user.response.TokenResponse;
@@ -215,6 +216,14 @@ public class UserServiceImpl implements UserService {
         reportRepository.deleteByUser(user);
 
         userRepository.delete(user);
+    }
+
+    @Override
+    @Transactional
+    public void modifyNickname(ModifyNicknameRequest request) {
+        User user = getUser(SecurityUtil.getCurrentUserId());
+
+        user.setNickname(request.getNickname());
     }
 
     private TokenResponse getToken(Long userId, String oauthToken, Type type, Long oauthExp) {

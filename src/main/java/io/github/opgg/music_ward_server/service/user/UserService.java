@@ -1,5 +1,6 @@
 package io.github.opgg.music_ward_server.service.user;
 
+import io.github.opgg.music_ward_server.dto.user.request.ModifyNicknameRequest;
 import io.github.opgg.music_ward_server.dto.user.request.RefreshTokenRequest;
 import io.github.opgg.music_ward_server.dto.user.response.LinkResponse;
 import io.github.opgg.music_ward_server.dto.user.response.TokenResponse;
@@ -17,4 +18,5 @@ public interface UserService {
     UserInfoResponse getUserInfo();
     TokenResponse refreshToken(RefreshTokenRequest request);
     void withdrawalUser();
+    void modifyNickname(ModifyNicknameRequest request);
 }

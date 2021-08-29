@@ -1,6 +1,7 @@
 package io.github.opgg.music_ward_server.controller;
 
 import io.github.opgg.music_ward_server.controller.response.CommonResponse;
+import io.github.opgg.music_ward_server.dto.user.request.ModifyNicknameRequest;
 import io.github.opgg.music_ward_server.dto.user.request.RefreshTokenRequest;
 import io.github.opgg.music_ward_server.dto.user.response.LinkResponse;
 import io.github.opgg.music_ward_server.dto.user.response.TokenResponse;
@@ -59,6 +60,12 @@ public class UserController {
     @DeleteMapping("/withdrawal")
     public ResponseEntity withdrawalUser() {
         userService.withdrawalUser();
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
+
+    @PatchMapping("/nickname")
+    public ResponseEntity modifyNickname(@RequestBody @Valid ModifyNicknameRequest request) {
+
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
