@@ -20,10 +20,7 @@ import io.github.opgg.music_ward_server.utils.api.client.google.GoogleAuthClient
 import io.github.opgg.music_ward_server.utils.api.client.google.GoogleInfoClient;
 import io.github.opgg.music_ward_server.utils.api.client.spotify.SpotifyAuthClient;
 import io.github.opgg.music_ward_server.utils.api.client.spotify.SpotifyInfoClient;
-import io.github.opgg.music_ward_server.utils.api.dto.google.GoogleCodeRequest;
-import io.github.opgg.music_ward_server.utils.api.dto.google.GoogleAccessTokenRequest;
-import io.github.opgg.music_ward_server.utils.api.dto.google.GoogleAccessTokenResponse;
-import io.github.opgg.music_ward_server.utils.api.dto.google.GoogleTokenResponse;
+import io.github.opgg.music_ward_server.utils.api.dto.google.*;
 import io.github.opgg.music_ward_server.utils.api.dto.spotify.SpotifyAccessTokenResponse;
 import io.github.opgg.music_ward_server.utils.api.dto.spotify.SpotifyTokenResponse;
 import io.github.opgg.music_ward_server.utils.security.SecurityUtil;
@@ -81,7 +78,9 @@ public class UserServiceImpl implements UserService {
     public LinkResponse getGoogleLink() {
         return new LinkResponse(GOOGLE_LOGIN_LINK +
                 "?client_id=" + googleClientId +
-                "&scope=https://www.googleapis.com/auth/youtube%20https://www.googleapis.com/auth/userinfo.email" +
+                "&scope=https://www.googleapis.com/auth/youtube%20" +
+                "https://www.googleapis.com/auth/userinfo.email%20" +
+                "https://www.googleapis.com/auth/userinfo.profile" +
                 "&response_type=code" +
                 "&access_type=offline" +
                 "&redirect_uri=" + URLEncoder.encode(googleRedirectUri, StandardCharsets.UTF_8));
@@ -103,13 +102,15 @@ public class UserServiceImpl implements UserService {
                         googleClientId, googleClientSecret, googleRedirectUri, "authorization_code")
         );
 
-        String email = googleInfoClient.getEmail("Bearer" + response.getAccessToken()).getEmail();
+        GoogleInfoResponse userInfo
+                = googleInfoClient.getEmail("Bearer" + response.getAccessToken());
 
         try{
-            if(userRepository.findByGoogleEmail(email).isEmpty()) {
+            if(userRepository.findByGoogleEmail(userInfo.getEmail()).isEmpty()) {
                 userRepository.save(
                         User.builder()
-                                .googleEmail(email)
+                                .googleEmail(userInfo.getEmail())
+                                .name(userInfo.getName())
                                 .role(Role.ROLE_USER)
                                 .build()
                 );
@@ -118,7 +119,7 @@ public class UserServiceImpl implements UserService {
             throw new EmailTooLongException();
         }
 
-        Long userId = userRepository.findByGoogleEmail(email)
+        Long userId = userRepository.findByGoogleEmail(userInfo.getEmail())
                 .orElseThrow(UserNotFoundException::new).getId();
 
         return getToken(userId, response.getRefreshToken(), Type.GOOGLE, GOOGLE_REFRESH_EXP);
@@ -192,7 +193,7 @@ public class UserServiceImpl implements UserService {
         return new TokenResponse(accessToken, refreshToken,
                 null, Type.MUSICWARD.name());
     }
-  
+
     @Override
     @Transactional
     public void withdrawalUser() {
