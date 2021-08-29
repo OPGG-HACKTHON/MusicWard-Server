@@ -67,21 +67,26 @@ public class YoutubePlaylistsResponse {
                 continue;
             }
 
-            Item.Snippet.Thumbnail thumbnail = item.getSnippet().getThumbnails().get("maxres");
-            NonPlaylistsResponse.Playlist.Image image = NonPlaylistsResponse.Playlist.Image.builder()
-                    .url(thumbnail.getUrl())
-                    .width(thumbnail.getWidth())
-                    .height(thumbnail.getHeight()).build();
+            if (item.getSnippet() != null
+                    && !item.getSnippet().getThumbnails().isEmpty()
+                    && item.getSnippet().getThumbnails().containsKey("maxres")) {
 
-            NonPlaylistsResponse.Playlist nonPlaylist = NonPlaylistsResponse.Playlist.builder()
-                    .originalId(item.getId())
-                    .originalTitle(item.getSnippet().getTitle())
-                    .originalDescription(item.getSnippet().getDescription())
-                    .image(image)
-                    .externalUrl("https://music.youtube.com/playlist?list=" + item.getId())
-                    .build();
+                Item.Snippet.Thumbnail thumbnail = item.getSnippet().getThumbnails().get("maxres");
+                NonPlaylistsResponse.Playlist.Image image = NonPlaylistsResponse.Playlist.Image.builder()
+                        .url(thumbnail.getUrl())
+                        .width(thumbnail.getWidth())
+                        .height(thumbnail.getHeight()).build();
 
-            nonPlaylists.add(nonPlaylist);
+                NonPlaylistsResponse.Playlist nonPlaylist = NonPlaylistsResponse.Playlist.builder()
+                        .originalId(item.getId())
+                        .originalTitle(item.getSnippet().getTitle())
+                        .originalDescription(item.getSnippet().getDescription())
+                        .image(image)
+                        .externalUrl("https://music.youtube.com/playlist?list=" + item.getId())
+                        .build();
+
+                nonPlaylists.add(nonPlaylist);
+            }
         }
 
         return NonPlaylistsResponse.builder()
