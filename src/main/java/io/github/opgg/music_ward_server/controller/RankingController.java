@@ -1,13 +1,14 @@
 package io.github.opgg.music_ward_server.controller;
 
 import io.github.opgg.music_ward_server.controller.response.CommonResponse;
-import io.github.opgg.music_ward_server.service.champion.ChampionService;
+import io.github.opgg.music_ward_server.exception.UnsupportedRankingTypeException;
+import io.github.opgg.music_ward_server.service.ranking.RankingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequestMapping("/")
@@ -15,15 +16,20 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class RankingController {
 
-    private final ChampionService championService;
+    public static final String CHAMPION = "champion";
+    public static final String PLAYLIST = "playlist";
 
-    @GetMapping("ranking/{rankingType}")
-    public ResponseEntity<CommonResponse> getRanking(@PathVariable("rankingType") String rankingType) {
+    private final RankingService rankingService;
 
-        if (rankingType.equals("champion")) {
-            return new ResponseEntity<>(new CommonResponse(championService.getRanking()), HttpStatus.OK);
+    @GetMapping("ranking")
+    public ResponseEntity<CommonResponse> getRanking(@RequestParam("type") String rankingType) {
+
+        if (rankingType.equals(CHAMPION)) {
+            return new ResponseEntity<>(new CommonResponse(rankingService.getChampionRanking()), HttpStatus.OK);
+        } else if (rankingType.equals(PLAYLIST)) {
+            return new ResponseEntity<>(new CommonResponse(rankingService.getPlaylistRanking()), HttpStatus.OK);
+        } else {
+            throw new UnsupportedRankingTypeException();
         }
-
-        return new ResponseEntity<>(new CommonResponse(null), HttpStatus.OK);
     }
 }
