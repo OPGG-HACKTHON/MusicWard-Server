@@ -84,7 +84,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public TokenResponse getGoogleTokenByCode(String code) {
+    public TokenResponse getTokenByGoogleCode(String code) {
         GoogleTokenResponse response = googleAuthClient.getTokenByCode(
                 new GoogleCodeRequest(URLDecoder.decode(code, StandardCharsets.UTF_8),
                         googleProperties.getClientId(), googleProperties.getClientSecret(),
@@ -123,7 +123,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public TokenResponse getSpotifyTokenByCode(String code) {
+    public TokenResponse getTokenBySpotifyCodeWithJwt(String code) {
 
         Long userId = SecurityUtil.getCurrentUserId();
 
@@ -142,6 +142,26 @@ public class UserServiceImpl implements UserService {
                 .map(user -> userRepository.save(user.setSpotifyEmail(email)));
 
         return getToken(userId, response.getRefreshToken(), Type.SPOTIFY, -1L);
+    }
+
+    @Override
+    public TokenResponse getTokenBySpotifyCode(String code) {
+
+        SpotifyTokenResponse response =
+                spotifyAuthClient.getTokenByCode("authorization_code",
+                        URLDecoder.decode(code, StandardCharsets.UTF_8),
+                        spotifyProperties.getRedirectUri(), "Basic " +
+                                Base64.encodeBase64String((spotifyProperties.getClientId() +
+                                        ":" + spotifyProperties.getClientSecret()).getBytes())
+                );
+
+        String email = spotifyInfoClient.getEmail("Bearer " + response.getAccessToken())
+                .getEmail();
+
+        Long userId = userRepository.findBySpotifyEmail(email)
+                .orElseThrow(UserNotFoundException::new).getId();
+
+        return getToken(userId, response.getRefreshToken(), Type.SPOTIFY, refreshExp);
     }
 
     @Override
