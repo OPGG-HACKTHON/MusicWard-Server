@@ -1,5 +1,7 @@
 package io.github.opgg.music_ward_server.service.user;
 
+import io.github.opgg.music_ward_server.config.properties.GoogleProperties;
+import io.github.opgg.music_ward_server.config.properties.SpotifyProperties;
 import io.github.opgg.music_ward_server.dto.user.request.ModifyNicknameRequest;
 import io.github.opgg.music_ward_server.dto.user.request.RefreshTokenRequest;
 import io.github.opgg.music_ward_server.dto.user.response.LinkResponse;
@@ -44,23 +46,8 @@ public class UserServiceImpl implements UserService {
     private static final Long GOOGLE_REFRESH_EXP = 604800L;
     private static final String SPOTIFY_LOGIN_LINK = "https://accounts.spotify.com/authorize";
 
-    @Value("${oauth.google.client_id}")
-    private String googleClientId;
-
-    @Value("${oauth.google.client_secret}")
-    private String googleClientSecret;
-
-    @Value("${oauth.google.redirect_uri}")
-    private String googleRedirectUri;
-
-    @Value("${oauth.spotify.client_id}")
-    private String spotifyClientId;
-
-    @Value("${oauth.spotify.client_secret}")
-    private String spotifyClientSecret;
-
-    @Value("${oauth.spotify.redirect_uri}")
-    private String spotifyRedirectUri;
+    private final GoogleProperties googleProperties;
+    private final SpotifyProperties spotifyProperties;
 
     @Value("${jwt.refresh.exp}")
     private Long refreshExp;
@@ -78,29 +65,30 @@ public class UserServiceImpl implements UserService {
     @Override
     public LinkResponse getGoogleLink() {
         return new LinkResponse(GOOGLE_LOGIN_LINK +
-                "?client_id=" + googleClientId +
+                "?client_id=" + googleProperties.getClientId() +
                 "&scope=https://www.googleapis.com/auth/youtube%20" +
                 "https://www.googleapis.com/auth/userinfo.email%20" +
                 "https://www.googleapis.com/auth/userinfo.profile" +
                 "&response_type=code" +
                 "&access_type=offline" +
-                "&redirect_uri=" + URLEncoder.encode(googleRedirectUri, StandardCharsets.UTF_8));
+                "&redirect_uri=" + URLEncoder.encode(googleProperties.getRedirectUri(), StandardCharsets.UTF_8));
     }
 
     @Override
     public LinkResponse getSpotifyLink() {
         return new LinkResponse(SPOTIFY_LOGIN_LINK +
-                "?client_id=" + spotifyClientId +
+                "?client_id=" + spotifyProperties.getClientId() +
                 "&scope=" + URLEncoder.encode("user-read-email playlist-read-private", StandardCharsets.UTF_8) +
                 "&response_type=code" +
-                "&redirect_uri=" + URLEncoder.encode(spotifyRedirectUri, StandardCharsets.UTF_8));
+                "&redirect_uri=" + URLEncoder.encode(spotifyProperties.getRedirectUri(), StandardCharsets.UTF_8));
     }
 
     @Override
     public TokenResponse getGoogleTokenByCode(String code) {
         GoogleTokenResponse response = googleAuthClient.getTokenByCode(
                 new GoogleCodeRequest(URLDecoder.decode(code, StandardCharsets.UTF_8),
-                        googleClientId, googleClientSecret, googleRedirectUri, "authorization_code")
+                        googleProperties.getClientId(), googleProperties.getClientSecret(),
+                        googleProperties.getRedirectUri(), "authorization_code")
         );
 
         GoogleInfoResponse userInfo
@@ -129,7 +117,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public GoogleAccessTokenResponse getGoogleAccessToken(String refreshToken) {
         return googleAuthClient.getAccessTokenByRefreshToken(
-                new GoogleAccessTokenRequest(googleClientId, googleClientSecret, refreshToken, "refresh_token")
+                new GoogleAccessTokenRequest(googleProperties.getClientId(),
+                        googleProperties.getClientSecret(), refreshToken, "refresh_token")
         );
     }
 
@@ -141,8 +130,9 @@ public class UserServiceImpl implements UserService {
         SpotifyTokenResponse response =
                 spotifyAuthClient.getTokenByCode("authorization_code",
                 URLDecoder.decode(code, StandardCharsets.UTF_8),
-                spotifyRedirectUri, "Basic " +
-                Base64.encodeBase64String((spotifyClientId + ":" + spotifyClientSecret).getBytes())
+                spotifyProperties.getRedirectUri(), "Basic " +
+                Base64.encodeBase64String((spotifyProperties.getClientId() +
+                        ":" + spotifyProperties.getClientSecret()).getBytes())
         );
 
         String email = spotifyInfoClient.getEmail("Bearer " + response.getAccessToken())
@@ -158,7 +148,8 @@ public class UserServiceImpl implements UserService {
     public SpotifyAccessTokenResponse getSpotifyAccessToken(String refreshToken) {
 
         String authorization = "Basic " +
-                Base64.encodeBase64String((spotifyClientId + ":" + spotifyClientSecret).getBytes());
+                Base64.encodeBase64String((spotifyProperties.getClientId() +
+                        ":" + spotifyProperties.getClientSecret()).getBytes());
 
         return spotifyAuthClient.getAccessTokenByRefreshToken(authorization, "refresh_token", refreshToken);
     }
