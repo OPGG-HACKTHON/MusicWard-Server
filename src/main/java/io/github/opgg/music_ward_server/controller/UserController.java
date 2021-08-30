@@ -34,15 +34,21 @@ public class UserController {
     }
 
     @PostMapping("/auth/google")
-    public ResponseEntity<CommonResponse<TokenResponse>> getGoogleTokenByCode(@RequestParam("code") String code) {
+    public ResponseEntity<CommonResponse<TokenResponse>> getTokenByGoogleCode(@RequestParam("code") String code) {
         return new ResponseEntity<>(
-                new CommonResponse<>(userService.getGoogleTokenByCode(code)), HttpStatus.OK);
+                new CommonResponse<>(userService.getTokenByGoogleCode(code)), HttpStatus.CREATED);
     }
 
     @PostMapping("/auth/spotify")
-    public ResponseEntity<CommonResponse<TokenResponse>> getSpotifyTokenByCode(@RequestParam("code") String code) {
+    public ResponseEntity<CommonResponse<TokenResponse>> getTokenBySpotifyCodeWithJwt(@RequestParam("code") String code) {
         return new ResponseEntity<>(
-                new CommonResponse<>(userService.getSpotifyTokenByCode(code)), HttpStatus.OK);
+                new CommonResponse<>(userService.getTokenBySpotifyCodeWithJwt(code)), HttpStatus.CREATED);
+    }
+
+    @PutMapping("/auth/spotify")
+    public ResponseEntity<CommonResponse<TokenResponse>> getTokenBySpotifyCode(@RequestParam("code") String code) {
+        return new ResponseEntity<>(
+                new CommonResponse<>(userService.getTokenBySpotifyCode(code)), HttpStatus.OK);
     }
 
     @GetMapping("/me")
