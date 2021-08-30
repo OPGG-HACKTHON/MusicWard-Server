@@ -65,7 +65,7 @@ public class UserController {
 
     @PatchMapping("/nickname")
     public ResponseEntity modifyNickname(@RequestBody @Valid ModifyNicknameRequest request) {
-
+        userService.modifyNickname(request);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
