@@ -12,6 +12,7 @@ import lombok.Getter;
 public class RankingMainResponse {
 
     private int ranking;
+    private Long playlistId;
     private String imageUrl;
     private String title;
     private String subTitle;
@@ -21,6 +22,7 @@ public class RankingMainResponse {
 
     // champion ranking 전용
     public RankingMainResponse(Champion champion, int view, int wardsTotal, int commentsTotal) {
+        this.playlistId = null;
         this.imageUrl = champion.getImageUrl();
         this.title = champion.getName();
         this.subTitle = champion.getStory();
@@ -31,6 +33,7 @@ public class RankingMainResponse {
 
     // playlist ranking 전용
     public RankingMainResponse(Playlist playlist) {
+        this.playlistId = playlist.getId();
         this.imageUrl = playlist.getImage().getUrl();
         this.title = playlist.getTitle();
         this.subTitle = playlist.getDescription();
