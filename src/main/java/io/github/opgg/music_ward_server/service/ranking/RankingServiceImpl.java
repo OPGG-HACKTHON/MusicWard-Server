@@ -1,7 +1,6 @@
 package io.github.opgg.music_ward_server.service.ranking;
 
-import io.github.opgg.music_ward_server.dto.ranking.response.ChampionRankingResponse;
-import io.github.opgg.music_ward_server.dto.ranking.response.PlaylistRankingResponse;
+import io.github.opgg.music_ward_server.dto.ranking.response.RankingMainResponse;
 import io.github.opgg.music_ward_server.entity.champion.ChampionRepository;
 import io.github.opgg.music_ward_server.entity.playlist.Playlist;
 import io.github.opgg.music_ward_server.entity.playlist.PlaylistRepository;
@@ -12,6 +11,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
+
 @Service
 public class RankingServiceImpl implements RankingService {
 
@@ -19,9 +19,9 @@ public class RankingServiceImpl implements RankingService {
     private final PlaylistRepository playlistRepository;
 
     @Override
-    public List<ChampionRankingResponse> getChampionRanking() {
+    public List<RankingMainResponse> getChampionRanking() {
 
-        return championRepository.findAllDistinct()
+        List<RankingMainResponse> rankingMainResponses = championRepository.findAllDistinct()
                 .stream()
                 .map(champion -> {
                     List<Playlist> playlists = champion.getPlaylists();
@@ -35,7 +35,7 @@ public class RankingServiceImpl implements RankingService {
                         commentsTotal += playlist.getComments().size();
                     }
 
-                    return new ChampionRankingResponse(champion, view, wardsTotal, commentsTotal);
+                    return new RankingMainResponse(champion, view, wardsTotal, commentsTotal);
                 })
                 .sorted(((o1, o2) -> {
 
@@ -50,14 +50,22 @@ public class RankingServiceImpl implements RankingService {
                 }))
                 .limit(10)
                 .collect(Collectors.toList());
+
+        int ranking = 1;
+        for (RankingMainResponse rankingMainResponse : rankingMainResponses) {
+            rankingMainResponse.setRanking(ranking);
+            ranking++;
+        }
+
+        return rank(rankingMainResponses);
     }
 
     @Override
-    public List<PlaylistRankingResponse> getPlaylistRanking() {
+    public List<RankingMainResponse> getPlaylistRanking() {
 
-        return playlistRepository.findAllOrderByCreatedDate()
+        List<RankingMainResponse> rankingMainResponses = playlistRepository.findAllOrderByCreatedDate()
                 .stream()
-                .map(playlist -> new PlaylistRankingResponse(playlist))
+                .map(playlist -> new RankingMainResponse(playlist))
                 .sorted((o1, o2) -> {
 
                     int total1 = o1.getView() + o1.getWardsTotal() + o1.getCommentsTotal();
@@ -71,5 +79,18 @@ public class RankingServiceImpl implements RankingService {
                 })
                 .limit(10)
                 .collect(Collectors.toList());
+
+        return rank(rankingMainResponses);
+    }
+
+    private List<RankingMainResponse> rank(List<RankingMainResponse> rankingMainResponses) {
+
+        int ranking = 1;
+        for (RankingMainResponse rankingMainResponse : rankingMainResponses) {
+            rankingMainResponse.setRanking(ranking);
+            ranking++;
+        }
+
+        return rankingMainResponses;
     }
 }
