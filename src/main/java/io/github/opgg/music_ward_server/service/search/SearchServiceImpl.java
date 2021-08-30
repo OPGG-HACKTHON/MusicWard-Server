@@ -15,7 +15,7 @@ import java.util.*;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 @Service
-public class SearchServicempl implements SearchService {
+public class SearchServiceImpl implements SearchService {
 
     private final RiotSummonerClient riotSummonerClient;
     private final RiotMatchClient riotMatchClient;
