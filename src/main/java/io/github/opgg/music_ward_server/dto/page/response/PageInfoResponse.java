@@ -15,7 +15,7 @@ public class PageInfoResponse {
     private Long totalElements;
 
     public PageInfoResponse(Page page) {
-        this.pageNumber = page.getNumber();
+        this.pageNumber = page.getNumber() + 1;
         this.pageSize = page.getSize();
         this.totalPages = page.getTotalPages();
         this.totalElements = page.getTotalElements();
