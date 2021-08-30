@@ -11,9 +11,10 @@ import io.github.opgg.music_ward_server.utils.api.dto.spotify.SpotifyAccessToken
 public interface UserService {
     LinkResponse getGoogleLink();
     LinkResponse getSpotifyLink();
-    TokenResponse getGoogleTokenByCode(String code);
+    TokenResponse getTokenByGoogleCode(String code);
     GoogleAccessTokenResponse getGoogleAccessToken(String refreshToken);
-    TokenResponse getSpotifyTokenByCode(String code);
+    TokenResponse getTokenBySpotifyCodeWithJwt(String code);
+    TokenResponse getTokenBySpotifyCode(String code);
     SpotifyAccessTokenResponse getSpotifyAccessToken(String refreshToken);
     UserInfoResponse getUserInfo();
     TokenResponse refreshToken(RefreshTokenRequest request);
