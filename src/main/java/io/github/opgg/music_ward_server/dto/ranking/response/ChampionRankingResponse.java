@@ -1,7 +1,8 @@
-package io.github.opgg.music_ward_server.dto.champion.response;
+package io.github.opgg.music_ward_server.dto.ranking.response;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import io.github.opgg.music_ward_server.dto.champion.response.ChampionMainResponse;
 import io.github.opgg.music_ward_server.entity.champion.Champion;
 import lombok.Getter;
 
