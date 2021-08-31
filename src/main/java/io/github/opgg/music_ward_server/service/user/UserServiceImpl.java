@@ -35,8 +35,10 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Optional;
+import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
@@ -45,6 +47,7 @@ public class UserServiceImpl implements UserService {
     private static final String GOOGLE_LOGIN_LINK = "https://accounts.google.com/o/oauth2/v2/auth";
     private static final Long GOOGLE_REFRESH_EXP = 604800L;
     private static final String SPOTIFY_LOGIN_LINK = "https://accounts.spotify.com/authorize";
+    private static final Random random = new Random();
 
     private final GoogleProperties googleProperties;
     private final SpotifyProperties spotifyProperties;
@@ -101,6 +104,7 @@ public class UserServiceImpl implements UserService {
                                 .googleEmail(userInfo.getEmail())
                                 .name(userInfo.getName())
                                 .role(Role.ROLE_USER)
+                                .nickname(getNickname())
                                 .build()
                 );
             }
@@ -256,6 +260,14 @@ public class UserServiceImpl implements UserService {
     private User getUser(Long userId) {
         return userRepository.findById(userId)
                 .orElseThrow(UserNotFoundException::new);
+    }
+
+    private String getNickname() {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i < 7; i++) {
+            stringBuilder.append(random.nextInt(10));
+        }
+        return "가렌-" + stringBuilder.toString();
     }
 
 }
