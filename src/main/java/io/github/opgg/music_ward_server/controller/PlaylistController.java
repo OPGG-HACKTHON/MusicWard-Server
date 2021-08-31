@@ -47,7 +47,7 @@ public class PlaylistController {
                     championName, pageMainRequestDto.toPageRequest()
             );
 
-            return new ResponseEntity<>(new PageResponse(page.getContent(),new PageInfoResponse(page)), HttpStatus.OK);
+            return new ResponseEntity<>(new PageResponse(page.getContent(), new PageInfoResponse(page)), HttpStatus.OK);
         }
 
         return new ResponseEntity<>(new CommonResponse(playlistService.findAll()), HttpStatus.OK);
