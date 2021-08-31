@@ -16,7 +16,6 @@ class UserTest {
         String googleEmail = "test@gmail.com";
         String spotifyEmail = "test@gmail.com";
         String name = "test";
-        String provider = "test";
         String nickname = "hideonbush";
 
         //when
@@ -25,7 +24,6 @@ class UserTest {
                 .googleEmail(googleEmail)
                 .spotifyEmail(spotifyEmail)
                 .name(name)
-                .provider(provider)
                 .nickname(nickname)
                 .withdrawal(false)
                 .build();
@@ -36,7 +34,6 @@ class UserTest {
                 () -> Assertions.assertEquals(googleEmail, user.getGoogleEmail()),
                 () -> Assertions.assertEquals(spotifyEmail, user.getSpotifyEmail()),
                 () -> Assertions.assertEquals(name, user.getName()),
-                () -> Assertions.assertEquals(provider, user.getProvider()),
                 () -> Assertions.assertEquals(nickname, user.getNickname())
         );
     }
