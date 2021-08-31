@@ -10,7 +10,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -32,14 +36,16 @@ public class SearchServiceImpl implements SearchService {
         return searchSummonerResponse;
     }
 
+    private SearchSummonerResponse getSearchSummonerResponse(
+            List<String> matchList, String summonerName, String userPuuid) {
 
-    private SearchSummonerResponse getSearchSummonerResponse(List<String> matchList, String summonerName, String userPuuid) {
         List<Boolean> winAry = new ArrayList<>();
         List<String> championNameList = new ArrayList<>();
         for (String match : matchList) {
             RiotMatchDetailResponse riotMatchDetailResponse = riotMatchClient.getMatchDetail(riotAPIKey, match);
             List<String> participants = riotMatchDetailResponse.getMetadata().getParticipants();
-            List<RiotMatchDetailResponse.Participants> matchParticipantsList = riotMatchDetailResponse.getInfo().getParticipants();
+            List<RiotMatchDetailResponse.Participants> matchParticipantsList =
+                    riotMatchDetailResponse.getInfo().getParticipants();
             Integer index = participants.indexOf(userPuuid);
             winAry.add(matchParticipantsList.get(index).isWin());
             championNameList.add(matchParticipantsList.get(index).getChampionName());
@@ -62,7 +68,6 @@ public class SearchServiceImpl implements SearchService {
         return null;
     }
 
-
     private String getWinningStreak(List<Boolean> winAry) {
         Integer winCount = 0;
         Boolean isWin = true;
@@ -84,12 +89,12 @@ public class SearchServiceImpl implements SearchService {
                 winCount += 1;
             }
         }
-        winType = String.valueOf(winCount) + winType;
+        winType = winCount + winType;
         return winType;
     }
 
     private Map<String, Integer> getChampionMap(List<String> championNameList) {
-        Map<String, Integer> championMap = new HashMap<String, Integer>();
+        Map<String, Integer> championMap = new HashMap<>();
         for (String str : championNameList) {
             Integer championCount = championMap.get(str);
             if (championCount == null) {
@@ -100,5 +105,4 @@ public class SearchServiceImpl implements SearchService {
         }
         return championMap;
     }
-
 }
