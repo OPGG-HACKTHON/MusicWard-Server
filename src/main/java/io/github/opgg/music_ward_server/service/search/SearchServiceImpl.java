@@ -56,20 +56,14 @@ public class SearchServiceImpl implements SearchService {
     public Page<PlaylistMainResponse> findByChampionName(String championName, Pageable pageable) {
 
         Page<Playlist> playlists = playlistRepository.findByChampionNameContaining(championName, pageable);
-        Page<PlaylistMainResponse> playlistMainResponses = playlists.map(playlist -> {
-            List<Tag> findTags = tagRepository.findByPlaylistId(playlist.getId());
-            List<String> tags = findTags.stream()
-                    .map(tag -> tag.getTitle())
-                    .collect(Collectors.toList());
+        return toPlaylistMainResponses(playlists);
+    }
 
-            Integer wardTotal = wardRepository.countByPlaylistId(playlist.getId());
-            Integer commentTotal = commentRepository.countByPlaylistId(playlist.getId());
-            Integer trackTotal = trackRepository.countByPlaylistId(playlist.getId());
+    @Override
+    public Page<PlaylistMainResponse> findByPlaylistTitle(String title, Pageable pageable) {
 
-            return new PlaylistMainResponse(playlist, tags, wardTotal, commentTotal, trackTotal);
-        });
-
-        return playlistMainResponses;
+        Page<Playlist> playlists = playlistRepository.findByTitleContaining(title, pageable);
+        return toPlaylistMainResponses(playlists);
     }
 
     private SearchSummonerResponse getSearchSummonerResponse(
@@ -140,5 +134,21 @@ public class SearchServiceImpl implements SearchService {
             }
         }
         return championMap;
+    }
+
+    private Page<PlaylistMainResponse> toPlaylistMainResponses(Page<Playlist> playlists) {
+
+        return playlists.map(playlist -> {
+            List<Tag> findTags = tagRepository.findByPlaylistId(playlist.getId());
+            List<String> tags = findTags.stream()
+                    .map(tag -> tag.getTitle())
+                    .collect(Collectors.toList());
+
+            Integer wardTotal = wardRepository.countByPlaylistId(playlist.getId());
+            Integer commentTotal = commentRepository.countByPlaylistId(playlist.getId());
+            Integer trackTotal = trackRepository.countByPlaylistId(playlist.getId());
+
+            return new PlaylistMainResponse(playlist, tags, wardTotal, commentTotal, trackTotal);
+        });
     }
 }
