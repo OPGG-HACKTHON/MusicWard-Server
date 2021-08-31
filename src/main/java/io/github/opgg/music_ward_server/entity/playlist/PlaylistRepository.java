@@ -27,4 +27,10 @@ public interface PlaylistRepository extends JpaRepository<Playlist, Long> {
             "join p.champion c " +
             "where c.name like %:championName% ")
     Page<Playlist> findByChampionNameContaining(@Param("championName") String championName, Pageable pageable);
+
+    @Query("select p " +
+            "from tbl_playlist p " +
+            "join p.champion c " +
+            "where p.title like %:title% ")
+    Page<Playlist> findByTitleContaining(@Param("title") String title, Pageable pageable);
 }
