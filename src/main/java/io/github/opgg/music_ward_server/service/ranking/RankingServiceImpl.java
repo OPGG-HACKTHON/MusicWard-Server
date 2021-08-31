@@ -5,6 +5,7 @@ import io.github.opgg.music_ward_server.entity.champion.ChampionRepository;
 import io.github.opgg.music_ward_server.entity.playlist.Playlist;
 import io.github.opgg.music_ward_server.entity.playlist.PlaylistRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,6 +20,7 @@ public class RankingServiceImpl implements RankingService {
     private final PlaylistRepository playlistRepository;
 
     @Override
+    @Cacheable(value = "championRanking")
     public List<RankingMainResponse> getChampionRanking() {
 
         List<RankingMainResponse> rankingMainResponses = championRepository.findAllDistinct()
@@ -61,6 +63,7 @@ public class RankingServiceImpl implements RankingService {
     }
 
     @Override
+    @Cacheable(value = "playlistRanking")
     public List<RankingMainResponse> getPlaylistRanking() {
 
         List<RankingMainResponse> rankingMainResponses = playlistRepository.findAllOrderByCreatedDate()
