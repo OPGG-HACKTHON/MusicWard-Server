@@ -26,10 +26,10 @@ public class User extends BaseEntity implements UserDetails {
     @Column(name = "user_id")
     private Long id;
 
-    @Column(length = 60)
+    @Column(length = 60, unique = true)
     private String googleEmail;
 
-    @Column(length = 60)
+    @Column(length = 60, unique = true)
     private String spotifyEmail;
 
     @Column(length = 10)
@@ -38,9 +38,6 @@ public class User extends BaseEntity implements UserDetails {
     @Enumerated(EnumType.STRING)
     @Column(length = 10)
     private Role role;
-
-    @Column(length = 10)
-    private String provider;
 
     @Column(length = 10)
     private String nickname;
@@ -56,12 +53,11 @@ public class User extends BaseEntity implements UserDetails {
 
     @Builder
     public User(String googleEmail, String spotifyEmail, String name, Role role,
-                String provider, String nickname, boolean withdrawal) {
+                String nickname, boolean withdrawal) {
         this.googleEmail = googleEmail;
         this.spotifyEmail = spotifyEmail;
         this.name = name;
         this.role = role;
-        this.provider = provider;
         this.nickname = nickname;
         this.withdrawal = withdrawal;
     }
