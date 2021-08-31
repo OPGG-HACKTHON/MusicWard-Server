@@ -6,8 +6,10 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import io.github.opgg.music_ward_server.entity.champion.Champion;
 import io.github.opgg.music_ward_server.entity.playlist.Playlist;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class RankingMainResponse {
 
