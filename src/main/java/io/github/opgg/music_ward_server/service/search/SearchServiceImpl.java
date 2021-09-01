@@ -55,7 +55,7 @@ public class SearchServiceImpl implements SearchService {
     @Override
     public Page<PlaylistMainResponse> findByChampionName(String championName, Pageable pageable) {
 
-        Page<Playlist> playlists = playlistRepository.findByChampionNameContaining(championName, pageable);
+        Page<Playlist> playlists = playlistRepository.findByChampionName(championName, championName, pageable);
         return toPlaylistMainResponses(playlists);
     }
 
@@ -63,6 +63,14 @@ public class SearchServiceImpl implements SearchService {
     public Page<PlaylistMainResponse> findByPlaylistTitle(String title, Pageable pageable) {
 
         Page<Playlist> playlists = playlistRepository.findByTitleContaining(title, pageable);
+        return toPlaylistMainResponses(playlists);
+    }
+
+    @Override
+    public Page<PlaylistMainResponse> findByTagTitle(String title, Pageable pageable) {
+
+        Page<Tag> tags = tagRepository.findByTitle(title, pageable);
+        Page<Playlist> playlists = tags.map(tag -> tag.getPlaylist());
         return toPlaylistMainResponses(playlists);
     }
 
