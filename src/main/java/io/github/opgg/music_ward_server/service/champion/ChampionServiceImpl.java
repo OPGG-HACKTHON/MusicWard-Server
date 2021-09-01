@@ -7,6 +7,7 @@ import io.github.opgg.music_ward_server.entity.champion.Champion;
 import io.github.opgg.music_ward_server.entity.champion.ChampionRepository;
 import io.github.opgg.music_ward_server.exception.ChampionNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,9 +20,9 @@ public class ChampionServiceImpl implements ChampionService {
     private final ChampionRepository championRepository;
 
     @Override
-    public ChampionListResponse getChampionList() {
+    public ChampionListResponse getChampionList(Sort sort) {
 
-        List<ChampionListDTO> championListDTO = championRepository.findAll()
+        List<ChampionListDTO> championListDTO = championRepository.findAll(sort)
                 .stream()
                 .map(ChampionListDTO::new)
                 .collect(Collectors.toList());

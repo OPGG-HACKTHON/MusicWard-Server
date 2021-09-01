@@ -3,6 +3,8 @@ package io.github.opgg.music_ward_server.controller;
 import io.github.opgg.music_ward_server.controller.response.CommonResponse;
 import io.github.opgg.music_ward_server.service.champion.ChampionService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.SortDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,9 +17,9 @@ public class ChampionController {
     private final ChampionService championService;
 
     @GetMapping("/championlist")
-    public ResponseEntity<CommonResponse> getChampoinList() {
+    public ResponseEntity<CommonResponse> getChampoinList(@SortDefault(sort = "name",direction = Sort.Direction.ASC) Sort sort){
 
-        return new ResponseEntity<>(new CommonResponse(championService.getChampionList()), HttpStatus.OK);
+        return new ResponseEntity<>(new CommonResponse(championService.getChampionList(sort)), HttpStatus.OK);
     }
 
     @GetMapping("/champion/{championId}")
