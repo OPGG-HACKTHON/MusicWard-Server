@@ -10,4 +10,5 @@ public interface SearchService {
 
     SearchSummonerResponse getRiotSummonerInfo(String summonerName);
     Page<PlaylistMainResponse> findByChampionName(String championName, Pageable pageable);
+    Page<PlaylistMainResponse> findByPlaylistTitle(String title, Pageable pageable);
 }

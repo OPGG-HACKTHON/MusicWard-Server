@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 public class SearchController {
 
     public static final String CHAMPION = "champion";
+    public static final String PLAYLIST = "playlist";
 
     private final SearchService searchService;
 
@@ -36,6 +37,10 @@ public class SearchController {
         if (searchType.equals(CHAMPION)) {
             Page<PlaylistMainResponse> page =
                     searchService.findByChampionName(query, pageMainRequestDto.toPageRequest());
+            return new ResponseEntity<>(new PageResponse(page.getContent(), new PageInfoResponse(page)), HttpStatus.OK);
+        } else if (searchType.equals(PLAYLIST)) {
+            Page<PlaylistMainResponse> page =
+                    searchService.findByPlaylistTitle(query, pageMainRequestDto.toPageRequest());
             return new ResponseEntity<>(new PageResponse(page.getContent(), new PageInfoResponse(page)), HttpStatus.OK);
         } else {
             throw new UnsupportedSearchTypeException();
