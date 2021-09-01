@@ -12,7 +12,7 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addMapping("/**")
                 .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
                 .allowedOrigins("http://localhost:3000", "https://music-ward.com", 
-                                "http://music-ward.s3-website.ap-northeast-2.amazonaws.com");
+                                "https://d2rwkba8myg6w5.cloudfront.net");
     }
 
 }
