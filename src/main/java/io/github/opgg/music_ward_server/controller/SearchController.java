@@ -9,17 +9,24 @@ import io.github.opgg.music_ward_server.exception.UnsupportedSearchTypeException
 import io.github.opgg.music_ward_server.service.search.SearchService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RequestMapping("/search")
 @RestController
 public class SearchController {
 
+    // search type
     public static final String CHAMPION = "champion";
     public static final String PLAYLIST = "playlist";
+    public static final String TAG = "tag";
 
     private final SearchService searchService;
 
@@ -34,16 +41,19 @@ public class SearchController {
     public ResponseEntity<? extends CommonResponse> getPlaylist(
             @PathVariable String searchType, @RequestParam String query, PageMainRequest pageMainRequestDto) {
 
+        PageRequest pageRequest = pageMainRequestDto.toPageRequest();
+
+        Page<PlaylistMainResponse> page;
         if (searchType.equals(CHAMPION)) {
-            Page<PlaylistMainResponse> page =
-                    searchService.findByChampionName(query, pageMainRequestDto.toPageRequest());
-            return new ResponseEntity<>(new PageResponse(page.getContent(), new PageInfoResponse(page)), HttpStatus.OK);
+            page = searchService.findByChampionName(query, pageRequest);
         } else if (searchType.equals(PLAYLIST)) {
-            Page<PlaylistMainResponse> page =
-                    searchService.findByPlaylistTitle(query, pageMainRequestDto.toPageRequest());
-            return new ResponseEntity<>(new PageResponse(page.getContent(), new PageInfoResponse(page)), HttpStatus.OK);
+            page = searchService.findByPlaylistTitle(query, pageRequest);
+        } else if (searchType.equals(TAG)) {
+            page = searchService.findByTagTitle(query, pageRequest);
         } else {
             throw new UnsupportedSearchTypeException();
         }
+
+        return new ResponseEntity<>(new PageResponse(page.getContent(), new PageInfoResponse(page)), HttpStatus.OK);
     }
 }
