@@ -7,7 +7,7 @@ import org.springframework.data.domain.Sort;
 @Getter
 public class PageMainRequest {
 
-    private static final int DEFAULT_SIZE = 10;
+    private static final int DEFAULT_SIZE = 5;
     private static final int MAX_SIZE = 50;
 
     private int page;
@@ -23,5 +23,9 @@ public class PageMainRequest {
 
     public PageRequest toPageRequest() {
         return PageRequest.of(page - 1, size, Sort.Direction.DESC, "lastModifiedDate");
+    }
+
+    public PageRequest toPageRequest(Sort.Direction direction, String... properties) {
+        return PageRequest.of(page - 1, size, direction, properties);
     }
 }
