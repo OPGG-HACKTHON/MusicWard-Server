@@ -16,6 +16,7 @@ public enum ErrorCode {
     UNSUPPORTED_PROVIDER(400, "Unsupported provider."),
     UNSUPPORTED_RANKING_TYPE(400, "Unsupported ranking type."),
     UNSUPPORTED_SEARCH_TYPE(400, "Unsupported search type."),
+    UNSUPPORTED_SORT_TYPE(400, "Unsupported sort type."),
     ALREADY_WARDED_PLAYLIST(400, "Already warded playlist."),
     INVALID_TOKEN(401, "Invalid token."),
     EXPIRED_ACCESS_TOKEN(401, "Expired access token."),
