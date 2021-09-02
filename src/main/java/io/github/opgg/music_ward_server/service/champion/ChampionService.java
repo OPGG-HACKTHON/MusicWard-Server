@@ -5,6 +5,8 @@ import io.github.opgg.music_ward_server.dto.champion.response.ChampionListRespon
 import org.springframework.data.domain.Sort;
 
 public interface ChampionService {
-    ChampionListResponse getChampionList(Sort sort);
+
+    ChampionListResponse getChampionList(String positions, String name, Sort sort);
     ChampionDetailDTO getChampionDetail(Long championId);
+
 }

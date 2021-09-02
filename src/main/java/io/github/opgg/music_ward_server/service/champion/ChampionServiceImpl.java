@@ -20,14 +20,32 @@ public class ChampionServiceImpl implements ChampionService {
     private final ChampionRepository championRepository;
 
     @Override
-    public ChampionListResponse getChampionList(Sort sort) {
-
-        List<ChampionListDTO> championListDTO = championRepository.findAll(sort)
-                .stream()
-                .map(ChampionListDTO::new)
-                .collect(Collectors.toList());
+    public ChampionListResponse getChampionList(String positions, String championName, Sort sort) {
+        List<ChampionListDTO> championListDTO;
+        if (championName != null && positions != null) {
+            championListDTO = championRepository.findByPositionContainingIgnoreCaseAndNameContaining(positions, championName, sort)
+                    .stream()
+                    .map(ChampionListDTO::new)
+                    .collect(Collectors.toList());
+        } else if (championName != null && positions == null) {
+            championListDTO = championRepository.findByNameContaining(championName, sort)
+                    .stream()
+                    .map(ChampionListDTO::new)
+                    .collect(Collectors.toList());
+        } else if (championName == null && positions != null) {
+            championListDTO = championRepository.findByPositionContainingIgnoreCase(positions, sort)
+                    .stream()
+                    .map(ChampionListDTO::new)
+                    .collect(Collectors.toList());
+        } else {
+            championListDTO = championRepository.findAll(sort)
+                    .stream()
+                    .map(ChampionListDTO::new)
+                    .collect(Collectors.toList());
+        }
+        if (championListDTO.isEmpty())
+            throw new ChampionNotFoundException();
         return new ChampionListResponse(championListDTO);
-
     }
 
     @Override
@@ -36,4 +54,6 @@ public class ChampionServiceImpl implements ChampionService {
         return new ChampionDetailDTO(champion);
 
     }
+
+
 }
