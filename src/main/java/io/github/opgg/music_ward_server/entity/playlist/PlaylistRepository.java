@@ -2,6 +2,7 @@ package io.github.opgg.music_ward_server.entity.playlist;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -22,17 +23,25 @@ public interface PlaylistRepository extends JpaRepository<Playlist, Long> {
             "order by p.createdDate DESC ")
     List<Playlist> findAllOrderByCreatedDate();
 
+    @EntityGraph(attributePaths = {"champion"})
     @Query("select p " +
             "from tbl_playlist p " +
             "join p.champion c " +
             "where c.name like %:championName% or c.englishName like %:englishName% ")
     Page<Playlist> findByChampionName(@Param("championName") String championName,
-                                                @Param("englishName") String englishName,
-                                                Pageable pageable);
+                                      @Param("englishName") String englishName, Pageable pageable);
 
+    @EntityGraph(attributePaths = {"champion"})
     @Query("select p " +
             "from tbl_playlist p " +
             "join p.champion c " +
             "where p.title like %:title% ")
     Page<Playlist> findByTitleContaining(@Param("title") String title, Pageable pageable);
+
+    @EntityGraph(attributePaths = {"champion"})
+    @Query("select distinct p " +
+            "from tbl_playlist p " +
+            "join p.tags t " +
+            "where t.title like %:title% ")
+    Page<Playlist> findByTagTitle(@Param("title") String title, Pageable pageable);
 }
