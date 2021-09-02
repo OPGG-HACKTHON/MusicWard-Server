@@ -35,5 +35,6 @@ public class Tag extends BaseEntity {
     public Tag(String title, Playlist playlist) {
         this.title = title;
         this.playlist = playlist;
+        this.playlist.getTags().add(this);
     }
 }

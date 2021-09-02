@@ -3,6 +3,8 @@ package io.github.opgg.music_ward_server.entity.playlist;
 import io.github.opgg.music_ward_server.entity.BaseEntity;
 import io.github.opgg.music_ward_server.entity.champion.Champion;
 import io.github.opgg.music_ward_server.entity.comment.Comment;
+import io.github.opgg.music_ward_server.entity.tag.Tag;
+import io.github.opgg.music_ward_server.entity.track.Track;
 import io.github.opgg.music_ward_server.entity.user.User;
 import io.github.opgg.music_ward_server.entity.ward.Ward;
 import lombok.AccessLevel;
@@ -62,6 +64,9 @@ public class Playlist extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "champion_id")
     private Champion champion;
+
+    @OneToMany(mappedBy = "playlist")
+    List<Tag> tags = new ArrayList<>();
 
     @OneToMany(mappedBy = "playlist")
     List<Comment> comments = new ArrayList<>();
