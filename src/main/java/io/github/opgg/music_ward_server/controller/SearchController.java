@@ -10,6 +10,8 @@ import io.github.opgg.music_ward_server.service.search.SearchService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,9 +34,10 @@ public class SearchController {
 
     @GetMapping("/summoner")
     public ResponseEntity<CommonResponse> getSearchSummonerResponse(
-            @RequestParam(value = "summoner_name") String summonerName) {
+            @RequestParam(value = "summoner_name") String summonerName, @PageableDefault(page = 0, size = 15) Pageable pageable) {
 
-        return new ResponseEntity<>(new CommonResponse(searchService.getRiotSummonerInfo(summonerName)), HttpStatus.OK);
+        return new ResponseEntity<>(new CommonResponse(searchService.getRiotSummonerInfo(summonerName, pageable)),
+                HttpStatus.OK);
     }
 
     @GetMapping("{searchType}")

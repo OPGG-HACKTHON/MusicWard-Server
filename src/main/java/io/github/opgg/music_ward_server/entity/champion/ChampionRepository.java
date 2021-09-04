@@ -12,6 +12,7 @@ import java.util.Optional;
 public interface ChampionRepository extends JpaRepository<Champion, Long> {
 
     Optional<Champion> findByName(String name);
+    Optional<Champion> findByEnglishName(String name);
     List<Champion> findByNameContaining(String name, Sort sort);
     List<Champion> findByPositionContainingIgnoreCase(String positions, Sort sort);
     List<Champion> findByPositionContainingIgnoreCaseAndNameContaining(String positions,String name, Sort sort);

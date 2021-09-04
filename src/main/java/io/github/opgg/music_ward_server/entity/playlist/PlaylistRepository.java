@@ -15,8 +15,15 @@ import java.util.Optional;
 public interface PlaylistRepository extends JpaRepository<Playlist, Long> {
 
     List<Playlist> findByUserId(Long userId);
+
     Page<Playlist> findByChampionName(String championName, Pageable pageable);
+
     Optional<Playlist> findByIdAndUserId(Long playlistId, Long userId);
+
+    @Query("select p " +
+            "from tbl_playlist p " +
+            "order by RAND() ")
+    Page<Playlist> findRandomAll(Pageable pageable);
 
     @Query("select p " +
             "from tbl_playlist p " +
@@ -44,4 +51,13 @@ public interface PlaylistRepository extends JpaRepository<Playlist, Long> {
             "join p.tags t " +
             "where t.title like %:title% ")
     Page<Playlist> findByTagTitle(@Param("title") String title, Pageable pageable);
+
+    @EntityGraph(attributePaths = {"champion"})
+    @Query("select p " +
+            "from tbl_playlist p " +
+            "join p.champion c " +
+            "where c.name like %:championName% or c.englishName like %:englishName% " +
+            "order by RAND() ")
+    Page<Playlist> findByRandomChampionName(@Param("championName") String championName,
+                                      @Param("englishName") String englishName, Pageable pageable);
 }
