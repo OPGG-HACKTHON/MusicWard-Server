@@ -5,6 +5,8 @@ import io.github.opgg.music_ward_server.controller.response.PageResponse;
 import io.github.opgg.music_ward_server.dto.page.request.PageMainRequest;
 import io.github.opgg.music_ward_server.dto.page.response.PageInfoResponse;
 import io.github.opgg.music_ward_server.dto.playlist.response.PlaylistMainResponse;
+import io.github.opgg.music_ward_server.entity.playlist.Provider;
+import io.github.opgg.music_ward_server.exception.UnsupportedProviderException;
 import io.github.opgg.music_ward_server.exception.UnsupportedSearchTypeException;
 import io.github.opgg.music_ward_server.service.search.SearchService;
 import lombok.RequiredArgsConstructor;
@@ -39,17 +41,23 @@ public class SearchController {
 
     @GetMapping("{searchType}")
     public ResponseEntity<? extends CommonResponse> getPlaylist(
-            @PathVariable String searchType, @RequestParam String query, PageMainRequest pageMainRequestDto) {
+            @PathVariable String searchType, @RequestParam String query, @RequestParam String provider,
+            PageMainRequest pageMainRequestDto) {
 
         PageRequest pageRequest = pageMainRequestDto.toPageRequest();
 
+        if (Provider.toProvider(provider) != Provider.YOUTUBE
+                && Provider.toProvider(provider) != Provider.SPOTIFY) {
+            throw new UnsupportedProviderException();
+        }
+
         Page<PlaylistMainResponse> page;
         if (searchType.equals(CHAMPION)) {
-            page = searchService.findByChampionName(query, pageRequest);
+            page = searchService.findByChampionName(query, Provider.toProvider(provider), pageRequest);
         } else if (searchType.equals(PLAYLIST)) {
-            page = searchService.findByPlaylistTitle(query, pageRequest);
+            page = searchService.findByPlaylistTitle(query, Provider.toProvider(provider), pageRequest);
         } else if (searchType.equals(TAG)) {
-            page = searchService.findByTagTitle(query, pageRequest);
+            page = searchService.findByTagTitle(query, Provider.toProvider(provider), pageRequest);
         } else {
             throw new UnsupportedSearchTypeException();
         }
