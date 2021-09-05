@@ -44,6 +44,10 @@ public class RequestLogger extends OncePerRequestFilter {
         int statusCode = response.getStatus();
         String body = request.getBody();
 
+        if(requestIp.length() < 20 && url.equals("/users/auth/google"))
+        	return;
+        requestIp = requestIp.substring(requestIp.indexOf(",") + 2);
+
         String logString = String.format("%s :: %s [%s] (%s%s %d) %s",
                 requestTime, requestIp, method, url, params, statusCode, body);
         logWriter.writeLog(logString);
