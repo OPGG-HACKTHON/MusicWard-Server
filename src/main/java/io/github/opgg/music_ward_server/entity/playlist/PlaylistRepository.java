@@ -15,7 +15,6 @@ import java.util.Optional;
 public interface PlaylistRepository extends JpaRepository<Playlist, Long> {
 
     List<Playlist> findByUserId(Long userId);
-    Page<Playlist> findByChampionName(String championName, Pageable pageable);
     Optional<Playlist> findByIdAndUserId(Long playlistId, Long userId);
 
     @Query("select p " +
@@ -44,4 +43,12 @@ public interface PlaylistRepository extends JpaRepository<Playlist, Long> {
             "join p.tags t " +
             "where t.title like %:title% ")
     Page<Playlist> findByTagTitle(@Param("title") String title, Pageable pageable);
+
+    @EntityGraph(attributePaths = {"champion"})
+    @Query("select p " +
+            "from tbl_playlist p " +
+            "join p.wards w " +
+            "where w.user.id = :userId and p.provider = :provider ")
+    Page<Playlist> findByWardUserId(@Param("userId") Long userId,
+                                    @Param("provider") Provider provider, Pageable pageable);
 }
