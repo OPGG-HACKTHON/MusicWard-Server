@@ -165,48 +165,6 @@ public class PlaylistServiceImpl implements PlaylistService {
     }
 
     @Override
-    public List<PlaylistMainResponse> findAll() {
-
-        List<Playlist> playlists = playlistRepository.findAll();
-        List<PlaylistMainResponse> playlistMainResponses = playlists.stream()
-                .map(playlist -> {
-                    List<Tag> findTags = tagRepository.findByPlaylistId(playlist.getId());
-                    List<String> tags = findTags.stream()
-                            .map(tag -> tag.getTitle())
-                            .collect(Collectors.toList());
-
-                    Integer wardTotal = wardRepository.countByPlaylistId(playlist.getId());
-                    Integer commentTotal = commentRepository.countByPlaylistId(playlist.getId());
-                    Integer trackTotal = trackRepository.countByPlaylistId(playlist.getId());
-
-                    return new PlaylistMainResponse(playlist, tags, wardTotal, commentTotal, trackTotal);
-                })
-                .collect(Collectors.toList());
-
-        return playlistMainResponses;
-    }
-
-    @Override
-    public Page<PlaylistMainResponse> findByChampionName(String championName, Pageable pageable) {
-
-        Page<Playlist> playlists = playlistRepository.findByChampionName(championName, pageable);
-        Page<PlaylistMainResponse> playlistMainResponses = playlists.map(playlist -> {
-            List<Tag> findTags = tagRepository.findByPlaylistId(playlist.getId());
-            List<String> tags = findTags.stream()
-                    .map(tag -> tag.getTitle())
-                    .collect(Collectors.toList());
-
-            Integer wardTotal = wardRepository.countByPlaylistId(playlist.getId());
-            Integer commentTotal = commentRepository.countByPlaylistId(playlist.getId());
-            Integer trackTotal = trackRepository.countByPlaylistId(playlist.getId());
-
-            return new PlaylistMainResponse(playlist, tags, wardTotal, commentTotal, trackTotal);
-        });
-
-        return playlistMainResponses;
-    }
-
-    @Override
     public PlaylistMainResponse findById(Long playlistId) {
 
         Playlist playlist = getPlaylist(playlistId);
@@ -316,22 +274,8 @@ public class PlaylistServiceImpl implements PlaylistService {
     public List<PlaylistMainResponse> findByUserId(Long userId) {
 
         List<Playlist> playlists = playlistRepository.findByUserId(userId);
-        List<PlaylistMainResponse> playlistMainResponses = playlists.stream()
-                .map(playlist -> {
-                    List<Tag> findTags = tagRepository.findByPlaylistId(playlist.getId());
-                    List<String> tags = findTags.stream()
-                            .map(tag -> tag.getTitle())
-                            .collect(Collectors.toList());
 
-                    Integer wardTotal = wardRepository.countByPlaylistId(playlist.getId());
-                    Integer commentTotal = commentRepository.countByPlaylistId(playlist.getId());
-                    Integer trackTotal = trackRepository.countByPlaylistId(playlist.getId());
-
-                    return new PlaylistMainResponse(playlist, tags, wardTotal, commentTotal, trackTotal);
-                })
-                .collect(Collectors.toList());
-
-        return playlistMainResponses;
+        return toPlaylistMainResponse(playlists);
     }
 
     @Override
@@ -350,6 +294,23 @@ public class PlaylistServiceImpl implements PlaylistService {
         );
     }
 
+    @Override
+    public Page<PlaylistMainResponse> findWardingPlaylist(Pageable pageable, String provider) {
+
+        if (Provider.toProvider(provider) == Provider.YOUTUBE || Provider.toProvider(provider) == Provider.SPOTIFY) {
+            Long userId = SecurityUtil.getCurrentUserId();
+
+            Page<Playlist> playlists = playlistRepository.findByWardUserId(
+                    userId, Provider.toProvider(provider), pageable);
+
+            return toPlaylistMainResponses(playlists);
+
+        } else {
+            throw new UnsupportedProviderException();
+
+        }
+    }
+
     private User getUser(Long id) {
         return userRepository.findById(id).orElseThrow(UserNotFoundException::new);
     }
@@ -364,5 +325,39 @@ public class PlaylistServiceImpl implements PlaylistService {
 
     private Playlist getPlaylistWithUser(Long playlistId, Long userId) {
         return playlistRepository.findByIdAndUserId(playlistId, userId).orElseThrow(PlaylistNotFoundException::new);
+    }
+
+    private List<PlaylistMainResponse> toPlaylistMainResponse(List<Playlist> playlists) {
+
+        return playlists.stream()
+                .map(playlist -> {
+                    List<Tag> findTags = tagRepository.findByPlaylistId(playlist.getId());
+                    List<String> tags = findTags.stream()
+                            .map(tag -> tag.getTitle())
+                            .collect(Collectors.toList());
+
+                    Integer wardTotal = wardRepository.countByPlaylistId(playlist.getId());
+                    Integer commentTotal = commentRepository.countByPlaylistId(playlist.getId());
+                    Integer trackTotal = trackRepository.countByPlaylistId(playlist.getId());
+
+                    return new PlaylistMainResponse(playlist, tags, wardTotal, commentTotal, trackTotal);
+                })
+                .collect(Collectors.toList());
+    }
+
+    private Page<PlaylistMainResponse> toPlaylistMainResponses(Page<Playlist> playlists) {
+
+        return playlists.map(playlist -> {
+            List<String> tags = tagRepository.findByPlaylistId(playlist.getId())
+                    .stream()
+                    .map(tag -> tag.getTitle())
+                    .collect(Collectors.toList());
+
+            int wardTotal = wardRepository.countByPlaylistId(playlist.getId());
+            int commentTotal = commentRepository.countByPlaylistId(playlist.getId());
+            int trackTotal = trackRepository.countByPlaylistId(playlist.getId());
+
+            return new PlaylistMainResponse(playlist, tags, wardTotal, commentTotal, trackTotal);
+        });
     }
 }

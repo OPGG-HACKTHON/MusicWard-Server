@@ -13,8 +13,6 @@ import java.util.List;
 public interface PlaylistService {
     NonPlaylistsResponse getNonPlaylists(String provider);
     PlaylistMainResponse save(PlaylistSaveRequest request);
-    List<PlaylistMainResponse> findAll();
-    Page<PlaylistMainResponse> findByChampionName(String championName, Pageable pageable);
     PlaylistMainResponse findById(Long playlistId);
     void update(Long playlistId, PlaylistUpdateRequest request);
     void synchronize(Long playlistId);
@@ -22,4 +20,5 @@ public interface PlaylistService {
     void addView(Long playlistId);
     List<PlaylistMainResponse> findByUserId(Long userId);
     void report(PlaylistReportRequest request);
+    Page<PlaylistMainResponse> findWardingPlaylist(Pageable pageable, String provider);
 }
