@@ -27,6 +27,9 @@ public class PageMainRequest {
     }
 
     public void setSort(String sort) {
+        if (sort == null) {
+            sort = CREATED_DATE;
+        }
         this.sort = sort;
     }
 

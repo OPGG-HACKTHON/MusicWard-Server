@@ -32,5 +32,6 @@ public class Ward extends BaseEntity {
     public Ward(User user, Playlist playlist) {
         this.user = user;
         this.playlist = playlist;
+        this.playlist.getWards().add(this);
     }
 }

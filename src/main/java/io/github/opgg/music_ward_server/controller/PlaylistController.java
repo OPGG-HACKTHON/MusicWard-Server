@@ -37,22 +37,6 @@ public class PlaylistController {
         return new ResponseEntity<>(new CommonResponse(playlistService.save(requestDto)), HttpStatus.CREATED);
     }
 
-    @GetMapping("playlists")
-    public ResponseEntity<? extends CommonResponse> findAll(
-            @RequestParam(value = "champion_name", required = false) String championName,
-            PageMainRequest pageMainRequestDto) {
-
-        if (championName != null) {
-            Page<PlaylistMainResponse> page = playlistService.findByChampionName(
-                    championName, pageMainRequestDto.toPageRequest()
-            );
-
-            return new ResponseEntity<>(new PageResponse(page.getContent(), new PageInfoResponse(page)), HttpStatus.OK);
-        }
-
-        return new ResponseEntity<>(new CommonResponse(playlistService.findAll()), HttpStatus.OK);
-    }
-
     @GetMapping("playlists/{playlistId}")
     public ResponseEntity<CommonResponse> findById(@PathVariable("playlistId") Long playlistId) {
 
@@ -107,4 +91,13 @@ public class PlaylistController {
         return new ResponseEntity(HttpStatus.CREATED);
     }
 
+    @GetMapping("playlists/wards/me")
+    public ResponseEntity<CommonResponse> findWardingPlaylist(
+            PageMainRequest pageMainRequest,
+            @RequestParam(value = "provider") String provider) {
+
+        Page<PlaylistMainResponse> page = playlistService.findWardingPlaylist(pageMainRequest.toPageRequest(), provider);
+
+        return new ResponseEntity<>(new PageResponse(page.getContent(), new PageInfoResponse(page)), HttpStatus.OK);
+    }
 }
