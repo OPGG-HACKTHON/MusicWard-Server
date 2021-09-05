@@ -26,23 +26,26 @@ public interface PlaylistRepository extends JpaRepository<Playlist, Long> {
     @Query("select p " +
             "from tbl_playlist p " +
             "join p.champion c " +
-            "where c.name like %:championName% or c.englishName like %:englishName% ")
+            "where (c.name like %:championName% or c.englishName like %:englishName%) and p.provider = :provider ")
     Page<Playlist> findByChampionName(@Param("championName") String championName,
-                                      @Param("englishName") String englishName, Pageable pageable);
+                                      @Param("englishName") String englishName,
+                                      @Param("provider") Provider provider, Pageable pageable);
 
     @EntityGraph(attributePaths = {"champion"})
     @Query("select p " +
             "from tbl_playlist p " +
             "join p.champion c " +
-            "where p.title like %:title% ")
-    Page<Playlist> findByTitleContaining(@Param("title") String title, Pageable pageable);
+            "where p.title like %:title% and p.provider = :provider ")
+    Page<Playlist> findByTitleContaining(@Param("title") String title,
+                                         @Param("provider") Provider provider, Pageable pageable);
 
     @EntityGraph(attributePaths = {"champion"})
     @Query("select distinct p " +
             "from tbl_playlist p " +
             "join p.tags t " +
-            "where t.title like %:title% ")
-    Page<Playlist> findByTagTitle(@Param("title") String title, Pageable pageable);
+            "where t.title like %:title% and p.provider = :provider ")
+    Page<Playlist> findByTagTitle(@Param("title") String title,
+                                  @Param("provider") Provider provider, Pageable pageable);
 
     @EntityGraph(attributePaths = {"champion"})
     @Query("select p " +
