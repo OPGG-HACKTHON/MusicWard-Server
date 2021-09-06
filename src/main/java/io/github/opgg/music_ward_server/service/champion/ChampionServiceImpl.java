@@ -43,8 +43,6 @@ public class ChampionServiceImpl implements ChampionService {
                     .map(ChampionListDTO::new)
                     .collect(Collectors.toList());
         }
-        if (championListDTO.isEmpty())
-            throw new ChampionNotFoundException();
         return new ChampionListResponse(championListDTO);
     }
 
