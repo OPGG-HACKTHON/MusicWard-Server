@@ -41,23 +41,17 @@ public class SearchController {
 
     @GetMapping("{searchType}")
     public ResponseEntity<? extends CommonResponse> getPlaylist(
-            @PathVariable String searchType, @RequestParam String query, @RequestParam String provider,
-            PageMainRequest pageMainRequestDto) {
+            @PathVariable String searchType, @RequestParam String query, PageMainRequest pageMainRequestDto) {
 
         PageRequest pageRequest = pageMainRequestDto.toPageRequest();
 
-        if (Provider.toProvider(provider) != Provider.YOUTUBE
-                && Provider.toProvider(provider) != Provider.SPOTIFY) {
-            throw new UnsupportedProviderException();
-        }
-
         Page<PlaylistMainResponse> page;
         if (searchType.equals(CHAMPION)) {
-            page = searchService.findByChampionName(query, Provider.toProvider(provider), pageRequest);
+            page = searchService.findByChampionName(query, pageRequest);
         } else if (searchType.equals(PLAYLIST)) {
-            page = searchService.findByPlaylistTitle(query, Provider.toProvider(provider), pageRequest);
+            page = searchService.findByPlaylistTitle(query, pageRequest);
         } else if (searchType.equals(TAG)) {
-            page = searchService.findByTagTitle(query, Provider.toProvider(provider), pageRequest);
+            page = searchService.findByTagTitle(query, pageRequest);
         } else {
             throw new UnsupportedSearchTypeException();
         }

@@ -96,7 +96,7 @@ public class PlaylistController {
             PageMainRequest pageMainRequest,
             @RequestParam(value = "provider") String provider) {
 
-        Page<PlaylistMainResponse> page = playlistService.findWardingPlaylist(pageMainRequest.toPageRequest(), provider);
+        Page<PlaylistMainResponse> page = playlistService.findWardingPlaylist(pageMainRequest.toPageRequest());
 
         return new ResponseEntity<>(new PageResponse(page.getContent(), new PageInfoResponse(page)), HttpStatus.OK);
     }
