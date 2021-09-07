@@ -21,9 +21,10 @@ public class RankingMainResponse {
     private int view;
     private int wardsTotal;
     private int commentsTotal;
+    private int tracksTotal;
 
     // champion ranking 전용
-    public RankingMainResponse(Champion champion, int view, int wardsTotal, int commentsTotal) {
+    public RankingMainResponse(Champion champion, int view, int wardsTotal, int commentsTotal, int tracksTotal) {
         this.id = champion.getId();
         this.imageUrl = champion.getImageUrl();
         this.title = champion.getName();
@@ -31,17 +32,19 @@ public class RankingMainResponse {
         this.view = view;
         this.wardsTotal = wardsTotal;
         this.commentsTotal = commentsTotal;
+        this.tracksTotal = tracksTotal;
     }
 
     // playlist ranking 전용
-    public RankingMainResponse(Playlist playlist) {
+    public RankingMainResponse(Playlist playlist, int wardsTotal, int commentsTotal, int tracksTotal) {
         this.id = playlist.getId();
         this.imageUrl = playlist.getImage().getUrl();
         this.title = playlist.getTitle();
         this.subTitle = playlist.getDescription();
         this.view = playlist.getView();
-        this.wardsTotal = playlist.getWards().size();
-        this.commentsTotal = playlist.getComments().size();
+        this.wardsTotal = wardsTotal;
+        this.commentsTotal = commentsTotal;
+        this.tracksTotal = tracksTotal;
     }
 
     public void setRanking(int ranking) {
