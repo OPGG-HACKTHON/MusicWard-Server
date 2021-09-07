@@ -27,7 +27,7 @@ public class RankingMainResponse {
         this.id = champion.getId();
         this.imageUrl = champion.getImageUrl();
         this.title = champion.getName();
-        this.subTitle = champion.getStory();
+        this.subTitle = champion.getTitle();
         this.view = view;
         this.wardsTotal = wardsTotal;
         this.commentsTotal = commentsTotal;
