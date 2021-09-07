@@ -4,22 +4,30 @@ import io.github.opgg.music_ward_server.entity.champion.Champion;
 import io.github.opgg.music_ward_server.entity.playlist.Image;
 import io.github.opgg.music_ward_server.entity.playlist.Playlist;
 import io.github.opgg.music_ward_server.entity.playlist.Provider;
+import io.github.opgg.music_ward_server.entity.user.Role;
 import io.github.opgg.music_ward_server.entity.user.User;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 class ReportTest {
 
-    static User generateUser() {
+    static User generateUser(String email) {
         return User.builder()
-                .googleEmail("test@email.com")
+                .googleEmail(email)
+                .spotifyEmail(email)
+                .name("test")
+                .role(Role.ROLE_ADMIN)
+                .nickname("hideonbush")
+                .withdrawal(false)
                 .build();
     }
 
     static Champion generateChampion() {
         return Champion.builder()
                 .name("가렌")
+                .title("데마시아의 힘")
                 .englishName("Garen")
                 .story("가렌은 불굴의 선봉대를 이끄는 고결하고 자긍심 강한 군인이다.")
                 .position("전사")
@@ -28,7 +36,7 @@ class ReportTest {
                 .build();
     }
 
-    static Playlist generatePlaylist() {
+    static Playlist generatePlaylist(User user) {
         return Playlist.builder()
                 .originalId("1234")
                 .provider(Provider.YOUTUBE)
@@ -36,7 +44,7 @@ class ReportTest {
                 .description("테스트 플레이 리스트 설명")
                 .image(new Image("url", "640", "640"))
                 .externalUrl("외부 url")
-                .user(generateUser())
+                .user(user)
                 .champion(generateChampion())
                 .build();
     }
@@ -45,8 +53,8 @@ class ReportTest {
     void createByBuilder() {
 
         // given
-        User user = generateUser();
-        Playlist playlist = generatePlaylist();
+        User user = generateUser("test@email.com");
+        Playlist playlist = generatePlaylist(user);
 
         // when
         Report report = Report.builder()
@@ -55,9 +63,9 @@ class ReportTest {
                 .build();
 
         // then
-        Assertions.assertAll(
-                () -> Assertions.assertEquals(user, report.getUser()),
-                () -> Assertions.assertEquals(playlist, report.getPlaylist())
+        assertAll(
+                () -> assertEquals(user, report.getUser()),
+                () -> assertEquals(playlist, report.getPlaylist())
         );
     }
 }

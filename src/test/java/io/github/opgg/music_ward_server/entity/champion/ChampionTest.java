@@ -14,6 +14,7 @@ class ChampionTest {
 
         // given
         String name = "가렌";
+        String title = "데마시아의 힘";
         String englishName = "Garen";
         String story = "가렌은 불굴의 선봉대를 이끄는 고결하고 자긍심 강한 군인이다. " +
                 "선봉대 내에서 인망이 두터울 뿐 아니라 심지어 적에게도 존경을 받지만, " +
@@ -27,6 +28,7 @@ class ChampionTest {
         // when
         Champion champion = Champion.builder()
                 .name(name)
+                .title(title)
                 .englishName(englishName)
                 .story(story)
                 .position(position)
@@ -37,6 +39,7 @@ class ChampionTest {
         // then
         Assertions.assertAll(
                 () -> assertEquals(name, champion.getName()),
+                () -> assertEquals(title, champion.getTitle()),
                 () -> assertEquals(englishName, champion.getEnglishName()),
                 () -> assertEquals(story, champion.getStory()),
                 () -> assertEquals(position, champion.getPosition()),
