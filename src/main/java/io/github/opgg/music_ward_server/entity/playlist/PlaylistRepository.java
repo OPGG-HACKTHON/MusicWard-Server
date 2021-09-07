@@ -26,32 +26,28 @@ public interface PlaylistRepository extends JpaRepository<Playlist, Long> {
     @Query("select p " +
             "from tbl_playlist p " +
             "join p.champion c " +
-            "where (c.name like %:championName% or c.englishName like %:englishName%) and p.provider = :provider ")
+            "where c.name like %:championName% or c.englishName like %:englishName% ")
     Page<Playlist> findByChampionName(@Param("championName") String championName,
-                                      @Param("englishName") String englishName,
-                                      @Param("provider") Provider provider, Pageable pageable);
+                                      @Param("englishName") String englishName, Pageable pageable);
 
     @EntityGraph(attributePaths = {"champion"})
     @Query("select p " +
             "from tbl_playlist p " +
             "join p.champion c " +
-            "where p.title like %:title% and p.provider = :provider ")
-    Page<Playlist> findByTitleContaining(@Param("title") String title,
-                                         @Param("provider") Provider provider, Pageable pageable);
+            "where p.title like %:title% ")
+    Page<Playlist> findByTitleContaining(@Param("title") String title, Pageable pageable);
 
     @EntityGraph(attributePaths = {"champion"})
     @Query("select distinct p " +
             "from tbl_playlist p " +
             "join p.tags t " +
-            "where t.title like %:title% and p.provider = :provider ")
-    Page<Playlist> findByTagTitle(@Param("title") String title,
-                                  @Param("provider") Provider provider, Pageable pageable);
+            "where t.title like %:title% ")
+    Page<Playlist> findByTagTitle(@Param("title") String title, Pageable pageable);
 
     @EntityGraph(attributePaths = {"champion"})
     @Query("select p " +
             "from tbl_playlist p " +
             "join p.wards w " +
-            "where w.user.id = :userId and p.provider = :provider ")
-    Page<Playlist> findByWardUserId(@Param("userId") Long userId,
-                                    @Param("provider") Provider provider, Pageable pageable);
+            "where w.user.id = :userId ")
+    Page<Playlist> findByWardUserId(@Param("userId") Long userId, Pageable pageable);
 }
