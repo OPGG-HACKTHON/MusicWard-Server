@@ -5,7 +5,6 @@ import io.github.opgg.music_ward_server.dto.search.response.SearchSummonerRespon
 import io.github.opgg.music_ward_server.entity.comment.CommentRepository;
 import io.github.opgg.music_ward_server.entity.playlist.Playlist;
 import io.github.opgg.music_ward_server.entity.playlist.PlaylistRepository;
-import io.github.opgg.music_ward_server.entity.playlist.Provider;
 import io.github.opgg.music_ward_server.entity.tag.TagRepository;
 import io.github.opgg.music_ward_server.entity.track.TrackRepository;
 import io.github.opgg.music_ward_server.entity.ward.WardRepository;
@@ -53,23 +52,23 @@ public class SearchServiceImpl implements SearchService {
     }
 
     @Override
-    public Page<PlaylistMainResponse> findByChampionName(String championName, Provider provider, Pageable pageable) {
+    public Page<PlaylistMainResponse> findByChampionName(String championName, Pageable pageable) {
 
-        Page<Playlist> playlists = playlistRepository.findByChampionName(championName, championName, provider, pageable);
+        Page<Playlist> playlists = playlistRepository.findByChampionName(championName, championName, pageable);
         return toPlaylistMainResponses(playlists);
     }
 
     @Override
-    public Page<PlaylistMainResponse> findByPlaylistTitle(String title, Provider provider, Pageable pageable) {
+    public Page<PlaylistMainResponse> findByPlaylistTitle(String title, Pageable pageable) {
 
-        Page<Playlist> playlists = playlistRepository.findByTitleContaining(title, provider, pageable);
+        Page<Playlist> playlists = playlistRepository.findByTitleContaining(title, pageable);
         return toPlaylistMainResponses(playlists);
     }
 
     @Override
-    public Page<PlaylistMainResponse> findByTagTitle(String title, Provider provider, Pageable pageable) {
+    public Page<PlaylistMainResponse> findByTagTitle(String title, Pageable pageable) {
 
-        Page<Playlist> playlists = playlistRepository.findByTagTitle(title, provider, pageable);
+        Page<Playlist> playlists = playlistRepository.findByTagTitle(title, pageable);
         return toPlaylistMainResponses(playlists);
     }
 
