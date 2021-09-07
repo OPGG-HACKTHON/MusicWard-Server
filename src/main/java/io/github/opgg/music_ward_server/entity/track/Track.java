@@ -28,19 +28,22 @@ public class Track extends BaseEntity {
     @Column(name = "track_id")
     private Long id;
 
+    @Column(nullable = false)
     private String originalId;
 
+    @Column(nullable = false)
     private String title;
 
     private String previewUrl;
 
+    @Column(nullable = false)
     private String artists;
 
     @Embedded
     private Image image;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "playlist_id")
+    @JoinColumn(name = "playlist_id", nullable = false)
     private Playlist playlist;
 
     @Builder
