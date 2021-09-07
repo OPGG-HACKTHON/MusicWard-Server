@@ -25,33 +25,39 @@ public class Champion extends BaseEntity {
     @Column(name = "champion_id")
     private Long id;
 
+    @Column(nullable = false)
     private String name;
 
+    @Column(nullable = false)
     private String title;
 
+    @Column(nullable = false)
     private String englishName;
 
     @Column(columnDefinition = "TEXT")
     private String story;
 
+    @Column(nullable = false)
     private String position;
 
+    @Column(nullable = false)
     private String profileImageUrl;
 
+    @Column(nullable = false)
     private String imageUrl;
 
     @OneToMany(mappedBy = "champion")
     private List<Playlist> playlists = new ArrayList<>();
 
     @Builder
-    public Champion(String name, String englishName, String story,
-                    String position, String profileImageUrl, String imageUrl, String title) {
+    public Champion(String name, String title, String englishName,
+                    String story, String position, String profileImageUrl, String imageUrl) {
         this.name = name;
+        this.title = title;
         this.englishName = englishName;
         this.story = story;
         this.position = position;
         this.profileImageUrl = profileImageUrl;
         this.imageUrl = imageUrl;
-        this.title = title;
     }
 }

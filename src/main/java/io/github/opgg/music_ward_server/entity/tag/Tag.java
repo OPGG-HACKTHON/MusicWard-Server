@@ -25,10 +25,11 @@ public class Tag extends BaseEntity {
     @Column(name = "tag_id")
     private Long id;
 
+    @Column(nullable = false, length = 10)
     private String title;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "playlist_id")
+    @JoinColumn(name = "playlist_id", nullable = false)
     private Playlist playlist;
 
     @Builder

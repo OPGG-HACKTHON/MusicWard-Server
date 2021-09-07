@@ -58,11 +58,11 @@ public class Playlist extends BaseEntity {
     private Integer view;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "champion_id")
+    @JoinColumn(name = "champion_id", nullable = false)
     private Champion champion;
 
     @OneToMany(mappedBy = "playlist")
