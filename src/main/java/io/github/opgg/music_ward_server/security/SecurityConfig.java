@@ -42,12 +42,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/users/auth/spotify").permitAll()
                 .antMatchers(HttpMethod.PUT, "/users/auth/spotify").permitAll()
                 .antMatchers(HttpMethod.PUT, "/users/auth").permitAll()
-                .antMatchers(HttpMethod.GET,"/championlist").permitAll()
-                .antMatchers(HttpMethod.GET,"/champion/**").permitAll()
-                .antMatchers(HttpMethod.GET,"/playlists/**").permitAll()
-                .antMatchers(HttpMethod.GET,"/users/**/playlists").permitAll()
-                .antMatchers(HttpMethod.GET,"/ranking/**").permitAll()
-                .antMatchers(HttpMethod.GET,"/search/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/championlist").permitAll()
+                .antMatchers(HttpMethod.GET, "/champion/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/playlists/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/users/**/playlists").permitAll()
+                .antMatchers(HttpMethod.GET, "/ranking/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/search/**").permitAll()
                 .anyRequest().authenticated()
                 .and().apply(new FilterConfigure(jwtTokenProvider, exceptionHandlerFilter, requestLogger));
     }

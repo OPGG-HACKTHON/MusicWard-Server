@@ -76,7 +76,7 @@ public class PlaylistController {
         return new ResponseEntity<>(new CommonResponse(playlistService.findByUserId(userId)), HttpStatus.OK);
     }
 
-    @GetMapping("me/playlists")
+    @GetMapping("playlists/me")
     public ResponseEntity<CommonResponse> findByMe() {
 
         Long userId = SecurityUtil.getCurrentUserId();
