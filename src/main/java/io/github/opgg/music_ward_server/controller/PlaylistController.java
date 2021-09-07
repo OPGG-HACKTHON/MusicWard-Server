@@ -92,9 +92,7 @@ public class PlaylistController {
     }
 
     @GetMapping("playlists/wards/me")
-    public ResponseEntity<CommonResponse> findWardingPlaylist(
-            PageMainRequest pageMainRequest,
-            @RequestParam(value = "provider") String provider) {
+    public ResponseEntity<CommonResponse> findWardingPlaylist(PageMainRequest pageMainRequest) {
 
         Page<PlaylistMainResponse> page = playlistService.findWardingPlaylist(pageMainRequest.toPageRequest());
 
