@@ -7,6 +7,7 @@ import io.github.opgg.music_ward_server.entity.champion.Champion;
 import io.github.opgg.music_ward_server.entity.champion.ChampionRepository;
 import io.github.opgg.music_ward_server.exception.ChampionNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +19,9 @@ import java.util.stream.Collectors;
 public class ChampionServiceImpl implements ChampionService {
 
     private final ChampionRepository championRepository;
+
+    @Value("${VOICE_BUCKET_URL}")
+    private String bucketUrl;
 
     @Override
     public ChampionListResponse getChampionList(String positions, String championName, Sort sort) {
@@ -49,8 +53,14 @@ public class ChampionServiceImpl implements ChampionService {
     @Override
     public ChampionDetailDTO getChampionDetail(Long championId) {
         Champion champion = championRepository.findById(championId).orElseThrow(ChampionNotFoundException::new);
-        return new ChampionDetailDTO(champion);
+        return new ChampionDetailDTO(champion, getVoiceUrl(champion.getEnglishName()));
+    }
 
+    private String getVoiceUrl(String EnglishName) {
+        int voiceMaxNumber = 2;
+        Integer number = (int) (Math.random() * voiceMaxNumber);
+        String objectKey = EnglishName + "_" + number + ".wav";
+        return bucketUrl + "/" + objectKey;
     }
 
 
