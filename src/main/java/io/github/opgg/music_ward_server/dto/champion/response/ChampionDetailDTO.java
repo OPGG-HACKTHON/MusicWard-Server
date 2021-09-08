@@ -31,7 +31,10 @@ public class ChampionDetailDTO {
 
     private final String title;
 
-    public ChampionDetailDTO(Champion champion) {
+    private final String voiceUrl;
+
+    public ChampionDetailDTO(Champion champion, String voiceUrl) {
+
         this.championId = champion.getId();
         this.story = champion.getStory();
         this.title = champion.getTitle();
@@ -41,5 +44,6 @@ public class ChampionDetailDTO {
         this.name = champion.getName();
         String[] splitPositions = champion.getPosition().split(",");
         this.position = new ArrayList<>(Arrays.asList(splitPositions));
+        this.voiceUrl = voiceUrl;
     }
 }
