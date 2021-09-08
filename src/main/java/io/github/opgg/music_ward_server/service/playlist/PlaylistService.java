@@ -20,5 +20,5 @@ public interface PlaylistService {
     void addView(Long playlistId);
     List<PlaylistMainResponse> findByUserId(Long userId);
     void report(PlaylistReportRequest request);
-    Page<PlaylistMainResponse> findWardingPlaylist(Pageable pageable, String provider);
+    Page<PlaylistMainResponse> findWardingPlaylist(Pageable pageable);
 }

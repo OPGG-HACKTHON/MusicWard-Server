@@ -288,27 +288,19 @@ public class PlaylistServiceImpl implements PlaylistService {
 
         reportRepository.save(
                 Report.builder()
-                .user(user)
-                .playlist(playlist)
-                .build()
+                        .user(user)
+                        .playlist(playlist)
+                        .build()
         );
     }
 
     @Override
-    public Page<PlaylistMainResponse> findWardingPlaylist(Pageable pageable, String provider) {
+    public Page<PlaylistMainResponse> findWardingPlaylist(Pageable pageable) {
+        Long userId = SecurityUtil.getCurrentUserId();
 
-        if (Provider.toProvider(provider) == Provider.YOUTUBE || Provider.toProvider(provider) == Provider.SPOTIFY) {
-            Long userId = SecurityUtil.getCurrentUserId();
+        Page<Playlist> playlists = playlistRepository.findByWardUserId(userId, pageable);
 
-            Page<Playlist> playlists = playlistRepository.findByWardUserId(
-                    userId, Provider.toProvider(provider), pageable);
-
-            return toPlaylistMainResponses(playlists);
-
-        } else {
-            throw new UnsupportedProviderException();
-
-        }
+        return toPlaylistMainResponses(playlists);
     }
 
     private User getUser(Long id) {
