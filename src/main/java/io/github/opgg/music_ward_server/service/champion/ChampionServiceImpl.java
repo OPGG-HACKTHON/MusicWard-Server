@@ -20,7 +20,7 @@ public class ChampionServiceImpl implements ChampionService {
 
     private final ChampionRepository championRepository;
 
-    @Value("${VOICE_BUCKET_URL}")
+    @Value("${cloud.aws.s3.bucket.url}")
     private String bucketUrl;
 
     @Override
