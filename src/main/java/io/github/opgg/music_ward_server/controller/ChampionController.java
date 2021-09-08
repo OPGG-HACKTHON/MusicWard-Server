@@ -15,12 +15,18 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 public class ChampionController {
+
     private final ChampionService championService;
 
     @GetMapping("/championlist")
-    public ResponseEntity<CommonResponse> getChampoinList(@RequestParam(value = "champion_name", required = false) String championName, @RequestParam(value = "positions", required = false) String positions, @SortDefault(sort = "name", direction = Sort.Direction.ASC) Sort sort) {
+    public ResponseEntity<CommonResponse> getChampoinList(
+            @RequestParam(value = "champion_name", required = false) String championName,
+            @RequestParam(value = "positions", required = false) String positions,
+            @SortDefault(sort = "name", direction = Sort.Direction.ASC) Sort sort) {
 
-        return new ResponseEntity<>(new CommonResponse(championService.getChampionList(positions, championName, sort)), HttpStatus.OK);
+        return new ResponseEntity<>(
+                new CommonResponse(championService.getChampionList(positions, championName, sort)), HttpStatus.OK
+        );
     }
 
     @GetMapping("/champion/{championId}")
