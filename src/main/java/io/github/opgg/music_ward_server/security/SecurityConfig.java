@@ -1,6 +1,7 @@
 package io.github.opgg.music_ward_server.security;
 
 import io.github.opgg.music_ward_server.error.ExceptionHandlerFilter;
+import io.github.opgg.music_ward_server.security.jwt.CorsFilter;
 import io.github.opgg.music_ward_server.security.jwt.FilterConfigure;
 import io.github.opgg.music_ward_server.security.jwt.JwtTokenProvider;
 import io.github.opgg.music_ward_server.security.logging.RequestLogger;
@@ -24,6 +25,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final JwtTokenProvider jwtTokenProvider;
     private final ExceptionHandlerFilter exceptionHandlerFilter;
     private final RequestLogger requestLogger;
+    private final CorsFilter corsFilter;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -49,7 +51,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/ranking/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/search/**").permitAll()
                 .anyRequest().authenticated()
-                .and().apply(new FilterConfigure(jwtTokenProvider, exceptionHandlerFilter, requestLogger));
+                .and().apply(new FilterConfigure(jwtTokenProvider, exceptionHandlerFilter, requestLogger, corsFilter));
     }
 
     @Override
