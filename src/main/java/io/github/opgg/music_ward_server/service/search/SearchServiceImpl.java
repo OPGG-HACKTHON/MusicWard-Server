@@ -2,6 +2,8 @@ package io.github.opgg.music_ward_server.service.search;
 
 import io.github.opgg.music_ward_server.dto.playlist.response.PlaylistMainResponse;
 import io.github.opgg.music_ward_server.dto.search.response.SearchSummonerResponse;
+import io.github.opgg.music_ward_server.entity.champion.Champion;
+import io.github.opgg.music_ward_server.entity.champion.ChampionRepository;
 import io.github.opgg.music_ward_server.entity.comment.CommentRepository;
 import io.github.opgg.music_ward_server.entity.playlist.Playlist;
 import io.github.opgg.music_ward_server.entity.playlist.PlaylistRepository;
@@ -24,6 +26,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -38,6 +41,7 @@ public class SearchServiceImpl implements SearchService {
     private final TrackRepository trackRepository;
     private final CommentRepository commentRepository;
     private final PlaylistRepository playlistRepository;
+    private final ChampionRepository championRepository;
 
     @Value("${api.riot.key}")
     private String riotAPIKey;
@@ -87,9 +91,9 @@ public class SearchServiceImpl implements SearchService {
             championNameList.add(matchParticipantsList.get(index).getChampionName());
         }
         Map<String, Integer> championMap = getChampionMap(championNameList);
-        String champion = getFavoriteChampion(championMap);
+        Optional<Champion> champion = championRepository.findByEnglishName(getFavoriteChampion(championMap));
         String win = getWinningStreak(winAry);
-        return new SearchSummonerResponse(summonerName, champion, win);
+        return new SearchSummonerResponse(summonerName, champion.get().getName(), win);
     }
 
 
