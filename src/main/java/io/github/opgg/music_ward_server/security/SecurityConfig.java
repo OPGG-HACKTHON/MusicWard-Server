@@ -1,7 +1,6 @@
 package io.github.opgg.music_ward_server.security;
 
 import io.github.opgg.music_ward_server.error.ExceptionHandlerFilter;
-import io.github.opgg.music_ward_server.security.jwt.CorsFilter;
 import io.github.opgg.music_ward_server.security.jwt.FilterConfigure;
 import io.github.opgg.music_ward_server.security.jwt.JwtTokenProvider;
 import io.github.opgg.music_ward_server.security.logging.RequestLogger;
@@ -28,7 +27,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
     private final JwtTokenProvider jwtTokenProvider;
     private final ExceptionHandlerFilter exceptionHandlerFilter;
     private final RequestLogger requestLogger;
-    private final CorsFilter corsFilter;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
