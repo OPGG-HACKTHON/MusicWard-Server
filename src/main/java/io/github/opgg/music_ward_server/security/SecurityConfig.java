@@ -1,6 +1,7 @@
 package io.github.opgg.music_ward_server.security;
 
 import io.github.opgg.music_ward_server.error.ExceptionHandlerFilter;
+import io.github.opgg.music_ward_server.security.jwt.CorsFilter;
 import io.github.opgg.music_ward_server.security.jwt.FilterConfigure;
 import io.github.opgg.music_ward_server.security.jwt.JwtTokenProvider;
 import io.github.opgg.music_ward_server.security.logging.RequestLogger;
@@ -15,7 +16,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
@@ -26,6 +26,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
     private final JwtTokenProvider jwtTokenProvider;
     private final ExceptionHandlerFilter exceptionHandlerFilter;
     private final RequestLogger requestLogger;
+    private final CorsFilter corsFilter;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -51,7 +52,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
                 .antMatchers(HttpMethod.GET, "/ranking/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/search/**").permitAll()
                 .anyRequest().authenticated()
-                .and().apply(new FilterConfigure(jwtTokenProvider, exceptionHandlerFilter, requestLogger));
+                .and().apply(new FilterConfigure(jwtTokenProvider, exceptionHandlerFilter, requestLogger, corsFilter));
     }
 
     @Override
@@ -64,12 +65,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
     public PasswordEncoder getPasswordEncoder() {
         return new BCryptPasswordEncoder(11);
     }
-
-	@Override
-	public void addCorsMappings(CorsRegistry registry) {
-		registry.addMapping("/**")
-				.allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
-				.allowedOrigins("http://localhost:3000", "https://site.music-ward.com");
-	}
 
 }

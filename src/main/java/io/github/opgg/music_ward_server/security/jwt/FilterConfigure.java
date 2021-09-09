@@ -14,6 +14,7 @@ public class FilterConfigure extends SecurityConfigurerAdapter<DefaultSecurityFi
     private final JwtTokenProvider jwtTokenProvider;
     private final ExceptionHandlerFilter exceptionHandlerFilter;
     private final RequestLogger requestLogger;
+    private final CorsFilter corsFilter;
 
     @Override
     public void configure(HttpSecurity builder) throws Exception {
@@ -21,5 +22,6 @@ public class FilterConfigure extends SecurityConfigurerAdapter<DefaultSecurityFi
         builder.addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);
         builder.addFilterBefore(exceptionHandlerFilter, JwtTokenFilter.class);
         builder.addFilterBefore(requestLogger, ExceptionHandlerFilter.class);
+		builder.addFilterBefore(corsFilter, RequestLogger.class);
     }
 }
