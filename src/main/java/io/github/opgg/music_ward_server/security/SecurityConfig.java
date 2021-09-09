@@ -73,6 +73,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
 		registry.addMapping("/**")
 				.allowedMethods("POST", "HEAD", "GET", "OPTIONS", "DELETE")
 				.allowedOrigins("*")
-				.allowedHeaders("Authorization");
+				.allowedHeaders("*");
 	}
 }
