@@ -19,8 +19,8 @@ public class CorsFilter implements Filter {
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 		HttpServletRequest req = (HttpServletRequest) request;
 		HttpServletResponse res = (HttpServletResponse) response;
-		res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
-		res.setHeader("Access-Control-Allow-Origin", "https://site.music-ward.com");
+		res.addHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+		res.addHeader("Access-Control-Allow-Origin", "https://site.music-ward.com");
 		res.setHeader("Access-Control-Allow-Credentials", "true");
 		res.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE, HEAD");
 		res.setHeader("Access-Control-Max-Age", "3600");
