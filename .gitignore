@@ -6,7 +6,7 @@ build/
 !**/src/test/**/build/
 
 ### test
-test/
+logging/
 
 ### STS ###
 .apt_generated
