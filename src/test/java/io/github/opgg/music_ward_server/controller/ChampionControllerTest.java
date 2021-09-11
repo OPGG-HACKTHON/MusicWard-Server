@@ -29,7 +29,7 @@ class ChampionControllerTest extends BaseIntegrationTest {
     }
 
     @Test
-    @DisplayName("/champion/{championId}")
+    @DisplayName("GET /champion/{championId}")
     void getChampion() throws Exception {
 
         // given
@@ -45,7 +45,7 @@ class ChampionControllerTest extends BaseIntegrationTest {
     }
 
     @Test
-    @DisplayName("/championlist")
+    @DisplayName("GET /championlist")
     void getChampions() throws Exception {
 
         // given
