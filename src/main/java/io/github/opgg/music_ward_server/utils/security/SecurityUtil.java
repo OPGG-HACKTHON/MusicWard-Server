@@ -14,7 +14,9 @@ public class SecurityUtil {
     public static Long getCurrentUserId() {
         final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        if (authentication == null || authentication.getPrincipal() == null) {
+        if (authentication == null
+                || authentication.getPrincipal() == null
+                || !(authentication instanceof UserDetails)) {
             throw new CredentialsNotFoundException();
         }
 
