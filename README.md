@@ -26,12 +26,21 @@ _**youtube**, **spotify**의 플레이리스트를 자유롭게 와딩하세요!
 
 ### [팀 wiki](https://sneaky-unicorn-a44.notion.site/WEB-B-aaf71753633e4cb0b2c95dda606b5f69)
 
-|이름|**Leeseojune**|**hyeonic**|**ZeroIRC**|
-|---|---|---|---|
-|op.gg|[와사비53](https://www.op.gg/summoner/userName=%EC%99%80%EC%82%AC%EB%B9%8453)|[OpenBom](https://www.op.gg/summoner/userName=OpenBom)|[IRC](https://www.op.gg/summoner/userName=IRC)|
-|github|[github](https://github.com/leeseojune53)|[github](https://github.com/hyeonic)|[github](https://github.com/ZeroIRC)|
+|이름|디자이너|프론트엔드|프론트엔드|백엔드|백엔드|백엔드|
+|---|---|---|---|---|---|---|
+|이름|장현수|**yeomhyeseon**|**anyl92**|**Leeseojune**|**hyeonic**|**ZeroIRC**|
+|op.gg|[뿌르땅뿌르끄](https://www.op.gg/summoner/userName=%EB%BF%8C%EB%A5%B4%EB%95%85%EB%BF%8C%EB%A5%B4%EB%81%84)|-|-|[와사비53](https://www.op.gg/summoner/userName=%EC%99%80%EC%82%AC%EB%B9%8453)|[OpenBom](https://www.op.gg/summoner/userName=OpenBom)|[IRC](https://www.op.gg/summoner/userName=IRC)|
+|github|-|[github](https://github.com/yeomhyeseon)|[github](https://github.com/anyl92)|[github](https://github.com/leeseojune53)|[github](https://github.com/hyeonic)|[github](https://github.com/ZeroIRC)|
 
-## 💻 기술 스택
+## 🛠 기술 스택
+
+<p align="center">
+    <img alt="typescript" src ="https://img.shields.io/badge/typescript-3178C6.svg?&style=for-the-badge&logo=typescript&logoColor=white"/>
+    <img alt="react" src ="https://img.shields.io/badge/react-61DAFB.svg?&style=for-the-badge&logo=react&logoColor=white"/>
+    <img alt="react-router" src ="https://img.shields.io/badge/react%20router-CA4245.svg?&style=for-the-badge&logo=reactrouter&logoColor=white"/>
+    <img alt="prettier" src ="https://img.shields.io/badge/prettier-F7B93E.svg?&style=for-the-badge&logo=prettier&logoColor=white"/>
+    <img alt="eslint" src ="https://img.shields.io/badge/eslint-4B32C3.svg?&style=for-the-badge&logo=eslint&logoColor=white"/>
+</p>
 
 <p align="center">
     <img alt="java" src ="https://img.shields.io/badge/java-007396.svg?&style=for-the-badge&logo=java&logoColor=white"/>
@@ -39,6 +48,7 @@ _**youtube**, **spotify**의 플레이리스트를 자유롭게 와딩하세요!
     <img alt="spring" src ="https://img.shields.io/badge/spring%20boot-6DB33F.svg?&style=for-the-badge&logo=springboot&logoColor=white"/>
     <img alt="hibernate" src ="https://img.shields.io/badge/hibernate-59666C.svg?&style=for-the-badge&logo=hibernate&logoColor=white"/>
     <img alt="mysql" src ="https://img.shields.io/badge/mysql-4479A1.svg?&style=for-the-badge&logo=mysql&logoColor=white"/>
+    <img alt="redis" src ="https://img.shields.io/badge/redis-DC382D.svg?&style=for-the-badge&logo=redis&logoColor=white"/>
     <img alt="junit" src ="https://img.shields.io/badge/junit5-25A162.svg?&style=for-the-badge&logo=junit5&logoColor=white"/>
     <img alt="swagger" src ="https://img.shields.io/badge/swagger-85EA2D.svg?&style=for-the-badge&logo=swagger&logoColor=white"/>
 </p>
@@ -56,14 +66,34 @@ _**youtube**, **spotify**의 플레이리스트를 자유롭게 와딩하세요!
     <img alt="roit" src ="https://img.shields.io/badge/riot%20games-D32936.svg?&style=for-the-badge&logo=riotgames&logoColor=white"/>
 </p>
 
-## 📐 프로젝트 아키텍처
+## 🏗 AWS ARCHITECTURE
 
 <p align="center">
-    <img src="https://user-images.githubusercontent.com/59357153/132118908-b20feb4c-ec67-4c82-b132-60ec760042f3.png">
+    <img src="https://user-images.githubusercontent.com/59357153/132972794-c5aa2011-4ea1-4e04-aeda-4e4a7455a41f.png">
+</p>
+
+## 🌊 USER SERVICE FLOW
+
+<p align="center">
+    <img src="https://user-images.githubusercontent.com/59357153/132972812-386ae357-2634-4864-8523-2880614efc5b.png">
 </p>
 
 ## 🔄 CI/CD
 
+### 👨‍💻👩‍💻 CLIENT
+
 <p align="center">
-    <img src="https://user-images.githubusercontent.com/59357153/132118919-801dfff7-459e-4cf7-9c76-7f53e237d4a8.png">
+    <img src="https://user-images.githubusercontent.com/59357153/132972831-20e51719-2f10-4f1f-bd1a-91b4a6f3c549.png">
+</p>
+
+### 🖥 SERVER
+
+<p align="center">
+    <img src="https://user-images.githubusercontent.com/59357153/132972837-93e6d8ea-f07d-4a65-9d03-5f8a769df219.png">
+</p>
+
+### 📜 LOG ANALYSIS FLOW
+
+<p align="center">
+    <img src="https://user-images.githubusercontent.com/59357153/132972799-194815c7-3272-4c31-8189-4f23fb9960bf.png">
 </p>
