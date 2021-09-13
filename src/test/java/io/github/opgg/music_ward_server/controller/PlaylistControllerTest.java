@@ -1,8 +1,7 @@
 package io.github.opgg.music_ward_server.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import io.github.opgg.music_ward_server.BaseIntegrationTest;
-import io.github.opgg.music_ward_server.dto.playlist.request.PlaylistSaveRequest;
+import io.github.opgg.music_ward_server.dto.playlist.request.PlaylistUpdateRequest;
 import io.github.opgg.music_ward_server.entity.champion.Champion;
 import io.github.opgg.music_ward_server.entity.champion.ChampionRepository;
 import io.github.opgg.music_ward_server.entity.playlist.Image;
@@ -12,18 +11,20 @@ import io.github.opgg.music_ward_server.entity.playlist.Provider;
 import io.github.opgg.music_ward_server.entity.user.Role;
 import io.github.opgg.music_ward_server.entity.user.User;
 import io.github.opgg.music_ward_server.entity.user.UserRepository;
-import io.github.opgg.music_ward_server.security.jwt.JwtTokenProvider;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.context.support.WithUserDetails;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -37,9 +38,6 @@ class PlaylistControllerTest extends BaseIntegrationTest {
 
     @Autowired
     private PlaylistRepository playlistRepository;
-
-    @Autowired
-    private JwtTokenProvider jwtTokenProvider;
 
     static User generateUser(String email) {
         return User.builder()
@@ -116,5 +114,108 @@ class PlaylistControllerTest extends BaseIntegrationTest {
         mockMvc.perform(get("/users/{userId}/playlists", user.getId()))
                 .andDo(print())
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("GET playlists/me")
+    @WithUserDetails(value = "1")
+    void getPlaylistsByMe() throws Exception {
+
+        // given & when & then
+        mockMvc.perform(get("/playlists/me"))
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("PUT playlists/{playlistId}")
+    @WithUserDetails(value = "1")
+    void updatePlaylist() throws Exception {
+
+        // given
+        User user = userRepository.findById(1L).get();
+
+        Champion champion = generateChampion();
+        championRepository.save(champion);
+
+        Playlist playlist = playlistRepository.save(generatePlaylist(user, champion));
+
+        // when
+        PlaylistUpdateRequest playlistUpdateRequest = PlaylistUpdateRequest.builder()
+                .title("업데이트 플레이리스트 제목")
+                .description("업데이트 플레이리스트 설명")
+                .championName(champion.getName())
+                .tags(List.of("가렌", "탑"))
+                .build();
+
+        // then
+        mockMvc.perform(put("/playlists/{playlistId}", playlist.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(playlistUpdateRequest)))
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("DELETE playlists/{playlistId}")
+    @WithUserDetails(value = "1")
+    void deletePlaylist() throws Exception {
+
+        // given
+        User user = userRepository.findById(1L).get();
+
+        Champion champion = generateChampion();
+        championRepository.save(champion);
+
+        // when
+        Playlist playlist = playlistRepository.save(generatePlaylist(user, champion));
+
+        // then
+        mockMvc.perform(delete("/playlists/{playlistId}", playlist.getId()))
+                .andDo(print())
+                .andExpect(status().isNoContent());
+    }
+
+    @Test
+    @DisplayName("GET playlists/wards/me")
+    @WithUserDetails(value = "1")
+    void findWardingPlaylists() throws Exception {
+
+        // given
+        int page = 1;
+        int size = 5;
+        String sort = "created_date";
+
+        // when & then
+        mockMvc.perform(get("/playlists/wards/me")
+                        .param("page", String.valueOf(page))
+                        .param("size", String.valueOf(size))
+                        .param("sort", sort))
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("POST playlists/report")
+    @WithUserDetails(value = "1")
+    void reportPlaylist() throws Exception {
+
+        // given
+        User user = userRepository.findById(1L).get();
+
+        Champion champion = generateChampion();
+        championRepository.save(champion);
+
+        Playlist playlist = playlistRepository.save(generatePlaylist(user, champion));
+
+        Map<String, String> requestBody = new HashMap<>();
+        requestBody.put("playlist_id", String.valueOf(playlist.getId()));
+
+        // when & then
+        mockMvc.perform(post("/playlists/report")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(requestBody)))
+                .andDo(print())
+                .andExpect(status().isCreated());
     }
 }
