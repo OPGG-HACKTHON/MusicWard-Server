@@ -16,7 +16,7 @@ public class SecurityUtil {
 
         if (authentication == null
                 || authentication.getPrincipal() == null
-                || !(authentication instanceof UserDetails)) {
+                || !(authentication.getPrincipal() instanceof UserDetails)) {
             throw new CredentialsNotFoundException();
         }
 
