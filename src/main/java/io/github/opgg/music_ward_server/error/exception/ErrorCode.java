@@ -27,7 +27,10 @@ public enum ErrorCode {
     USER_NOT_FOUND(404, "User not found."),
     CHAMPION_NOT_FOUND(404, "Champion not found."),
     COMMENT_NOT_FOUND(404, "Comment not found."),
-    WARD_NOT_FOUND(404, "Ward not found.");
+    WARD_NOT_FOUND(404, "Ward not found."),
+    SUMMONER_NAME_NOT_FOUND(404, "Summoner name not found."),
+    MATCH_NOT_FOUND(403, "Match not found.");
+
 
     private final int status;
     private final String message;
