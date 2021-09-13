@@ -10,6 +10,8 @@ import io.github.opgg.music_ward_server.entity.playlist.PlaylistRepository;
 import io.github.opgg.music_ward_server.entity.tag.TagRepository;
 import io.github.opgg.music_ward_server.entity.track.TrackRepository;
 import io.github.opgg.music_ward_server.entity.ward.WardRepository;
+import io.github.opgg.music_ward_server.exception.MatchNotFoundException;
+import io.github.opgg.music_ward_server.exception.SummonerNameNotFoundException;
 import io.github.opgg.music_ward_server.utils.api.client.riot.RiotMatchClient;
 import io.github.opgg.music_ward_server.utils.api.client.riot.RiotSummonerClient;
 import io.github.opgg.music_ward_server.utils.api.dto.riot.RiotMatchDetailResponse;
@@ -48,9 +50,17 @@ public class SearchServiceImpl implements SearchService {
 
     @Override
     public SearchSummonerResponse getRiotSummonerInfo(String summonerName) {
-        RiotSummonerResponse riotSummonerResponse = riotSummonerClient.getSummonerNameInfo(riotAPIKey, summonerName);
+        RiotSummonerResponse riotSummonerResponse;
+        try {
+            riotSummonerResponse = riotSummonerClient.getSummonerNameInfo(riotAPIKey, summonerName);
+        } catch (Exception e) {
+            throw new SummonerNameNotFoundException();
+        }
         String userPuuid = riotSummonerResponse.getPuuid();
         List<String> matchList = riotMatchClient.getMatch(riotAPIKey, userPuuid);
+        if (matchList.isEmpty()) {
+            throw new MatchNotFoundException();
+        }
         SearchSummonerResponse searchSummonerResponse = getSearchSummonerResponse(matchList, summonerName, userPuuid);
         return searchSummonerResponse;
     }
