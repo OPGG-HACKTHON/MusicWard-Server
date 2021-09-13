@@ -1,2 +1,2 @@
 INSERT INTO tbl_user (user_id, google_email, spotify_email, name, nickname, role, withdrawal, created_date, last_modified_date)
-VALUES (1, 'test@email.com', 'test@email.com', 'test', 'test', 'ROLE_USER', false, now(), now());
+VALUES (1, 'test-user@email.com', 'test-user@email.com', 'test', 'test', 'ROLE_USER', false, now(), now());
