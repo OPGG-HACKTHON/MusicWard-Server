@@ -5,8 +5,6 @@ import io.github.opgg.music_ward_server.controller.response.PageResponse;
 import io.github.opgg.music_ward_server.dto.page.request.PageMainRequest;
 import io.github.opgg.music_ward_server.dto.page.response.PageInfoResponse;
 import io.github.opgg.music_ward_server.dto.playlist.response.PlaylistMainResponse;
-import io.github.opgg.music_ward_server.entity.playlist.Provider;
-import io.github.opgg.music_ward_server.exception.UnsupportedProviderException;
 import io.github.opgg.music_ward_server.exception.UnsupportedSearchTypeException;
 import io.github.opgg.music_ward_server.service.search.SearchService;
 import lombok.RequiredArgsConstructor;
