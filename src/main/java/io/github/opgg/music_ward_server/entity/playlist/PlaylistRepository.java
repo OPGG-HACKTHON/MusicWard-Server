@@ -16,6 +16,7 @@ public interface PlaylistRepository extends JpaRepository<Playlist, Long> {
 
     List<Playlist> findByUserId(Long userId);
     Optional<Playlist> findByIdAndUserId(Long playlistId, Long userId);
+    void deleteByIdAndUserId(Long playlistId, Long userId);
 
     @Query("select p " +
             "from tbl_playlist p " +

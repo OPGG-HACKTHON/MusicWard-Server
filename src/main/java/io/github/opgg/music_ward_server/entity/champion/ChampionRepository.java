@@ -16,6 +16,7 @@ public interface ChampionRepository extends JpaRepository<Champion, Long> {
     List<Champion> findByNameContaining(String name, Sort sort);
     List<Champion> findByPositionContainingIgnoreCase(String positions, Sort sort);
     List<Champion> findByPositionContainingIgnoreCaseAndNameContaining(String positions,String name, Sort sort);
+
     @Query("select distinct c " +
             "from tbl_champion c " +
             "join fetch c.playlists")

@@ -24,13 +24,13 @@ public enum ErrorCode {
     CREDENTIALS_NOT_FOUND(401, "Credentials not found."),
     EMPTY_REFRESH_TOKEN(401, "Empty refresh token."),
     NOT_YOUR_COMMENT(403, "Not your comment."),
+    NOT_YOUR_PLAYLIST(403, "Not your playlist."),
     USER_NOT_FOUND(404, "User not found."),
     CHAMPION_NOT_FOUND(404, "Champion not found."),
     COMMENT_NOT_FOUND(404, "Comment not found."),
     WARD_NOT_FOUND(404, "Ward not found."),
     SUMMONER_NAME_NOT_FOUND(404, "Summoner name not found."),
     MATCH_NOT_FOUND(403, "Match not found.");
-
 
     private final int status;
     private final String message;

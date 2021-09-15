@@ -4,7 +4,6 @@ import io.github.opgg.music_ward_server.entity.BaseEntity;
 import io.github.opgg.music_ward_server.entity.champion.Champion;
 import io.github.opgg.music_ward_server.entity.comment.Comment;
 import io.github.opgg.music_ward_server.entity.tag.Tag;
-import io.github.opgg.music_ward_server.entity.track.Track;
 import io.github.opgg.music_ward_server.entity.user.User;
 import io.github.opgg.music_ward_server.entity.ward.Ward;
 import lombok.AccessLevel;

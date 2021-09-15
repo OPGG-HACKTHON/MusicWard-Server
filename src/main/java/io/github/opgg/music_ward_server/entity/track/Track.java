@@ -1,6 +1,5 @@
 package io.github.opgg.music_ward_server.entity.track;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.github.opgg.music_ward_server.entity.BaseEntity;
 import io.github.opgg.music_ward_server.entity.playlist.Image;
 import io.github.opgg.music_ward_server.entity.playlist.Playlist;

@@ -7,6 +7,7 @@ import io.github.opgg.music_ward_server.entity.playlist.Image;
 import io.github.opgg.music_ward_server.entity.playlist.Playlist;
 import io.github.opgg.music_ward_server.entity.playlist.Provider;
 import io.github.opgg.music_ward_server.entity.user.User;
+import io.github.opgg.music_ward_server.exception.UnsupportedProviderException;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -69,9 +70,9 @@ public class PlaylistSaveRequest {
         if (Provider.toProvider(provider) == Provider.SPOTIFY) {
             return "https://open.spotify.com/playlist/" + this.originalId;
         } else if (Provider.toProvider(provider) == Provider.YOUTUBE) {
-            return "https://music.youtube.com/playlist?list=" + this.originalId;
+            return "https://youtube.com/playlist?list=" + this.originalId;
         } else {
-            return null;
+            throw new UnsupportedProviderException();
         }
     }
 }
