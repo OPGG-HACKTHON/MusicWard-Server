@@ -24,20 +24,24 @@ _**youtube**, **spotify**의 플레이리스트를 자유롭게 와딩하세요!
 
 ## 🧑‍💻👩‍💻 음악을 포기 못한 소환사들
 
-### [팀 wiki](https://sneaky-unicorn-a44.notion.site/WEB-B-aaf71753633e4cb0b2c95dda606b5f69)
+### ▶️ [팀 wiki](https://sneaky-unicorn-a44.notion.site/WEB-B-aaf71753633e4cb0b2c95dda606b5f69) ◀️
 
-|이름|디자이너|프론트엔드|프론트엔드|백엔드|백엔드|백엔드|
+|-|디자이너|프론트엔드|프론트엔드|백엔드|백엔드|백엔드|
 |---|---|---|---|---|---|---|
-|이름|장현수|**yeomhyeseon**|**anyl92**|**Leeseojune**|**hyeonic**|**ZeroIRC**|
-|op.gg|[뿌르땅뿌르끄](https://www.op.gg/summoner/userName=%EB%BF%8C%EB%A5%B4%EB%95%85%EB%BF%8C%EB%A5%B4%EB%81%84)|-|-|[와사비53](https://www.op.gg/summoner/userName=%EC%99%80%EC%82%AC%EB%B9%8453)|[OpenBom](https://www.op.gg/summoner/userName=OpenBom)|[IRC](https://www.op.gg/summoner/userName=IRC)|
-|github|-|[github](https://github.com/yeomhyeseon)|[github](https://github.com/anyl92)|[github](https://github.com/leeseojune53)|[github](https://github.com/hyeonic)|[github](https://github.com/ZeroIRC)|
+|구성원|[gustnwkd0127](https://www.behance.net/gustnwkd015d28)|[yeomhyeseon](https://github.com/yeomhyeseon)|[anyl92](https://github.com/anyl92)|[Leeseojune](https://github.com/leeseojune53)|[hyeonic](https://github.com/hyeonic)|[ZeroIRC](https://github.com/ZeroIRC)|
+|op.gg|[뿌르땅뿌르끄](https://www.op.gg/summoner/userName=%EB%BF%8C%EB%A5%B4%EB%95%85%EB%BF%8C%EB%A5%B4%EB%81%84)|-|[니얼귤실화냐](https://www.op.gg/summoner/userName=%EB%8B%88%EC%96%BC%EA%B7%A4%EC%8B%A4%ED%99%94%EB%83%90)|[와사비53](https://www.op.gg/summoner/userName=%EC%99%80%EC%82%AC%EB%B9%8453)|[OpenBom](https://www.op.gg/summoner/userName=OpenBom)|[IRC](https://www.op.gg/summoner/userName=IRC)|
 
 ## 🛠 기술 스택
+
+<p align="center">
+    <img alt="figma" src ="https://img.shields.io/badge/figma-F24E1E.svg?&style=for-the-badge&logo=figma&logoColor=white"/>
+</p>
 
 <p align="center">
     <img alt="typescript" src ="https://img.shields.io/badge/typescript-3178C6.svg?&style=for-the-badge&logo=typescript&logoColor=white"/>
     <img alt="react" src ="https://img.shields.io/badge/react-61DAFB.svg?&style=for-the-badge&logo=react&logoColor=white"/>
     <img alt="react-router" src ="https://img.shields.io/badge/react%20router-CA4245.svg?&style=for-the-badge&logo=reactrouter&logoColor=white"/>
+    <img alt="styled-components" src ="https://img.shields.io/badge/styled%20components%20-DB7093.svg?&style=for-the-badge&logo=styledcomponents&logoColor=white"/>
     <img alt="prettier" src ="https://img.shields.io/badge/prettier-F7B93E.svg?&style=for-the-badge&logo=prettier&logoColor=white"/>
     <img alt="eslint" src ="https://img.shields.io/badge/eslint-4B32C3.svg?&style=for-the-badge&logo=eslint&logoColor=white"/>
 </p>
@@ -50,7 +54,6 @@ _**youtube**, **spotify**의 플레이리스트를 자유롭게 와딩하세요!
     <img alt="mysql" src ="https://img.shields.io/badge/mysql-4479A1.svg?&style=for-the-badge&logo=mysql&logoColor=white"/>
     <img alt="redis" src ="https://img.shields.io/badge/redis-DC382D.svg?&style=for-the-badge&logo=redis&logoColor=white"/>
     <img alt="junit" src ="https://img.shields.io/badge/junit5-25A162.svg?&style=for-the-badge&logo=junit5&logoColor=white"/>
-    <img alt="swagger" src ="https://img.shields.io/badge/swagger-85EA2D.svg?&style=for-the-badge&logo=swagger&logoColor=white"/>
 </p>
 
 <p align="center">
@@ -69,13 +72,13 @@ _**youtube**, **spotify**의 플레이리스트를 자유롭게 와딩하세요!
 ## 🏗 AWS ARCHITECTURE
 
 <p align="center">
-    <img src="https://user-images.githubusercontent.com/59357153/132972794-c5aa2011-4ea1-4e04-aeda-4e4a7455a41f.png">
+    <img src="https://user-images.githubusercontent.com/59357153/133461610-ac93f5c3-7ee1-4b21-960b-42518fc7f9af.png">
 </p>
 
 ## 🌊 USER SERVICE FLOW
 
 <p align="center">
-    <img src="https://user-images.githubusercontent.com/59357153/132972812-386ae357-2634-4864-8523-2880614efc5b.png">
+    <img src="https://user-images.githubusercontent.com/59357153/133461717-e224d60c-07c0-41a7-9ab9-7c72c6e70c13.png">
 </p>
 
 ## 🔄 CI/CD
@@ -83,17 +86,17 @@ _**youtube**, **spotify**의 플레이리스트를 자유롭게 와딩하세요!
 ### 👨‍💻👩‍💻 CLIENT
 
 <p align="center">
-    <img src="https://user-images.githubusercontent.com/59357153/132972831-20e51719-2f10-4f1f-bd1a-91b4a6f3c549.png">
+    <img src="https://user-images.githubusercontent.com/59357153/133461746-54e25ba3-ddd3-4b39-96dd-4799a5b4627e.png">
 </p>
 
 ### 🖥 SERVER
 
 <p align="center">
-    <img src="https://user-images.githubusercontent.com/59357153/132972837-93e6d8ea-f07d-4a65-9d03-5f8a769df219.png">
+    <img src="https://user-images.githubusercontent.com/59357153/133461778-c027a4a2-96bf-49ac-8040-ae5523260795.png">
 </p>
 
 ### 📜 LOG ANALYSIS FLOW
 
 <p align="center">
-    <img src="https://user-images.githubusercontent.com/59357153/132972799-194815c7-3272-4c31-8189-4f23fb9960bf.png">
+    <img src="https://user-images.githubusercontent.com/59357153/133461798-358ce539-59b6-4705-aac8-cd9ff4941f16.png">
 </p>
