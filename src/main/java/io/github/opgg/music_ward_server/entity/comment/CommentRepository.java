@@ -10,4 +10,5 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
 
     List<Comment> findByPlaylistId(Long playlistId);
     Integer countByPlaylistId(Long playlistId);
+    void deleteByPlaylistId(Long playlistId);
 }
