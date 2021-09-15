@@ -13,13 +13,13 @@ _**youtube**, **spotify**의 플레이리스트를 자유롭게 와딩하세요!
 
 
 <p align="center">
-    <img src="https://user-images.githubusercontent.com/59357153/132119407-776304ca-6f95-46ea-8b59-10e62c351697.png">
+    <img src="https://user-images.githubusercontent.com/59357153/133463930-814a2308-2984-4746-9f1b-fd404f25e309.png">
 </p>
 
 런치패드로 챔피언의 플레이리스트를 확인해보세요!
 
 <p align="center">
-    <img src="https://user-images.githubusercontent.com/59357153/132119387-67463c5c-881f-44f1-a612-d39de70c7381.png">
+    <img src="https://user-images.githubusercontent.com/59357153/133463916-1b4e1e25-cf1a-4ba1-95f2-af3aadaa895c.png">
 </p>
 
 ## 🧑‍💻👩‍💻 음악을 포기 못한 소환사들
