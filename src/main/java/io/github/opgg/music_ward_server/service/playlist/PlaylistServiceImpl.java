@@ -29,6 +29,7 @@ import io.github.opgg.music_ward_server.entity.user.UserRepository;
 import io.github.opgg.music_ward_server.entity.ward.WardRepository;
 import io.github.opgg.music_ward_server.exception.ChampionNotFoundException;
 import io.github.opgg.music_ward_server.exception.EmptyRefreshTokenException;
+import io.github.opgg.music_ward_server.exception.NotYourPlaylistException;
 import io.github.opgg.music_ward_server.exception.PlaylistNotFoundException;
 import io.github.opgg.music_ward_server.exception.UnsupportedProviderException;
 import io.github.opgg.music_ward_server.exception.UserNotFoundException;
@@ -161,7 +162,9 @@ public class PlaylistServiceImpl implements PlaylistService {
                 .map(TrackMainResponse::new)
                 .collect(Collectors.toList());
 
-        return new PlaylistMainResponse(playlist, requestDto.getTags(), null, null, trackMainResponses);
+        return new PlaylistMainResponse(
+                playlist, requestDto.getTags(), null, null, trackMainResponses
+        );
     }
 
     @Override
@@ -215,9 +218,9 @@ public class PlaylistServiceImpl implements PlaylistService {
 
         trackRepository.deleteByPlaylistId(playlistId);
 
-        Playlist playlist = getPlaylist(playlistId);
-
         Long userId = SecurityUtil.getCurrentUserId();
+
+        Playlist playlist = getPlaylistWithUser(playlistId, userId);
 
         if (playlist.getProvider() == Provider.YOUTUBE) {
 
@@ -248,6 +251,9 @@ public class PlaylistServiceImpl implements PlaylistService {
             for (TrackSaveRequest trackSaveRequest : trackSaveRequests) {
                 trackRepository.save(trackSaveRequest.toEntity(playlist));
             }
+
+        } else {
+            throw new UnsupportedProviderException();
         }
     }
 
@@ -255,11 +261,15 @@ public class PlaylistServiceImpl implements PlaylistService {
     @Transactional
     public void delete(Long playlistId) {
 
+        Long userId = SecurityUtil.getCurrentUserId();
+
+        getPlaylistWithUser(playlistId, userId);
+
         trackRepository.deleteByPlaylistId(playlistId);
         tagRepository.deleteByPlaylistId(playlistId);
         wardRepository.deleteByPlaylistId(playlistId);
 
-        playlistRepository.deleteById(playlistId);
+        playlistRepository.deleteByIdAndUserId(playlistId, userId);
     }
 
     @Override
@@ -316,7 +326,7 @@ public class PlaylistServiceImpl implements PlaylistService {
     }
 
     private Playlist getPlaylistWithUser(Long playlistId, Long userId) {
-        return playlistRepository.findByIdAndUserId(playlistId, userId).orElseThrow(PlaylistNotFoundException::new);
+        return playlistRepository.findByIdAndUserId(playlistId, userId).orElseThrow(NotYourPlaylistException::new);
     }
 
     private List<PlaylistMainResponse> toPlaylistMainResponse(List<Playlist> playlists) {
