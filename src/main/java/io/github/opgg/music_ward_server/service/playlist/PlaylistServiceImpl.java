@@ -216,11 +216,11 @@ public class PlaylistServiceImpl implements PlaylistService {
     @Transactional
     public void synchronize(Long playlistId) {
 
-        trackRepository.deleteByPlaylistId(playlistId);
-
         Long userId = SecurityUtil.getCurrentUserId();
 
         Playlist playlist = getPlaylistWithUser(playlistId, userId);
+
+        trackRepository.deleteByPlaylistId(playlistId);
 
         if (playlist.getProvider() == Provider.YOUTUBE) {
 
@@ -268,6 +268,7 @@ public class PlaylistServiceImpl implements PlaylistService {
         trackRepository.deleteByPlaylistId(playlistId);
         tagRepository.deleteByPlaylistId(playlistId);
         wardRepository.deleteByPlaylistId(playlistId);
+        commentRepository.deleteByPlaylistId(playlistId);
 
         playlistRepository.deleteByIdAndUserId(playlistId, userId);
     }
