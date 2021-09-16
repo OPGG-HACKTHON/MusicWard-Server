@@ -19,5 +19,6 @@ public interface GoogleApiClient {
     @GetMapping("/youtube/v3/playlists")
     YoutubePlaylistsResponse getPlaylists(@RequestHeader("Authorization") String token,
                                           @RequestParam("part") String part,
-                                          @RequestParam("mine") boolean mine);
+                                          @RequestParam("mine") boolean mine,
+                                          @RequestParam("maxResults") String maxResults);
 }
