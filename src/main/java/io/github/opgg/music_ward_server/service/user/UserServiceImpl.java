@@ -243,8 +243,6 @@ public class UserServiceImpl implements UserService {
 
         reportRepository.deleteByUser(user);
 
-        tokenRepository.deleteByIdStartingWith(user.getId().toString());
-
         userRepository.delete(user);
     }
 
