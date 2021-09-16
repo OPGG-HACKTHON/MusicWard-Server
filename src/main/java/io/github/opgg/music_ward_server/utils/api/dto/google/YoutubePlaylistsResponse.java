@@ -68,7 +68,6 @@ public class YoutubePlaylistsResponse {
             }
 
             if (item.getSnippet() != null
-                    && !item.getSnippet().getThumbnails().isEmpty()
                     && !item.getSnippet().getThumbnails().isEmpty()) {
 
                 Item.Snippet.Thumbnail thumbnail;
