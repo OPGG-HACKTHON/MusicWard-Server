@@ -269,6 +269,7 @@ public class PlaylistServiceImpl implements PlaylistService {
         tagRepository.deleteByPlaylistId(playlistId);
         wardRepository.deleteByPlaylistId(playlistId);
         commentRepository.deleteByPlaylistId(playlistId);
+        reportRepository.deleteByPlaylistId(playlistId);
 
         playlistRepository.deleteByIdAndUserId(playlistId, userId);
     }
