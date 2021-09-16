@@ -38,7 +38,7 @@ public class RankingMainResponse {
     // playlist ranking 전용
     public RankingMainResponse(Playlist playlist, int wardsTotal, int commentsTotal, int tracksTotal) {
         this.id = playlist.getId();
-        this.imageUrl = playlist.getImage().getUrl();
+        this.imageUrl = playlist.getImage() != null ? playlist.getImage().getUrl() : null;
         this.title = playlist.getTitle();
         this.subTitle = playlist.getDescription();
         this.view = playlist.getView();
