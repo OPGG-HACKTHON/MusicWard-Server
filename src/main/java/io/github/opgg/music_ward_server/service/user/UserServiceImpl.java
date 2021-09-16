@@ -51,7 +51,7 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl implements UserService {
 
     private static final String GOOGLE_LOGIN_LINK = "https://accounts.google.com/o/oauth2/v2/auth";
-    private static final Long GOOGLE_REFRESH_EXP = 604800L;
+    private static final Long REFRESH_EXP = -1L;
     private static final String SPOTIFY_LOGIN_LINK = "https://accounts.spotify.com/authorize";
     private static final Random random = new Random();
 
@@ -121,7 +121,7 @@ public class UserServiceImpl implements UserService {
         Long userId = userRepository.findByGoogleEmail(userInfo.getEmail())
                 .orElseThrow(UserNotFoundException::new).getId();
 
-        return getToken(userId, response.getRefreshToken(), Type.GOOGLE, GOOGLE_REFRESH_EXP);
+        return getToken(userId, response.getRefreshToken(), Type.GOOGLE, REFRESH_EXP);
     }
 
     @Override
@@ -155,7 +155,7 @@ public class UserServiceImpl implements UserService {
 			throw new AlreadyRegisteredEmailException();
 		}
 
-        return getToken(userId, response.getRefreshToken(), Type.SPOTIFY, -1L);
+        return getToken(userId, response.getRefreshToken(), Type.SPOTIFY, REFRESH_EXP);
     }
 
     @Override
@@ -265,10 +265,13 @@ public class UserServiceImpl implements UserService {
                 .ifPresent(token -> tokenRepository.save(token.update(refreshToken, refreshExp)));
         tokenRepository.findById(userId + type.name())
                 .or(() -> Optional.of(new Token(userId + type.name(),
-                        oauthToken, refreshExp)))
-                .ifPresent(token -> tokenRepository.save(token.update(oauthToken, oauthExp)));
+                        oauthToken, refreshExp)));
 
-        return new TokenResponse(accessToken, refreshToken, oauthToken, type.name());
+        String oauthRefreshToken = tokenRepository.findById(userId + type.name())
+				.map(Token::getRefreshToken)
+				.orElse(null);
+
+        return new TokenResponse(accessToken, refreshToken, oauthRefreshToken, type.name());
     }
 
     private User getUser(Long userId) {
