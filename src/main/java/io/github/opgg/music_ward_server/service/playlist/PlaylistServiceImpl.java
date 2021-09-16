@@ -85,7 +85,7 @@ public class PlaylistServiceImpl implements PlaylistService {
             GoogleAccessTokenResponse accessToken = userService.getGoogleAccessToken(token.getRefreshToken());
 
             YoutubePlaylistsResponse playlists = googleApiClient.getPlaylists(
-                    accessToken.getAccessTokenAndTokenType(), "id,snippet,status", true);
+                    accessToken.getAccessTokenAndTokenType(), "id,snippet,status", true, "50");
 
             return playlists.toNonPlaylists();
 
