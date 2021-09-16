@@ -261,9 +261,10 @@ public class UserServiceImpl implements UserService {
         tokenRepository.findById(userId + Type.MUSICWARD.name())
                 .or(() -> Optional.of(new Token(userId + Type.MUSICWARD.name(), refreshToken, refreshExp)))
                 .ifPresent(token -> tokenRepository.save(token.update(refreshToken, refreshExp)));
-        tokenRepository.findById(userId + type.name())
-                .or(() -> Optional.of(new Token(userId + type.name(),
-                        oauthToken, refreshExp)));
+		if(tokenRepository.findById(userId + type.name()).isEmpty()) {
+			tokenRepository.save(new Token(userId + type.name(),
+					oauthToken, oauthExp));
+		}
 
         String oauthRefreshToken = tokenRepository.findById(userId + type.name())
 				.map(Token::getRefreshToken)
