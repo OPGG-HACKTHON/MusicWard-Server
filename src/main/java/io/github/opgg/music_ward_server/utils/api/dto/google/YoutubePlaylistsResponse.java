@@ -82,7 +82,7 @@ public class YoutubePlaylistsResponse {
                         .originalTitle(item.getSnippet().getTitle())
                         .originalDescription(item.getSnippet().getDescription())
                         .image(image)
-                        .externalUrl("https://music.youtube.com/playlist?list=" + item.getId())
+                        .externalUrl("https://youtube.com/playlist?list=" + item.getId())
                         .build();
 
                 nonPlaylists.add(nonPlaylist);
