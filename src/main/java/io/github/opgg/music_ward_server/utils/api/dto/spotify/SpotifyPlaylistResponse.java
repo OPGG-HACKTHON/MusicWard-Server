@@ -178,6 +178,9 @@ public class SpotifyPlaylistResponse implements PlaylistResponse {
                             image.getUrl(), image.getWidth(), image.getHeight());
                 }
             }
+        } else if (images.size() == 1) {
+            return new io.github.opgg.music_ward_server.entity.playlist.Image(
+                    images.get(0).getUrl(), null, null);
         }
 
         return null;
