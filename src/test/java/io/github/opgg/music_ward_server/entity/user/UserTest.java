@@ -25,7 +25,6 @@ class UserTest {
                 .name(name)
                 .role(role)
                 .nickname(nickname)
-                .withdrawal(false)
                 .build();
 
         //then
