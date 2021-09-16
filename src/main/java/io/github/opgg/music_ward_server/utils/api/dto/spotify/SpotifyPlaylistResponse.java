@@ -171,9 +171,13 @@ public class SpotifyPlaylistResponse implements PlaylistResponse {
     @Override
     public io.github.opgg.music_ward_server.entity.playlist.Image getImage() {
 
-        if (images.size() != 0) {
+        if (images.size() > 1) {
             for (Image image : images) {
-                if (image.getWidth().equals("640") && image.getHeight().equals("640")) {
+                if (image.getWidth() != null
+                        && image.getHeight() != null
+                        && image.getWidth().equals("640")
+                        && image.getHeight().equals("640")) {
+
                     return new io.github.opgg.music_ward_server.entity.playlist.Image(
                             image.getUrl(), image.getWidth(), image.getHeight());
                 }
