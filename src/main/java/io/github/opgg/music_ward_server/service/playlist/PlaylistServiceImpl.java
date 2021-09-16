@@ -265,10 +265,12 @@ public class PlaylistServiceImpl implements PlaylistService {
 
         getPlaylistWithUser(playlistId, userId);
 
+        // TODO: ghost 계정으로 변경할 예정
         trackRepository.deleteByPlaylistId(playlistId);
         tagRepository.deleteByPlaylistId(playlistId);
         wardRepository.deleteByPlaylistId(playlistId);
         commentRepository.deleteByPlaylistId(playlistId);
+        reportRepository.deleteByPlaylistIdAndUserId(playlistId, userId);
 
         playlistRepository.deleteByIdAndUserId(playlistId, userId);
     }
