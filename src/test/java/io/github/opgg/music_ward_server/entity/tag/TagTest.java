@@ -20,7 +20,6 @@ class TagTest {
                 .name("test")
                 .role(Role.ROLE_ADMIN)
                 .nickname("hideonbush")
-                .withdrawal(false)
                 .build();
     }
 

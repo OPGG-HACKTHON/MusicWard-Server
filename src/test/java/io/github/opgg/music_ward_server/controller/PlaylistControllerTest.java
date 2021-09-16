@@ -46,7 +46,6 @@ class PlaylistControllerTest extends BaseIntegrationTest {
                 .name("test")
                 .role(Role.ROLE_ADMIN)
                 .nickname("hideonbush")
-                .withdrawal(false)
                 .build();
     }
 

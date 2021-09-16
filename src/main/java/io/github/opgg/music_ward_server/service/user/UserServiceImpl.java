@@ -229,13 +229,15 @@ public class UserServiceImpl implements UserService {
 
         User ghostUser = getUser(0L);
 
-        user.getComments().forEach(
-                comment -> comment.changeUser(ghostUser)
-        );
+		if(user.getComments() != null)
+			user.getComments().forEach(
+					comment -> comment.changeUser(ghostUser)
+			);
 
-        user.getPlaylists().forEach(
-                playlist -> playlist.changeUser(ghostUser)
-        );
+		if(user.getPlaylists() != null)
+			user.getPlaylists().forEach(
+					playlist -> playlist.changeUser(ghostUser)
+			);
 
         wardRepository.deleteByUser(user);
 

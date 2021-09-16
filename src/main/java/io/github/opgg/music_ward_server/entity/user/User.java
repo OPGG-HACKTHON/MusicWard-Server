@@ -50,9 +50,6 @@ public class User extends BaseEntity implements UserDetails {
     @Column(length = 10)
     private String nickname;
 
-    @Column(columnDefinition = "BIT(1)")
-    private boolean withdrawal;
-
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     private Set<Comment> comments = new HashSet<>();
 
@@ -61,13 +58,12 @@ public class User extends BaseEntity implements UserDetails {
 
     @Builder
     public User(String googleEmail, String spotifyEmail, String name, Role role,
-                String nickname, boolean withdrawal) {
+                String nickname) {
         this.googleEmail = googleEmail;
         this.spotifyEmail = spotifyEmail;
         this.name = name;
         this.role = role;
         this.nickname = nickname;
-        this.withdrawal = withdrawal;
     }
 
     @Override
