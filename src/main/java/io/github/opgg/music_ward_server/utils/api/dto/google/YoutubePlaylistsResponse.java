@@ -69,9 +69,15 @@ public class YoutubePlaylistsResponse {
 
             if (item.getSnippet() != null
                     && !item.getSnippet().getThumbnails().isEmpty()
-                    && item.getSnippet().getThumbnails().containsKey("maxres")) {
+                    && !item.getSnippet().getThumbnails().isEmpty()) {
 
-                Item.Snippet.Thumbnail thumbnail = item.getSnippet().getThumbnails().get("maxres");
+                Item.Snippet.Thumbnail thumbnail;
+                if (item.getSnippet().getThumbnails().containsKey("maxres")) {
+                    thumbnail = item.getSnippet().getThumbnails().get("maxres");
+                } else {
+                    thumbnail = item.getSnippet().getThumbnails().get("default");
+                }
+
                 NonPlaylistsResponse.Playlist.Image image = NonPlaylistsResponse.Playlist.Image.builder()
                         .url(thumbnail.getUrl())
                         .width(thumbnail.getWidth())
