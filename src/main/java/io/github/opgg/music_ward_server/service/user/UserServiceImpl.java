@@ -1,5 +1,13 @@
 package io.github.opgg.music_ward_server.service.user;
 
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.Optional;
+import java.util.Random;
+
+import javax.transaction.Transactional;
+
 import io.github.opgg.music_ward_server.config.properties.GoogleProperties;
 import io.github.opgg.music_ward_server.config.properties.SpotifyProperties;
 import io.github.opgg.music_ward_server.dto.user.request.ModifyNicknameRequest;
@@ -15,6 +23,7 @@ import io.github.opgg.music_ward_server.entity.user.Role;
 import io.github.opgg.music_ward_server.entity.user.User;
 import io.github.opgg.music_ward_server.entity.user.UserRepository;
 import io.github.opgg.music_ward_server.entity.ward.WardRepository;
+import io.github.opgg.music_ward_server.exception.AlreadyRegisteredEmailException;
 import io.github.opgg.music_ward_server.exception.EmailTooLongException;
 import io.github.opgg.music_ward_server.exception.ExpiredRefreshTokenException;
 import io.github.opgg.music_ward_server.exception.UserNotFoundException;
@@ -23,21 +32,19 @@ import io.github.opgg.music_ward_server.utils.api.client.google.GoogleAuthClient
 import io.github.opgg.music_ward_server.utils.api.client.google.GoogleInfoClient;
 import io.github.opgg.music_ward_server.utils.api.client.spotify.SpotifyAuthClient;
 import io.github.opgg.music_ward_server.utils.api.client.spotify.SpotifyInfoClient;
-import io.github.opgg.music_ward_server.utils.api.dto.google.*;
+import io.github.opgg.music_ward_server.utils.api.dto.google.GoogleAccessTokenRequest;
+import io.github.opgg.music_ward_server.utils.api.dto.google.GoogleAccessTokenResponse;
+import io.github.opgg.music_ward_server.utils.api.dto.google.GoogleCodeRequest;
+import io.github.opgg.music_ward_server.utils.api.dto.google.GoogleInfoResponse;
+import io.github.opgg.music_ward_server.utils.api.dto.google.GoogleTokenResponse;
 import io.github.opgg.music_ward_server.utils.api.dto.spotify.SpotifyAccessTokenResponse;
 import io.github.opgg.music_ward_server.utils.api.dto.spotify.SpotifyTokenResponse;
 import io.github.opgg.music_ward_server.utils.security.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.codec.binary.Base64;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-
-import javax.transaction.Transactional;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.util.Optional;
-import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
@@ -141,8 +148,12 @@ public class UserServiceImpl implements UserService {
         String email = spotifyInfoClient.getEmail("Bearer " + response.getAccessToken())
                 .getEmail();
 
-        userRepository.findById(userId)
-                .map(user -> userRepository.save(user.setSpotifyEmail(email)));
+		try {
+			userRepository.findById(userId)
+					.map(user -> userRepository.save(user.setSpotifyEmail(email)));
+		} catch(RuntimeException e) {
+			throw new AlreadyRegisteredEmailException();
+		}
 
         return getToken(userId, response.getRefreshToken(), Type.SPOTIFY, -1L);
     }
