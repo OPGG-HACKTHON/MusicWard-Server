@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ReportRepository extends JpaRepository<Report, Long> {
     void deleteByUser(User user);
-    void deleteByPlaylistIdAndUserId(Long playlistId, Long userId);
+    void deleteByPlaylistId(Long playlistId);
 }
