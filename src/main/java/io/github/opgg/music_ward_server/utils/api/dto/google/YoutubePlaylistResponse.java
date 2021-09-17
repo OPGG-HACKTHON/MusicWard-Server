@@ -72,7 +72,14 @@ public class YoutubePlaylistResponse implements PlaylistResponse {
     @Override
     public Image getImage() {
         if (items.size() != 0) {
-            Item.Snippet.Thumbnail thumbnail = items.get(0).getSnippet().getThumbnails().get("maxres");
+            Item.Snippet.Thumbnail thumbnail;
+            Map<String, Item.Snippet.Thumbnail> thumbnails = items.get(0).getSnippet().getThumbnails();
+            if (thumbnails.containsKey("maxres")) {
+                thumbnail = thumbnails.get("maxres");
+            } else {
+                thumbnail = thumbnails.get("default");
+            }
+
             return new Image(thumbnail.getUrl(), thumbnail.getWidth(), thumbnail.getHeight());
         }
 
@@ -81,7 +88,7 @@ public class YoutubePlaylistResponse implements PlaylistResponse {
 
     @Override
     public List<TrackSaveRequest> getTrackSaveRequests() {
-        
+
         List<TrackSaveRequest> trackSaveRequests = new ArrayList<>();
 
         for (Item item : items) {
@@ -104,7 +111,7 @@ public class YoutubePlaylistResponse implements PlaylistResponse {
 
             trackSaveRequests.add(trackSaveRequest);
         }
-        
+
         return trackSaveRequests;
     }
 }
