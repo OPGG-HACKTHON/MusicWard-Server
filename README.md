@@ -6,20 +6,20 @@ _**youtube**, **spotify**의 플레이리스트를 자유롭게 와딩하세요!
 
 ## 😃 서비스 소개
 <p align="center">
-    <img src="https://user-images.githubusercontent.com/59357153/132119270-4f11d8ed-6f47-4986-ab69-4bfbb4849515.png">
+    <img src="https://user-images.githubusercontent.com/59357153/133793838-94ed0f54-3df4-4bf6-a9e6-a4abd5ea0890.png">
 </p>
 
 **music ward**는 **youtube**와 **spotify**에서 생성한 플레이리스트를 등록하여 공유하고 추천할 수 있는 서비스입니다.
 
 
 <p align="center">
-    <img src="https://user-images.githubusercontent.com/59357153/133463930-814a2308-2984-4746-9f1b-fd404f25e309.png">
+    <img src="https://user-images.githubusercontent.com/59357153/133794230-a36d1e95-9c5d-439a-9cf4-1cc253d293d0.png">
 </p>
 
 런치패드로 챔피언의 플레이리스트를 확인해보세요!
 
 <p align="center">
-    <img src="https://user-images.githubusercontent.com/59357153/133463916-1b4e1e25-cf1a-4ba1-95f2-af3aadaa895c.png">
+    <img src="https://user-images.githubusercontent.com/59357153/133794044-f3a24117-f565-433e-b888-6ab794f262f0.png">
 </p>
 
 ## 🧑‍💻👩‍💻 음악을 포기 못한 소환사들
