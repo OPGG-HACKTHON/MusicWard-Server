@@ -30,10 +30,10 @@ _**youtube**, **spotify**의 플레이리스트를 자유롭게 와딩하세요!
 * [MusicWard-Client](https://github.com/OPGG-HACKTHON/MusicWard-Client)
 * [MusicWard-Server](https://github.com/OPGG-HACKTHON/MusicWard-Server)
 
-|-|디자이너|프론트엔드|프론트엔드|백엔드|백엔드|백엔드|
+| |디자이너|프론트엔드|프론트엔드|백엔드|백엔드|백엔드|
 |---|---|---|---|---|---|---|
 |구성원|[gustnwkd0127](https://www.behance.net/gustnwkd015d28)|[yeomhyeseon](https://github.com/yeomhyeseon)|[anyl92](https://github.com/anyl92)|[Leeseojune](https://github.com/leeseojune53)|[hyeonic](https://github.com/hyeonic)|[ZeroIRC](https://github.com/ZeroIRC)|
-|op.gg|[뿌르땅뿌르끄](https://www.op.gg/summoner/userName=%EB%BF%8C%EB%A5%B4%EB%95%85%EB%BF%8C%EB%A5%B4%EB%81%84)|-|[니얼귤실화냐](https://www.op.gg/summoner/userName=%EB%8B%88%EC%96%BC%EA%B7%A4%EC%8B%A4%ED%99%94%EB%83%90)|[와사비53](https://www.op.gg/summoner/userName=%EC%99%80%EC%82%AC%EB%B9%8453)|[OpenBom](https://www.op.gg/summoner/userName=OpenBom)|[IRC](https://www.op.gg/summoner/userName=IRC)|
+|op.gg|[뿌르땅뿌르끄](https://www.op.gg/summoner/userName=%EB%BF%8C%EB%A5%B4%EB%95%85%EB%BF%8C%EB%A5%B4%EB%81%84)|[순골드박](https://www.op.gg/summoner/userName=%EC%88%9C%EA%B3%A8%EB%93%9C%EB%B0%95)|[니얼귤실화냐](https://www.op.gg/summoner/userName=%EB%8B%88%EC%96%BC%EA%B7%A4%EC%8B%A4%ED%99%94%EB%83%90)|[와사비53](https://www.op.gg/summoner/userName=%EC%99%80%EC%82%AC%EB%B9%8453)|[OpenBom](https://www.op.gg/summoner/userName=OpenBom)|[IRC](https://www.op.gg/summoner/userName=IRC)|
 
 ## 🛠 기술 스택
 
