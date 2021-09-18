@@ -1,20 +1,27 @@
 package io.github.opgg.music_ward_server.security.jwt;
 
+import java.util.Base64;
+import java.util.Date;
+
+import javax.servlet.http.HttpServletRequest;
+
 import io.github.opgg.music_ward_server.exception.ExpiredAccessTokenException;
 import io.github.opgg.music_ward_server.exception.ExpiredRefreshTokenException;
 import io.github.opgg.music_ward_server.exception.InvalidTokenException;
 import io.github.opgg.music_ward_server.security.jwt.auth.AuthDetailsService;
-import io.jsonwebtoken.*;
+import io.github.opgg.music_ward_server.security.jwt.auth.UserAuthentication;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.SignatureException;
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
-
-import javax.servlet.http.HttpServletRequest;
-import java.util.Base64;
-import java.util.Date;
 
 @Component
 @RequiredArgsConstructor
@@ -88,7 +95,7 @@ public class JwtTokenProvider {
     public Authentication authentication(String token) {
         UserDetails userDetails = authDetailsService
                 .loadUserByUsername(getTokenSubject(token));
-        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
+        return new UserAuthentication(userDetails);
     }
 
     private Claims getTokenBody(String token) {
